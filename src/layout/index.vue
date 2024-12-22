@@ -1,8 +1,8 @@
 <template>
   <div class="layout_container" :class="{
-      suuny: LayoutSettingStore.theme,
-      moon: !LayoutSettingStore.theme,
-    }" >
+    suuny: LayoutSettingStore.theme,
+    moon: !LayoutSettingStore.theme,
+  }">
     <!-- 偏好设置 -->
     <Drawer></Drawer>
     <!-- 左侧菜单 -->
@@ -14,18 +14,21 @@
       <!-- logo -->
       <Logo class="logo"></Logo>
       <!-- 展示菜单 -->
-      <el-scrollbar class="scrollbar" >
+      <el-scrollbar class="scrollbar">
         <!-- 菜单组件 -->
         <el-menu :collapse="LayoutSettingStore.fold" :default-active="$route.path" :collapse-transition="false" router>
           <Menu :menuList="usePermissionStore.sidebarRouters"></Menu>
         </el-menu>
       </el-scrollbar>
       <el-button class="foldwithExpand iconBtn" @click="changeIcon">
-          <svg-icon  :name="LayoutSettingStore.fold ? '折叠-展开' : '折叠-收起'" :color="LayoutSettingStore.theme ? 'black' : 'white'" />
-        </el-button>
+        <svg-icon :name="LayoutSettingStore.fold ? '折叠-展开' : '折叠-收起'"
+          :color="LayoutSettingStore.theme ? 'black' : 'white'" />
+      </el-button>
     </div>
     <!-- 顶部导航 -->
     <div class="layout_tabbar" :class="{
+      showNavigationBar: LayoutSettingStore.navigationBar,
+      hidenNavigationBar: !LayoutSettingStore.navigationBar,
       suuny: LayoutSettingStore.theme,
       moon: !LayoutSettingStore.theme,
       unfold: !LayoutSettingStore.fold,
@@ -37,6 +40,8 @@
     </div>
     <!-- 顶部tabs -->
     <div class="layout_tabs" :class="{
+      showNavigationBar: LayoutSettingStore.navigationBar,
+      hidenNavigationBar: !LayoutSettingStore.navigationBar,
       suuny: LayoutSettingStore.theme,
       moon: !LayoutSettingStore.theme,
       fold: LayoutSettingStore.fold,
@@ -48,6 +53,8 @@
 
     <!-- 内容展示区域 -->
     <div class="layout_main" :class="{
+      showNavigationBar: LayoutSettingStore.navigationBar,
+      hidenNavigationBar: !LayoutSettingStore.navigationBar,
       suuny: LayoutSettingStore.theme,
       moon: !LayoutSettingStore.theme,
       fold: LayoutSettingStore.fold,
@@ -57,19 +64,18 @@
       showMenu: LayoutSettingStore.menu,
       hidenMenu: !LayoutSettingStore.menu,
     }">
-      <!-- <el-watermark
-        :content="setting.watermarkContent"
-        :font="{ color: 'blue' }"
-      > -->
-      <Breadcrumb class="breadcurmb"></Breadcrumb>
-      <Main class="context"></Main>
-      <copyright v-show="LayoutSettingStore.copyright"></copyright>
-      <!-- </el-watermark> -->
+      <el-watermark :content="setting.watermarkContent">
+        <Breadcrumb class="breadcurmb" v-show="LayoutSettingStore.breadcrumb"></Breadcrumb>
+        <Main class="context">
+        </Main>
+        <copyright v-show="LayoutSettingStore.copyright"></copyright>
+      </el-watermark>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import setting from '@/setting'
 //导入右侧抽屉
 import Drawer from './tabbar/setting/drawer/index.vue'
 //引入菜单组件
@@ -105,57 +111,67 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-*{
+* {
   transition: width 0.15s;
   -webkit-transition: width 0.15s;
   -moz-transition: width 0.15s;
   -webkit-transition: width 0.15s;
   -o-transition: width 0.15s;
 }
+
 .layout_container {
   position: relative;
   width: 100%;
   height: 100vh;
+
   //白天
   &.suuny {
     background-color: #fafafb;
   }
+
   //黑夜
-  &.moon{
+  &.moon {
     background-color: #000000;
   }
+
   .layout_slider {
+
     //白天
     &.suuny {
       background-color: #ffffff;
     }
+
     //黑夜
-    &.moon{
+    &.moon {
       background-color: #161618;
     }
- 
+
     position: fixed;
     width: $base-menu-width;
     box-shadow: --el-box-shadow-light;
     height: 100vh;
     top: 0px;
+
     // 导航栏折叠
     &.fold {
       width: $base-menu-min-width;
     }
+
     .scrollbar {
-        height: calc(100vh - $base-menu-logo-height);
-        .el-menu {
-          border-right: none;
-        }
-     }
-     // 导航栏展开
-     .foldwithExpand {
-        position: absolute;
-        bottom: 0; // 距离底部 0 距离，使其贴靠在底部
-        left: 50%; // 先将按钮左边框移动到父元素水平方向的中间位置
-        transform: translateX(-50%); // 通过平移，将按钮自身宽度的一半往左移，实现水平居中效果
+      height: calc(100vh - $base-menu-logo-height);
+
+      .el-menu {
+        border-right: none;
       }
+    }
+
+    // 导航栏展开
+    .foldwithExpand {
+      position: absolute;
+      bottom: 0; // 距离底部 0 距离，使其贴靠在底部
+      left: 50%; // 先将按钮左边框移动到父元素水平方向的中间位置
+      transform: translateX(-50%); // 通过平移，将按钮自身宽度的一半往左移，实现水平居中效果
+    }
   }
 
   .layout_tabbar {
@@ -163,19 +179,30 @@ export default {
     position: fixed;
     left: $base-menu-width;
     width: calc(100% - $base-menu-width);
-    height: $base-tabbar-height;
+
+    &.showNavigationBar {
+      height: $base-tabbar-height;
+    }
+
+    &.hidenNavigationBar {
+      height: 0px;
+    }
+
     //白天
     &.suuny {
       background-color: #fafafb;
     }
+
     //黑夜
-    &.moon{
+    &.moon {
       background-color: #000000;
     }
+
     &.hidenMenu {
       width: 100%;
       left: 0;
     }
+
     // 折叠中
     &.fold {
       &.showMenu {
@@ -183,47 +210,70 @@ export default {
         left: $base-menu-min-width;
       }
     }
-     // 展开中
-    &.unfold{
+
+    // 展开中
+    &.unfold {
       &.showMenu {
         width: calc(100% - $base-menu-width);
         left: $base-menu-width;
       }
     }
- 
+
   }
 
   .layout_main {
     overflow-y: auto;
     position: absolute;
+    right: 0px;
+
     //白天
     &.suuny {
       background-color: #fafafb;
     }
+
     //黑夜
-    &.moon{
+    &.moon {
       background-color: #000000;
     }
-    .breadcurmb{
+
+    .breadcurmb {
       padding: 5px 15px;
     }
-    .context{
+
+    .context {
       padding: 10px;
     }
+
     &.showTabs {
-      top: calc($base-tabbar-height + $base-tabs-height);
-      height: calc(100vh - $base-tabs-height - $base-tabs-height);
+      &.showNavigationBar {
+        top: calc($base-tabbar-height + $base-tabs-height);
+        height: calc(100vh - $base-tabs-height - $base-tabs-height);
+      }
+
+      &.hidenNavigationBar {
+        top: calc($base-tabbar-height);
+        height: calc(100vh - $base-tabs-height);
+      }
     }
 
     &.hidenTabs {
-      top: $base-tabbar-height;
-      height: calc(100vh - $base-tabs-height);
+      &.showNavigationBar {
+        top: $base-tabbar-height;
+        height: calc(100vh - $base-tabs-height);
+      }
+
+      &.hidenNavigationBar {
+        top: 0px;
+        height: 100vh
+      }
     }
+
 
     &.hidenMenu {
       width: 100%;
       left: 0;
     }
+
     // 折叠中
     &.fold {
       &.showMenu {
@@ -231,33 +281,43 @@ export default {
         left: $base-menu-min-width;
       }
     }
-     // 展开中
-    &.unfold{
+
+    // 展开中
+    &.unfold {
       &.showMenu {
         width: calc(100% - $base-menu-width);
         left: $base-menu-width;
       }
     }
- 
-  
-   
+
+
+
   }
 
 
   .layout_tabs {
-    top: $base-tabbar-height;
     scrollbar-width: thin;
     position: fixed;
     height: $base-tabs-height;
+
+    &.showNavigationBar {
+      top: $base-tabbar-height;
+    }
+
+    &.hidenNavigationBar {
+      top: 0px;
+    }
+
     //白天
     &.suuny {
       background-color: #fafafb;
     }
+
     //黑夜
-    &.moon{
+    &.moon {
       background-color: #000000;
     }
-   
+
     &.showMenu {
       width: calc(100% - $base-menu-width);
       left: $base-menu-width;
@@ -274,7 +334,6 @@ export default {
     }
   }
 
- 
-}
 
+}
 </style>

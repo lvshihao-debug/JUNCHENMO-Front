@@ -13,9 +13,14 @@ const useSettinggStore = defineStore('SettinggStore', {
       settingDrawer: false, //抽屉展开或收起状态
       fold: false, //menu展开或者收起状态
       theme: true, //主题是否是暗黑模式还是白天模式
-      size: 20, //数据默认条数设置
+      themeColor: "red", //主题颜色
+      size: "20", //数据默认条数设置
       tabs: true, //tabs是否展示
+      navigationBar: true, //顶部导航栏是否展示
       menu: true, //菜单是否展示
+      weakColor:false, //弱色模式
+      grayscale:false, //黑白模式
+      breadcrumb: true, //面包屑是否展示
       copyright: true, //版权内容是否展示 
     }
   },
@@ -26,15 +31,15 @@ const useSettinggStore = defineStore('SettinggStore', {
     if (result.code == 200) {
       console.log(result)
       nextTick(() => {
-        console.log("刷新成功")
         this.theme = result.data.theme
-        this.size = result.data.size
+        this.themeColor = result.data.themeColor
+        this.size = result.data.size + ""
         this.tabs = result.data.tabs
-        // this.menu = result.data.menu
+        this.menu = result.data.menu
+        this.breadcrumb = result.data.breadcrumb
+        this.navigationBar = result.data.navigationBar
         this.copyright = result.data.copyright
       })
-   
-      // this.topMenu = result.topMenu
       return Promise.resolve('ok')
     } else {
       return Promise.reject(result.msg)

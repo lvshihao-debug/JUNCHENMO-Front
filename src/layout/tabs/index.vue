@@ -1,10 +1,10 @@
 <template>
-  <el-row class="row-tabs" :class="{
+  <el-row class="row-tabs animate__animated animate__fadeIn" :class="{
       moon: !LayoutSettingStore.theme,
       sunny: LayoutSettingStore.theme,
-    }">
+    }" >
     <el-col :span="23" >
-      <el-scrollbar ref="scrollbarRef"   @wheel.prevent="handleScroll" >
+      <el-scrollbar ref="scrollbarRef"   @wheel.prevent="handleScroll" height="100%">
         <!-- 面包屑动态的展示路由名字与标题 -->
         <div class="tabs-jcm">
           <transition-group name="tab">
@@ -29,7 +29,7 @@
                       <div  class="jcm-tabs-titleWithIcon">
                         <!-- 新增的分隔符 -->
                         <span >{{ tag.title }}</span>
-                        <svg-icon  class="jcm-tabs-icon" name="叉" :width="12" :height="12"  @click="TabsStore.removeTab(tag, $router)"/>
+                        <svg-icon  class="jcm-tabs-icon" name="叉" :width="12" :height="12"  @click.stop="TabsStore.removeTab(tag, $router)"/>
                       </div>
                     </div>
                   </el-check-tag>
@@ -106,7 +106,7 @@ let currentPosition = 0
 
 const handleScroll = (e: WheelEvent) => {
   const delta = Math.sign(e.deltaY) // get the direction of the scroll (1 for down, -1 for up)
-  const newPosition = currentPosition + 15 * delta // calculate the new position based on the direction and step size
+  const newPosition = currentPosition + 20 * delta // calculate the new position based on the direction and step size
   if (
     newPosition >= 0 &&
     newPosition <=
@@ -118,9 +118,11 @@ const handleScroll = (e: WheelEvent) => {
     scrollbarRef.value.setScrollLeft(currentPosition)
   }
 }
+
 </script>
 
 <style scoped lang="scss">
+
 .row-tabs{
   margin-left: 7px;
 }
@@ -171,8 +173,5 @@ const handleScroll = (e: WheelEvent) => {
   width: auto;
   text-align: center;
 }
-/** 隐藏横向滚动条 */
-.el-scrollbar__bar .is-horizontal {
-  bottom: 0px;
-}
+
 </style>

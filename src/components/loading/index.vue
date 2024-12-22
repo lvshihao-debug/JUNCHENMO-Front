@@ -22,7 +22,7 @@
   
   // 定义响应式变量，用于控制组件的样式相关属性
   const loaderStyles = ref({});
-  const textContent = ref('Searching');
+  const textContent = ref('Loading...');
   
   // 定义CSS变量，可根据需要在外部传入不同的值来改变样式
   const background = ref('#62abff');

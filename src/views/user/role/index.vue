@@ -101,7 +101,7 @@
       <template #footer>
         <div class="pagination-style">
           <!--分页-->
-          <el-pagination :page-sizes="[10, 20, 30, 40]" :default-page-size="LayoutSettingStore.size" small="small"
+          <el-pagination :page-sizes="[10, 20, 30, 40]" :default-page-size="Number(LayoutSettingStore.size)" small="small"
             background="true" layout="total, sizes, prev, pager, next, jumper" :total="dataList.total"
             @size-change="handleSizeChange" @current-change="handleCurrentChange" />
         </div>
@@ -134,8 +134,8 @@ const LayoutSettingStore = useLayoutSettingStore()
 
 
 onMounted(() => {
-  //手动触发更新页数的逻辑
-  handleSizeChange(LayoutSettingStore.size)
+ //手动触发更新页数的逻辑
+ handleSizeChange(Number(LayoutSettingStore.size))
   //进入页面初始化的数据
   searchList(roleStore.searchform)
 })

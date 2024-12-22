@@ -58,7 +58,6 @@ const useMenuStore = defineStore('Menu', {
           this.setRoutes(RoutesData)
           this.setSidebarRouters(RoutesData)
           RoutesData.forEach((route: any) => {
-            console.log(route.path)
             if (isNotHttp(route.path)) {
               router.addRoute(route) // 动态添加可访问路由表
             }

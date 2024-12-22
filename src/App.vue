@@ -9,18 +9,13 @@
 //配置国际化
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 let locale = zhCn
-const ss=()=>{
-  let styles=document.documentElement.style
-  styles.setProperty('$lvshihao-menu-suuny-item-active-div-svg-bg', "blue")
-}
 
-ss()
 //配置按钮自动插入空格
 const config = reactive({
   autoInsertSpace: true,
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 </style>

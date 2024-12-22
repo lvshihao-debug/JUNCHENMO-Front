@@ -1,6 +1,6 @@
 <template>
   <el-button title="刷新"  class="iconBtn"  @click="updateRefsh">
-    <svg-icon  name="刷新"  />
+    <svg-icon  name="顶部刷新"  />
   </el-button>
   <el-button title="全屏" class="iconBtn"   @click="fullScreen">
     <svg-icon  name="全屏"  />

@@ -93,7 +93,6 @@ const open = (item: any) => {
 
 //点击修改按钮触发的事件
 const updateInfoItem = (formEl: FormInstance | undefined) => {
-    console.log(dictDataStore.extra)
     if (!formEl) return
     formEl.validate((valid) => {
         if (valid) {

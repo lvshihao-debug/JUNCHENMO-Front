@@ -1,5 +1,5 @@
 <template>
-    <div class="ivu-global-footer i-copyright">
+    <div class="ivu-global-footer i-copyright animate__animated animate__fadeIn">
        <div class="ivu-global-footer-links">
           <a :href="item.href" target="_blank" v-for="(item,index) in links" :key="index">{{item.title}}</a>
        </div>
