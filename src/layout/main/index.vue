@@ -4,7 +4,7 @@
       <!-- 渲染layout一级路由组件的子路由 -->
       <transition name="slide" mode="out-in" appear>
         <keep-alive :include="usePermissionStore.cacheRouterNames">
-          <component :is="Component" v-if="flag" :key="route.path" />
+          <component :is="Component" v-if="flag" :key="route.path"  />
         </keep-alive>
       </transition>
     </router-view>

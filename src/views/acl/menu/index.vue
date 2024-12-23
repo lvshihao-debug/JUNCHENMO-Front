@@ -54,7 +54,7 @@
       </el-form>
     </el-card>
     <!-- 权限列表卡片 -->
-    <el-card class="card-table-style" v-if="!menuStore.tableLoading">
+    <el-card class="card-table-style" v-if="!menuStore.tableLoading||!LoadingStatus">
       <el-table :data="menuStore.dataList" table-layout="auto" row-key="menuId"
         :default-expand-all="menuStore.expandStatus" :default-sort="{ prop: 'sort', order: 'ascending' }"
         v-if="menuStore.refreshTable">
@@ -190,13 +190,17 @@ import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 const instance: ComponentInternalInstance | null = getCurrentInstance();
 const menuStore = useMenuStore()
 const LayoutSettingStore = useLayoutSettingStore()
+const LoadingStatus = ref(false) 
 
 onMounted(() => {
-  console.log("初始化")
+  LoadingStatus.value=LayoutSettingStore.dataLoding
   menuStore.tableLoading = true
+
   //进入页面初始化的数据
   searchList(menuStore.searchform)
+  setTimeout(() => {
   menuStore.tableLoading = false
+  },1000)
 })
 
 //表单对象
@@ -204,6 +208,7 @@ const searchFormRef = ref<FormInstance>()
 //user弹出窗对象
 const menuAddFromModal = ref<FromModal>()
 const menuUpdateFromModal = ref<FromModal>()
+
 
 
 //根据搜索条件进行搜索

@@ -69,7 +69,7 @@
       }">
 
         <Breadcrumb class="breadcurmb" v-show="LayoutSettingStore.breadcrumb"></Breadcrumb>
-        <Main class="context">
+        <Main class="context" >
         </Main>
         <copyright v-show="LayoutSettingStore.copyright"></copyright>
       </div>

@@ -28,6 +28,7 @@ const useSettinggStore = defineStore('SettinggStore', {
       contrast:false, //对比度降低
       hueRotate:false, //色相旋转
       saturate:false, //饱和度
+      dataLoding:true //是否开数据加载动画
     }
   },
   actions: {

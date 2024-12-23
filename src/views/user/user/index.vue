@@ -1,5 +1,5 @@
 <template>
-  <div class="animate__animated animate__fadeIn">
+  <div>
     <el-card>
       <el-form :inline="true" :model="userStore.searchform" class="searchForm" label-position="right" label-width="auto"
         ref="searchFormRef">
@@ -47,6 +47,7 @@
         </el-row>
       </el-form>
     </el-card>
+    
     <el-card class="card-table-style">
       <template #header>
         <div class="card-header-style">

@@ -69,9 +69,7 @@
         <el-table-column prop="value" label="配置值" align="center" />
         <el-table-column prop="extra" width="240" label="额外参数" align="center" show-overflow-tooltip>
           <template #default="scope">
-            <el-tooltip class="box-item" effect="dark" :content="scope.row.extra" placement="top">
               {{ scope.row.extra }}
-            </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column prop="description" label="配置描述" align="center" />
