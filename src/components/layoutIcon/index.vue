@@ -1,6 +1,6 @@
 <template>
   <div class="jcm-layout-icon">
-    <div class="layout-icon-container" :style="{ backgroundColor: leftBgColor,border: currentSelectedIndex == props.index? '3px solid '+props.themeColor : '3px solid #f9f9f9'}">
+    <div class="layout-icon-container" :style="{ backgroundColor: leftBgColor,border: currentSelectedIndex == index? '3px solid '+ themeColor : theme}">
       <div :class="['left-column', { 'custom-width': customLeftWidth }]"
         :style="{ width: leftWidth + '%', backgroundColor: leftBgColor }">
         <div class="left-menu-item" :style="{ backgroundColor: leftColor }"></div>
@@ -24,13 +24,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-
+import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
+const LayoutSettingStore = useLayoutSettingStore()
 // 定义接收的props，使用类型注解明确参数类型
 const props = defineProps({
-  themeColor:{
-    type: String,
-    default: ''
-  },
   index: {
     type: Number,
     default: 0
@@ -64,23 +61,25 @@ const props = defineProps({
     default: '两栏布局' // 设置默认显示的文字，可根据需求修改
   }
 });
-
+const themeColor = ref<string>()
+const theme = ref<string>()
+themeColor.value=LayoutSettingStore.themeColor
+theme.value=LayoutSettingStore.theme?"white":"black"
 // 用于标记是否是自定义宽度，方便添加相应的类名来处理样式
 const customLeftWidth = ref(false);
 const customRightWidth = ref(false);
 // 点击组件时触发的函数，更新当前选中的组件索引
 const currentSelectedIndex = ref(0);
 
-// 使用computed计算属性来根据条件返回不同的边框样式字符串
-const getBorderStyle = computed(() => {
-  console.log(props.themeColor);
-  return ;
-});
-
 const selectIndex = (index: number) => {
   currentSelectedIndex.value = index;
 };
-
+watch(() => LayoutSettingStore.themeColor, (newVal) => {
+  themeColor.value=newVal
+});
+watch(() => LayoutSettingStore.theme, (newVal) => {
+  theme.value=newVal?"white":"black"
+});
 // 监听leftWidth和rightWidth的变化，当它们不等于默认值时，标记为自定义宽度
 watch(() => props.leftWidth, (newVal) => {
   customLeftWidth.value = newVal !== 35;

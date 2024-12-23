@@ -22,13 +22,16 @@ body {
   //主色彩
   --lvshihao-theme-color:#6F68F6;
   //色弱度
-  --lvshihao-theme-filter-invert:0%;
-  //黑白
-  --lvshihao-theme-filter-grayscale:0%;
+  --lvshihao-theme-filter-grayscale: 0%;
+  --lvshihao-theme-filter-invert: 0%;
+  --lvshihao-theme-filter-blur: 0px;
+  --lvshihao-theme-filter-contrast: 100%;
+  --lvshihao-theme-filter-hueRotate: 0deg;
+  --lvshihao-theme-filter-saturate: 100%;
 
-   filter: invert(var(--lvshihao-theme-filter-invert));
 
-   filter: grayscale(var(--lvshihao-theme-filter-grayscale));
+   filter: invert(var(--lvshihao-theme-filter-invert)) grayscale(var(--lvshihao-theme-filter-grayscale)) blur(var(--lvshihao-theme-filter-blur)) contrast(var(--lvshihao-theme-filter-contrast))  hue-rotate(var(--lvshihao-theme-filter-hueRotate)) saturate(var(--lvshihao-theme-filter-saturate));
+
      //模糊
    // filter: blur(3px);
    //对比度

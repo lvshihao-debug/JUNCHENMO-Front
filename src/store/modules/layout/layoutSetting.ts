@@ -16,12 +16,18 @@ const useSettinggStore = defineStore('SettinggStore', {
       themeColor: "red", //主题颜色
       size: "20", //数据默认条数设置
       tabs: true, //tabs是否展示
+      tabsIcon: true, //tabs图标是否展示
       navigationBar: true, //顶部导航栏是否展示
       menu: true, //菜单是否展示
-      weakColor:false, //弱色模式
-      grayscale:false, //黑白模式
       breadcrumb: true, //面包屑是否展示
       copyright: true, //版权内容是否展示 
+      watermark: true, //用户水印是否展示
+      weakColor:false, //弱色模式
+      grayscale:false, //黑白模式
+      blur:false, //高斯模糊
+      contrast:false, //对比度降低
+      hueRotate:false, //色相旋转
+      saturate:false, //饱和度
     }
   },
   actions: {

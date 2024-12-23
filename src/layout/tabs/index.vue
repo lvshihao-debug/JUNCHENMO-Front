@@ -22,10 +22,10 @@
                     @click="TabsStore.routerTab(tag, $router)"
                   >
                     <div style="display: flex; align-items: center">
-                      <!--隐藏图标-->
-                      <!-- <div>
-                        <svg-icon :name="tag.icon" :color="iconColor"/>
-                      </div> -->
+                      <!-- 隐藏图标-->
+                      <div v-show="LayoutSettingStore.tabsIcon">
+                        <svg-icon :name="tag.icon" :color="iconColor" :width="12" :height="12" />
+                      </div>
                       <div  class="jcm-tabs-titleWithIcon">
                         <!-- 新增的分隔符 -->
                         <span >{{ tag.title }}</span>
@@ -45,9 +45,9 @@
                 >
                   <div style="display: flex; align-items: center">
                     <!--隐藏图标-->
-                    <!-- <div>
-                      <svg-icon :name="tag.icon" :color="iconColor"/>
-                    </div> -->
+                    <div v-show="LayoutSettingStore.tabsIcon">
+                      <svg-icon :name="tag.icon" :color="iconColor" :width="12" :height="12" />
+                    </div>
                     <div class="jcm-tabs-titleWithIcon">
                       <!-- 新增的分隔符 -->
                       <span >{{ tag.title }}</span>
@@ -98,11 +98,15 @@ const TabsStore = useTabsStore()
 const $router = useRouter()
 const route = useRoute()
 
-TabsStore.initTabs($router,route)
-//每次滚动左右移动10px
+
+//每次滚动左右移动20px
 const scrollbarRef = ref()
-  
 let currentPosition = 0
+
+TabsStore.initTabs($router,route)
+
+//图标根据主题模式动态切换颜色
+const iconColor = computed(() => LayoutSettingStore.theme? 'black' : 'white');
 
 const handleScroll = (e: WheelEvent) => {
   const delta = Math.sign(e.deltaY) // get the direction of the scroll (1 for down, -1 for up)

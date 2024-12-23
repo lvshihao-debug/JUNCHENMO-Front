@@ -1,5 +1,5 @@
 <template>
-  <el-button title="刷新"  class="iconBtn"  @click="updateRefsh">
+  <el-button title="刷新"  class="iconBtn turn"  @click="updateRefsh">
     <svg-icon  name="顶部刷新"  />
   </el-button>
   <el-button title="全屏" class="iconBtn"   @click="fullScreen">

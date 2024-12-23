@@ -3,112 +3,142 @@
     <el-divider>主题风格</el-divider>
     <div class="filed-style">
       <div class="layout-icon-container">
-        <LayoutIcon :iconText="layoutIcons[0].iconText" ref="layoutIconOneRef" :leftBgColor="layoutIcons[0].leftBgColor"
-          :rightBgColor="layoutIcons[0].rightBgColor" :leftWidth="layoutIcons[0].leftWidth" class="layout-icon-item" :themeColor="LayoutSettingStore.themeColor"
-          :rightWidth="layoutIcons[0].rightWidth" @click="showDot(0)" index="0" />
-        <LayoutIcon :iconText="layoutIcons[1].iconText" ref="layoutIconTwoRef" :leftBgColor="layoutIcons[1].leftBgColor"
-          :rightBgColor="layoutIcons[1].rightBgColor" :leftWidth="layoutIcons[1].leftWidth" class="layout-icon-item" :themeColor="LayoutSettingStore.themeColor"
-          :rightWidth="layoutIcons[1].rightWidth" @click="showDot(1)" index="1" />
-        <LayoutIcon :iconText="layoutIcons[2].iconText" ref="layoutIconThreeRef"
-          :leftBgColor="layoutIcons[2].leftBgColor" :rightBgColor="layoutIcons[2].rightBgColor"
-          :leftWidth="layoutIcons[2].leftWidth" class="layout-icon-item" :rightWidth="layoutIcons[2].rightWidth" :themeColor="LayoutSettingStore.themeColor"
-          @click="showDot(2)" index="2" />
+        <!-- 使用v-for指令遍历layoutIcons数组来创建多个LayoutIcon组件 -->
+        <LayoutIcon v-for="(icon, index) in layoutIcons" :key="index" :iconText="icon.iconText"
+          :ref="(el:any) => layoutIconRefs[index] = el" :leftBgColor="icon.leftBgColor"
+          :rightBgColor="icon.rightBgColor" :leftWidth="icon.leftWidth" :rightWidth="icon.rightWidth"
+          :class="['layout-icon-item']" @click="showDot(index)" :index="index" />
       </div>
-    </div>
 
-  </div>
-
-
-  <div>
-    <el-divider>布局设置</el-divider>
-    <div class="filed-style">
-      <div>导航栏</div>
-      <div>
-        <el-switch v-model="LayoutSettingStore.navigationBar" class="mt-2 setting-context" inline-prompt />
-      </div>
-    </div>
-    <div class="filed-style">
-      <div>多页签</div>
-      <div>
-        <el-switch v-model="LayoutSettingStore.tabs" class="mt-2 setting-context" inline-prompt />
-      </div>
-    </div>
-    <div class="filed-style">
-      <div>面包屑</div>
-      <div>
-        <el-switch v-model="LayoutSettingStore.breadcrumb" class="mt-2 setting-context" inline-prompt />
-      </div>
-    </div>
-    <div class="filed-style">
-      <div>底部页脚</div>
-      <div>
-        <el-switch v-model="LayoutSettingStore.copyright" class="mt-2 setting-context" inline-prompt />
-      </div>
-    </div>
-    <div class="filed-style">
-      <div>菜单栏</div>
-      <div>
-        <el-switch v-model="LayoutSettingStore.menu" class="mt-2 setting-context" inline-prompt />
-      </div>
-    </div>
-    <div class="filed-style">
-      <div>菜单宽度(px)</div>
-      <div>
-        <el-input style="width: 60px" size="small" />
-      </div>
     </div>
   </div>
 
-  <div>
-    <el-divider> Other设置</el-divider>
-    <div class="filed-style">
-      <div>色弱模式</div>
-      <div>
-        <el-switch v-model="LayoutSettingStore.weakColor" class="mt-2 setting-context" inline-prompt />
-      </div>
-    </div>
-    <div class="filed-style">
-      <div>黑白模式</div>
-      <div>
-        <el-switch v-model="LayoutSettingStore.grayscale" class="mt-2 setting-context" inline-prompt />
-      </div>
-    </div>
-  </div>
-
-  <div>
     <div>
-      <el-divider>数据设置</el-divider>
-    </div>
-    <div class="filed-style">
-      <div>菜单宽度(px)</div>
-      <div>
-        <el-select v-model="LayoutSettingStore.size" placeholder="Select" style="width: 80px" size="small">
-          <el-option label="10条/页" value="10" />
-          <el-option label="20条/页" value="20" />
-          <el-option label="30条/页" value="30" />
-          <el-option label="40条/页" value="40" />
-        </el-select>
+      <el-divider>布局设置</el-divider>
+      <div class="filed-style">
+        <div>导航栏</div>
+        <div>
+          <el-switch v-model="LayoutSettingStore.navigationBar" class="mt-2 setting-context" inline-prompt />
+        </div>
       </div>
-    </div>
-
-  </div>
-
-  <div>
-    <div>
-      <el-divider>系统主题色</el-divider>
-    </div>
-    <div class="dot-buttons-row">
-      <div v-for="(color, index) in colors" :key="index" class="dot-button" @click="selectColor(color)">
-        <div :class="['dot', { 'active': selectedColor === color }]" :style="{ backgroundColor: color }">
-          <template v-if="selectedColor === color">
-            <div class="icon-container" style="background-color: transparent;">
-              <svg-icon name="对号" :color="LayoutSettingStore.theme" width="12px" height="20px" />
-            </div>
-          </template>
+      <div class="filed-style">
+        <div>多页签</div>
+        <div>
+          <el-switch v-model="LayoutSettingStore.tabs" class="mt-2 setting-context" inline-prompt />
+        </div>
+      </div>
+      <div class="filed-style">
+        <div>面包屑</div>
+        <div>
+          <el-switch v-model="LayoutSettingStore.breadcrumb" class="mt-2 setting-context" inline-prompt />
+        </div>
+      </div>
+      <div class="filed-style">
+        <div>底部页脚</div>
+        <div>
+          <el-switch v-model="LayoutSettingStore.copyright" class="mt-2 setting-context" inline-prompt />
+        </div>
+      </div>
+      <div class="filed-style">
+        <div>菜单栏</div>
+        <div>
+          <el-switch v-model="LayoutSettingStore.menu" class="mt-2 setting-context" inline-prompt />
+        </div>
+      </div>
+      <div class="filed-style">
+        <div>菜单宽度(px)</div>
+        <div>
+          <el-input style="width: 60px" size="small" />
         </div>
       </div>
     </div>
-  </div>
+    <!-- Other设置 -->
+    <div>
+      <el-divider> Other设置</el-divider>
+      <div class="filed-style">
+        <div>全局水印</div>
+        <div>
+          <el-switch v-model="LayoutSettingStore.watermark" class="mt-2 setting-context" inline-prompt />
+        </div>
+      </div>
+      <div class="filed-style">
+        <div>标签页图标</div>
+        <div>
+          <el-switch v-model="LayoutSettingStore.tabsIcon" class="mt-2 setting-context" inline-prompt />
+        </div>
+      </div>
+      <div class="filed-style">
+        <div>色弱模式</div>
+        <div>
+          <el-switch v-model="LayoutSettingStore.weakColor" class="mt-2 setting-context" inline-prompt />
+        </div>
+      </div>
+      <div class="filed-style">
+        <div>黑白模式</div>
+        <div>
+          <el-switch v-model="LayoutSettingStore.grayscale" class="mt-2 setting-context" inline-prompt />
+        </div>
+      </div>
+      <div class="filed-style">
+        <div>模糊模式</div>
+        <div>
+          <el-switch v-model="LayoutSettingStore.blur" class="mt-2 setting-context" inline-prompt />
+        </div>
+      </div>
+      <div class="filed-style">
+        <div>低亮模式</div>
+        <div>
+          <el-switch v-model="LayoutSettingStore.contrast" class="mt-2 setting-context" inline-prompt />
+        </div>
+      </div>
+      <div class="filed-style">
+        <div>色相旋转</div>
+        <div>
+          <el-switch v-model="LayoutSettingStore.hueRotate" class="mt-2 setting-context" inline-prompt />
+        </div>
+      </div>
+      <div class="filed-style">
+        <div>饱和度</div>
+        <div>
+          <el-switch v-model="LayoutSettingStore.saturate" class="mt-2 setting-context" inline-prompt />
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div>
+        <el-divider>数据设置</el-divider>
+      </div>
+      <div class="filed-style">
+        <div>表格条数</div>
+        <div>
+          <el-select v-model="LayoutSettingStore.size" placeholder="Select" style="width: 80px" size="small">
+            <el-option label="10条/页" value="10" />
+            <el-option label="20条/页" value="20" />
+            <el-option label="30条/页" value="30" />
+            <el-option label="40条/页" value="40" />
+          </el-select>
+        </div>
+      </div>
+
+    </div>
+
+    <div>
+      <div>
+        <el-divider>系统主题色</el-divider>
+      </div>
+      <div class="dot-buttons-row">
+        <div v-for="(color, index) in colors" :key="index" class="dot-button" @click="selectColor(color)">
+          <div :class="['dot', { 'active': selectedColor === color }]" :style="{ backgroundColor: color }">
+            <template v-if="selectedColor === color">
+              <div class="icon-container" style="background-color: transparent;">
+                <svg-icon name="对号" :color="LayoutSettingStore.theme" width="12px" height="20px" />
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
 
 </template>
 
@@ -121,32 +151,69 @@ const colors = ref(['#FF80C8', '#6F68F6', '#dc440d', '#4a18ee', '#ee1871', '#2d1
 const selectedColor = ref('');
 
 // 定义布局图标相关的数据数组，每个对象包含对应组件的属性
+// 定义layoutIcons数组，存放各个LayoutIcon组件的配置信息
 const layoutIcons = ref([
-  { iconText: "浅色", leftBgColor: "white", rightBgColor: "white" },
-  { iconText: "深色", leftBgColor: "#22252A", rightBgColor: "#22252A" },
-  { iconText: "系统", leftWidth: 50, rightWidth: 50, leftBgColor: "white", rightBgColor: "#22252A" }
+  {
+    iconText: "浅色",
+    leftBgColor: "white",
+    rightBgColor: "white",
+    leftWidth: 30,
+    rightWidth: 60
+  },
+  {
+    iconText: "深色",
+    leftBgColor: "#22252A",
+    rightBgColor: "#22252A",
+    leftWidth: 40,
+    rightWidth: 50
+  },
+  {
+    iconText: "系统",
+    leftBgColor: "white",
+    rightBgColor: "#22252A",
+    leftWidth: 50,
+    rightWidth: 50
+  }
 ]);
 
-const layoutIconOneRef = ref()
-const layoutIconTwoRef = ref()
-const layoutIconThreeRef = ref()
-// 点击LayoutIcon时触发的函数，用于切换对应小圆点的显示状态
-const showDot = (index: number) => {
-  if (layoutIconOneRef) {
-    layoutIconOneRef.value.selectIndex(index);
-    layoutIconTwoRef.value.selectIndex(index);
-    layoutIconThreeRef.value.selectIndex(index);
-  }
-  if (index === 0) {
-    let html = document.documentElement
-    LayoutSettingStore.theme = true
-    html.className = ''
-  } else if (index === 1) {
-    let html = document.documentElement
-    LayoutSettingStore.theme = false
-    html.className = 'dark'
-  } else {
+// 创建一个ref数组，用于存储各个LayoutIcon组件的引用
+const layoutIconRefs = reactive([]);
 
+
+// 点击LayoutIcon时触发的函数，用于切换对应小圆点的显示状态以及执行其他相关逻辑
+const showDot = (index: number) => {
+  // 遍历所有的LayoutIcon组件引用，调用selectIndex方法（前提是组件实例有这个方法）
+  layoutIconRefs.forEach((ref) => {
+    if (ref && ref.selectIndex) {
+      ref.selectIndex(index);
+    }
+  });
+  const html = document.documentElement;
+
+  if (index === 0) {
+    LayoutSettingStore.theme = true;
+    html.className = '';
+  } else if (index === 1) {
+    LayoutSettingStore.theme = false;
+    html.className = 'dark';
+  }else{
+    const themeMedia = window.matchMedia("(prefers-color-scheme: light)");
+    themeMedia.addEventListener("change", event => {
+      if(themeMedia.matches){
+        LayoutSettingStore.theme = true;
+        html.className = '';
+      }else{
+        LayoutSettingStore.theme = false;
+        html.className = 'dark';
+      }
+    })
+    if(themeMedia.matches){
+        LayoutSettingStore.theme = true;
+        html.className = '';
+      }else{
+        LayoutSettingStore.theme = false;
+        html.className = 'dark';
+      }
   }
 };
 
@@ -163,7 +230,6 @@ const selectColor = (color: string) => {
 
 // 监听色弱数据变更
 watch(() => LayoutSettingStore.weakColor, (v) => {
-  console.log(v)
   if (v) {
     body?.style.setProperty('--lvshihao-theme-filter-invert', "100%")
   } else {
@@ -177,6 +243,42 @@ watch(() => LayoutSettingStore.grayscale, (v) => {
     body?.style.setProperty('--lvshihao-theme-filter-grayscale', "100%")
   } else {
     body?.style.setProperty('--lvshihao-theme-filter-grayscale', "0%")
+  }
+});
+
+// 监听模糊模式数据变更
+watch(() => LayoutSettingStore.blur, (v) => {
+  if (v) {
+    body?.style.setProperty('--lvshihao-theme-filter-blur', "2px")
+  } else {
+    body?.style.setProperty('--lvshihao-theme-filter-blur', "0px")
+  }
+});
+
+// 监听对比度数据变更
+watch(() => LayoutSettingStore.contrast, (v) => {
+  if (v) {
+    body?.style.setProperty('--lvshihao-theme-filter-contrast', "75%")
+  } else {
+    body?.style.setProperty('--lvshihao-theme-filter-contrast', "100%")
+  }
+});
+
+// 监听色相旋转数据变更
+watch(() => LayoutSettingStore.hueRotate, (v) => {
+  if (v) {
+    body?.style.setProperty('--lvshihao-theme-filter-hueRotate', "80deg")
+  } else {
+    body?.style.setProperty('--lvshihao-theme-filter-hueRotate', "0deg")
+  }
+});
+
+// 监听色饱和度数据变更
+watch(() => LayoutSettingStore.saturate, (v) => {
+  if (v) {
+    body?.style.setProperty('--lvshihao-theme-filter-saturate', "180%")
+  } else {
+    body?.style.setProperty('--lvshihao-theme-filter-saturate', "100%")
   }
 });
 
@@ -202,7 +304,7 @@ export default {
 .dot-buttons-row {
   display: flex;
   justify-content: space-around;
-  
+
 }
 
 .dot-button {
@@ -219,10 +321,11 @@ export default {
   box-shadow: var(--el-box-shadow-light);
 }
 
-.icon-container{
+.icon-container {
   display: flex;
   justify-content: space-around;
 }
+
 .dot-with-icon {
   display: flex;
   justify-content: center;
@@ -238,6 +341,6 @@ export default {
 }
 
 .layout-icon-item {
-  margin-left: 20px;
+  margin-left: 25px;
 }
 </style>

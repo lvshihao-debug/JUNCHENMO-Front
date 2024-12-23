@@ -4,5 +4,4 @@ export default {
   title: 'JCM LEADER', //项目标题
   logoHidden: true, //logo组件是否隐藏设置
   userHeadImageType: 'text', //设置用户的头像类型，text:用户名第一个字母，img:图片模式
-  watermarkContent: 'JUN CHEN MO', //设置用户水印的内容
 }

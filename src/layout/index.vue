@@ -1,81 +1,84 @@
 <template>
-  <div class="layout_container" :class="{
-    suuny: LayoutSettingStore.theme,
-    moon: !LayoutSettingStore.theme,
-  }">
-    <!-- 偏好设置 -->
-    <Drawer></Drawer>
-    <!-- 左侧菜单 -->
-    <div class="layout_slider" :class="{
+  <el-watermark :content="useUserStore.user.username" :font="font">
+    <div class="layout_container" :class="{
       suuny: LayoutSettingStore.theme,
       moon: !LayoutSettingStore.theme,
-      fold: LayoutSettingStore.fold
-    }" v-show="LayoutSettingStore.menu">
-      <!-- logo -->
-      <Logo class="logo"></Logo>
-      <!-- 展示菜单 -->
-      <el-scrollbar class="scrollbar">
-        <!-- 菜单组件 -->
-        <el-menu :collapse="LayoutSettingStore.fold" :default-active="$route.path" :collapse-transition="false" router>
-          <Menu :menuList="usePermissionStore.sidebarRouters"></Menu>
-        </el-menu>
-      </el-scrollbar>
-      <el-button class="foldwithExpand iconBtn" @click="changeIcon">
-        <svg-icon :name="LayoutSettingStore.fold ? '折叠-展开' : '折叠-收起'"
-          :color="LayoutSettingStore.theme ? 'black' : 'white'" />
-      </el-button>
-    </div>
-    <!-- 顶部导航 -->
-    <div class="layout_tabbar" :class="{
-      showNavigationBar: LayoutSettingStore.navigationBar,
-      hidenNavigationBar: !LayoutSettingStore.navigationBar,
-      suuny: LayoutSettingStore.theme,
-      moon: !LayoutSettingStore.theme,
-      unfold: !LayoutSettingStore.fold,
-      fold: LayoutSettingStore.fold,
-      showMenu: LayoutSettingStore.menu,
-      hidenMenu: !LayoutSettingStore.menu,
     }">
-      <Tabbar></Tabbar>
-    </div>
-    <!-- 顶部tabs -->
-    <div class="layout_tabs" :class="{
-      showNavigationBar: LayoutSettingStore.navigationBar,
-      hidenNavigationBar: !LayoutSettingStore.navigationBar,
-      suuny: LayoutSettingStore.theme,
-      moon: !LayoutSettingStore.theme,
-      fold: LayoutSettingStore.fold,
-      showMenu: LayoutSettingStore.menu,
-      hidenMenu: !LayoutSettingStore.menu,
-    }" v-show="LayoutSettingStore.tabs">
-      <Tabs></Tabs>
-    </div>
 
-    <!-- 内容展示区域 -->
-    <div class="layout_main" :class="{
-      showNavigationBar: LayoutSettingStore.navigationBar,
-      hidenNavigationBar: !LayoutSettingStore.navigationBar,
-      suuny: LayoutSettingStore.theme,
-      moon: !LayoutSettingStore.theme,
-      fold: LayoutSettingStore.fold,
-      unfold: !LayoutSettingStore.fold,
-      showTabs: LayoutSettingStore.tabs,
-      hidenTabs: !LayoutSettingStore.tabs,
-      showMenu: LayoutSettingStore.menu,
-      hidenMenu: !LayoutSettingStore.menu,
-    }">
-      <el-watermark :content="setting.watermarkContent">
+      <!-- 偏好设置 -->
+      <Drawer></Drawer>
+      <!-- 左侧菜单 -->
+      <div class="layout_slider" :class="{
+        suuny: LayoutSettingStore.theme,
+        moon: !LayoutSettingStore.theme,
+        fold: LayoutSettingStore.fold
+      }" v-show="LayoutSettingStore.menu">
+        <!-- logo -->
+        <Logo class="logo"></Logo>
+        <!-- 展示菜单 -->
+        <el-scrollbar class="scrollbar">
+          <!-- 菜单组件 -->
+          <el-menu :collapse="LayoutSettingStore.fold" :default-active="$route.path" :collapse-transition="false"
+            router>
+            <Menu :menuList="usePermissionStore.sidebarRouters"></Menu>
+          </el-menu>
+        </el-scrollbar>
+        <el-button class="foldwithExpand iconBtn" @click="changeIcon">
+          <svg-icon :name="LayoutSettingStore.fold ? '折叠-展开' : '折叠-收起'"
+            :color="LayoutSettingStore.theme ? 'black' : 'white'" />
+        </el-button>
+      </div>
+      <!-- 顶部导航 -->
+      <div class="layout_tabbar" :class="{
+        showNavigationBar: LayoutSettingStore.navigationBar,
+        hidenNavigationBar: !LayoutSettingStore.navigationBar,
+        suuny: LayoutSettingStore.theme,
+        moon: !LayoutSettingStore.theme,
+        unfold: !LayoutSettingStore.fold,
+        fold: LayoutSettingStore.fold,
+        showMenu: LayoutSettingStore.menu,
+        hidenMenu: !LayoutSettingStore.menu,
+      }">
+        <Tabbar></Tabbar>
+      </div>
+      <!-- 顶部tabs -->
+      <div class="layout_tabs" :class="{
+        showNavigationBar: LayoutSettingStore.navigationBar,
+        hidenNavigationBar: !LayoutSettingStore.navigationBar,
+        suuny: LayoutSettingStore.theme,
+        moon: !LayoutSettingStore.theme,
+        fold: LayoutSettingStore.fold,
+        showMenu: LayoutSettingStore.menu,
+        hidenMenu: !LayoutSettingStore.menu,
+      }" v-show="LayoutSettingStore.tabs">
+        <Tabs></Tabs>
+      </div>
+
+      <!-- 内容展示区域 -->
+      <div class="layout_main" :class="{
+        showNavigationBar: LayoutSettingStore.navigationBar,
+        hidenNavigationBar: !LayoutSettingStore.navigationBar,
+        suuny: LayoutSettingStore.theme,
+        moon: !LayoutSettingStore.theme,
+        fold: LayoutSettingStore.fold,
+        unfold: !LayoutSettingStore.fold,
+        showTabs: LayoutSettingStore.tabs,
+        hidenTabs: !LayoutSettingStore.tabs,
+        showMenu: LayoutSettingStore.menu,
+        hidenMenu: !LayoutSettingStore.menu,
+      }">
+
         <Breadcrumb class="breadcurmb" v-show="LayoutSettingStore.breadcrumb"></Breadcrumb>
         <Main class="context">
         </Main>
         <copyright v-show="LayoutSettingStore.copyright"></copyright>
-      </el-watermark>
+      </div>
+
     </div>
-  </div>
+  </el-watermark>
 </template>
 
 <script setup lang="ts">
-import setting from '@/setting'
 //导入右侧抽屉
 import Drawer from './tabbar/setting/drawer/index.vue'
 //引入菜单组件
@@ -93,13 +96,31 @@ import Breadcrumb from './tabbar/breadcrumb/index.vue'
 //引入当前路由
 import { useRoute } from 'vue-router'
 //获取用户相关的小仓库
+import UserStore from '@/store/modules/user'
+//获取用户相关的小仓库
 import PermissionStore from '@/store/modules/menu'
 //获取设置相关的小仓库
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 //获取layout配置相关的仓库
 const LayoutSettingStore = useLayoutSettingStore()
 const usePermissionStore = PermissionStore()
+const useUserStore = UserStore();
 const $route = useRoute()
+
+const font = reactive({
+  color: 'rgba(0, 0, 255, .35)',
+})
+
+// 监听水印开启的数据变更
+watch(() => LayoutSettingStore.watermark, (v) => {
+  font.color = v
+      ? 'rgba(100, 100, 100, .45)'
+      : 'rgba(0, 0, 0, 0)'
+},{
+  immediate: true,
+});
+
+
 const changeIcon = () => {
   LayoutSettingStore.fold = !LayoutSettingStore.fold
 }
