@@ -17,6 +17,7 @@ const useRoleStore = defineStore('role', {
   state: () => {
     return {
       multipleSelection:[], //选的数据列表
+      tableLoading: true, //表格数据加载loading
       //搜索表单
       searchform :{
         name: '',

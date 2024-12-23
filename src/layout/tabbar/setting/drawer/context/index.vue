@@ -13,43 +13,54 @@
 
     </div>
   </div>
+    <!--系统主题色-->
+    <div>
+    <div>
+      <el-divider>系统主题色</el-divider>
+    </div>
+    <div class="dot-buttons-row">
+      <div v-for="(color, index) in colors" :key="index" class="dot-button" @click="selectColor(color)">
+        <div :class="['dot', { 'active': selectedColor === color }]" :style="{ backgroundColor: color }">
+          <template v-if="selectedColor === color">
+            <div class="icon-container" style="background-color: transparent;">
+              <svg-icon name="对号"  width="12px" height="20px" />
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
   <!--布局设置-->
   <div>
     <el-divider>布局设置</el-divider>
     <div class="filed-style">
       <div>导航栏</div>
       <div>
-        <el-switch v-model="LayoutSettingStore.navigationBar" class="mt-2 setting-context" inline-prompt />
+        <el-switch v-model="LayoutSettingStore.setting.navigationBar" class="mt-2 setting-context" inline-prompt />
       </div>
     </div>
     <div class="filed-style">
       <div>多页签</div>
       <div>
-        <el-switch v-model="LayoutSettingStore.tabs" class="mt-2 setting-context" inline-prompt />
+        <el-switch v-model="LayoutSettingStore.setting.tabs" class="mt-2 setting-context" inline-prompt />
       </div>
     </div>
     <div class="filed-style">
       <div>面包屑</div>
       <div>
-        <el-switch v-model="LayoutSettingStore.breadcrumb" class="mt-2 setting-context" inline-prompt />
+        <el-switch v-model="LayoutSettingStore.setting.breadcrumb" class="mt-2 setting-context" inline-prompt />
       </div>
     </div>
     <div class="filed-style">
       <div>底部页脚</div>
       <div>
-        <el-switch v-model="LayoutSettingStore.copyright" class="mt-2 setting-context" inline-prompt />
+        <el-switch v-model="LayoutSettingStore.setting.copyright" class="mt-2 setting-context" inline-prompt />
       </div>
     </div>
     <div class="filed-style">
       <div>菜单栏</div>
       <div>
-        <el-switch v-model="LayoutSettingStore.menu" class="mt-2 setting-context" inline-prompt />
-      </div>
-    </div>
-    <div class="filed-style">
-      <div>菜单宽度(px)</div>
-      <div>
-        <el-input style="width: 60px" size="small" />
+        <el-switch v-model="LayoutSettingStore.setting.menu" class="mt-2 setting-context" inline-prompt />
       </div>
     </div>
   </div>
@@ -59,55 +70,55 @@
     <div class="filed-style">
       <div>全局水印</div>
       <div>
-        <el-switch v-model="LayoutSettingStore.watermark" class="mt-2 setting-context" inline-prompt />
+        <el-switch v-model="LayoutSettingStore.setting.watermark" class="mt-2 setting-context" inline-prompt />
       </div>
     </div>
     <div class="filed-style">
       <div>标签页图标</div>
       <div>
-        <el-switch v-model="LayoutSettingStore.tabsIcon" class="mt-2 setting-context" inline-prompt />
+        <el-switch v-model="LayoutSettingStore.setting.tabsIcon" class="mt-2 setting-context" inline-prompt />
       </div>
     </div>
     <div class="filed-style">
       <div>色弱模式</div>
       <div>
-        <el-switch v-model="LayoutSettingStore.weakColor" class="mt-2 setting-context" inline-prompt />
+        <el-switch v-model="LayoutSettingStore.setting.weakColor" class="mt-2 setting-context" inline-prompt />
       </div>
     </div>
     <div class="filed-style">
       <div>黑白模式</div>
       <div>
-        <el-switch v-model="LayoutSettingStore.grayscale" class="mt-2 setting-context" inline-prompt />
+        <el-switch v-model="LayoutSettingStore.setting.grayscale" class="mt-2 setting-context" inline-prompt />
       </div>
     </div>
     <div class="filed-style">
       <div>模糊模式</div>
       <div>
-        <el-switch v-model="LayoutSettingStore.blur" class="mt-2 setting-context" inline-prompt />
+        <el-switch v-model="LayoutSettingStore.setting.blur" class="mt-2 setting-context" inline-prompt />
       </div>
     </div>
     <div class="filed-style">
       <div>低亮模式</div>
       <div>
-        <el-switch v-model="LayoutSettingStore.contrast" class="mt-2 setting-context" inline-prompt />
+        <el-switch v-model="LayoutSettingStore.setting.contrast" class="mt-2 setting-context" inline-prompt />
       </div>
     </div>
     <div class="filed-style">
       <div>色相旋转</div>
       <div>
-        <el-switch v-model="LayoutSettingStore.hueRotate" class="mt-2 setting-context" inline-prompt />
+        <el-switch v-model="LayoutSettingStore.setting.hueRotate" class="mt-2 setting-context" inline-prompt />
       </div>
     </div>
     <div class="filed-style">
       <div>饱和度</div>
       <div>
-        <el-switch v-model="LayoutSettingStore.saturate" class="mt-2 setting-context" inline-prompt />
+        <el-switch v-model="LayoutSettingStore.setting.saturate" class="mt-2 setting-context" inline-prompt />
       </div>
     </div>
     <div class="filed-style">
       <div>数据加载动画</div>
       <div>
-        <el-switch v-model="LayoutSettingStore.dataLoding" class="mt-2 setting-context" inline-prompt />
+        <el-switch v-model="LayoutSettingStore.setting.dataLoding" class="mt-2 setting-context" inline-prompt />
       </div>
     </div>
   </div>
@@ -119,7 +130,7 @@
     <div class="filed-style">
       <div>表格条数</div>
       <div>
-        <el-select v-model="LayoutSettingStore.size" placeholder="Select" style="width: 80px" size="small">
+        <el-select v-model="LayoutSettingStore.setting.size" placeholder="Select" style="width: 80px" size="small">
           <el-option label="10条/页" value="10" />
           <el-option label="20条/页" value="20" />
           <el-option label="30条/页" value="30" />
@@ -129,26 +140,10 @@
     </div>
 
   </div>
-  <!--系统主题色-->
-  <div>
-    <div>
-      <el-divider>系统主题色</el-divider>
-    </div>
-    <div class="dot-buttons-row">
-      <div v-for="(color, index) in colors" :key="index" class="dot-button" @click="selectColor(color)">
-        <div :class="['dot', { 'active': selectedColor === color }]" :style="{ backgroundColor: color }">
-          <template v-if="selectedColor === color">
-            <div class="icon-container" style="background-color: transparent;">
-              <svg-icon name="对号" :color="LayoutSettingStore.theme" width="12px" height="20px" />
-            </div>
-          </template>
-        </div>
-      </div>
-    </div>
-  </div>
+
   <!--保存-->
-  <div style="display: flex;justify-content: center;margin-top: 10px;cursor: pointer;box-shadow: 0px 4px 20px #00000008;">
-      <div ><svg-icon name="保存" :color="LayoutSettingStore.getThemeInvert"  width="45px" height="45px"/></div>
+  <div style="display: flex;justify-content: center;margin-top: 10px;cursor: pointer;box-shadow: 0px 4px 20px #00000008;" >
+      <div><svg-icon name="保存" :color="LayoutSettingStore.getThemeInvert"  width="45px" height="45px"  @click="saveSetting()"/></div>
   </div>
 </template>
 
@@ -201,31 +196,29 @@ const showDot = (index: number) => {
   const html = document.documentElement;
 
   if (index === 0) {
-    LayoutSettingStore.theme = true;
+    LayoutSettingStore.setting.theme = 0;
     html.className = '';
   } else if (index === 1) {
-    LayoutSettingStore.theme = false;
+    LayoutSettingStore.setting.theme = 1;
     html.className = 'dark';
   } else {
     const themeMedia = window.matchMedia("(prefers-color-scheme: light)");
     themeMedia.addEventListener("change", event => {
-      if (themeMedia.matches) {
-        LayoutSettingStore.theme = true;
-        html.className = '';
-      } else {
-        LayoutSettingStore.theme = false;
-        html.className = 'dark';
-      }
+      changeTheme(themeMedia,html);
     })
-    if (themeMedia.matches) {
-      LayoutSettingStore.theme = true;
-      html.className = '';
-    } else {
-      LayoutSettingStore.theme = false;
-      html.className = 'dark';
-    }
+    changeTheme(themeMedia,html);
   }
 };
+
+const changeTheme = (themeMedia:any,html:any) => {
+  if (themeMedia.matches) {
+      LayoutSettingStore.setting.theme = 0;
+      html.className = '';
+    } else {
+      LayoutSettingStore.setting.theme = 1;
+      html.className = 'dark';
+    }
+}
 
 //获取body的dom
 const body = document.querySelector('body')
@@ -233,13 +226,20 @@ const body = document.querySelector('body')
 //设置主题色
 const selectColor = (color: string) => {
   selectedColor.value = color;
-  LayoutSettingStore.themeColor = color;
+  LayoutSettingStore.setting.themeColor = color;
   body?.style.setProperty('--lvshihao-theme-color', color)
 };
-
+//主题模式的变化
+watch(() => LayoutSettingStore.setting.theme, (v) => {
+  if (v==0) {
+    showDot(0)
+  } else {
+    showDot(1)
+  }
+});
 
 // 监听色弱数据变更
-watch(() => LayoutSettingStore.weakColor, (v) => {
+watch(() => LayoutSettingStore.setting.weakColor, (v) => {
   if (v) {
     body?.style.setProperty('--lvshihao-theme-filter-invert', "100%")
   } else {
@@ -248,7 +248,7 @@ watch(() => LayoutSettingStore.weakColor, (v) => {
 });
 
 // 监听黑白模式数据变更
-watch(() => LayoutSettingStore.grayscale, (v) => {
+watch(() => LayoutSettingStore.setting.grayscale, (v) => {
   if (v) {
     body?.style.setProperty('--lvshihao-theme-filter-grayscale', "100%")
   } else {
@@ -257,7 +257,7 @@ watch(() => LayoutSettingStore.grayscale, (v) => {
 });
 
 // 监听模糊模式数据变更
-watch(() => LayoutSettingStore.blur, (v) => {
+watch(() => LayoutSettingStore.setting.blur, (v) => {
   if (v) {
     body?.style.setProperty('--lvshihao-theme-filter-blur', "2px")
   } else {
@@ -266,7 +266,7 @@ watch(() => LayoutSettingStore.blur, (v) => {
 });
 
 // 监听对比度数据变更
-watch(() => LayoutSettingStore.contrast, (v) => {
+watch(() => LayoutSettingStore.setting.contrast, (v) => {
   if (v) {
     body?.style.setProperty('--lvshihao-theme-filter-contrast', "75%")
   } else {
@@ -275,7 +275,7 @@ watch(() => LayoutSettingStore.contrast, (v) => {
 });
 
 // 监听色相旋转数据变更
-watch(() => LayoutSettingStore.hueRotate, (v) => {
+watch(() => LayoutSettingStore.setting.hueRotate, (v) => {
   if (v) {
     body?.style.setProperty('--lvshihao-theme-filter-hueRotate', "80deg")
   } else {
@@ -284,7 +284,7 @@ watch(() => LayoutSettingStore.hueRotate, (v) => {
 });
 
 // 监听色饱和度数据变更
-watch(() => LayoutSettingStore.saturate, (v) => {
+watch(() => LayoutSettingStore.setting.saturate, (v) => {
   if (v) {
     body?.style.setProperty('--lvshihao-theme-filter-saturate', "180%")
   } else {
@@ -292,8 +292,9 @@ watch(() => LayoutSettingStore.saturate, (v) => {
   }
 });
 
-
-
+const saveSetting=() =>{
+  ElMessage.success({ message: '保存成功' })
+}
 </script>
 
 <script lang="ts">
@@ -302,6 +303,7 @@ export default {
 }
 </script>
 <style scoped>
+
 .setting-context {
   margin-left: 24px
 }

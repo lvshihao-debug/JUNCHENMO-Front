@@ -31,7 +31,7 @@
         </el-row>
       </el-form>
     </el-card>
-    <el-card class="card-table-style">
+    <el-card class="card-table-style" v-if="!roleStore.tableLoading||!LoadingStatus">
       <template #header>
         <div class="card-header-style">
           <div class="card-header">
@@ -101,13 +101,16 @@
       <template #footer>
         <div class="pagination-style">
           <!--分页-->
-          <el-pagination :page-sizes="[10, 20, 30, 40]" :default-page-size="Number(LayoutSettingStore.size)" small="small"
+          <el-pagination :page-sizes="[10, 20, 30, 40]" :default-page-size="Number(LayoutSettingStore.setting.size)" small="small"
             background="true" layout="total, sizes, prev, pager, next, jumper" :total="dataList.total"
-            @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+            @size-change="handleSizeChange"  @current-change="handleCurrentChange"  />
         </div>
       </template>
     </el-card>
-
+    <!--加载动画-->
+    <div class="table-data-loading" v-else>
+      <Loading />
+    </div>
     <!--弹出框组件列表-->
     <RoleAddFromModal ref="roleAddFromModal" @refreshData="refreshData"></RoleAddFromModal>
     <RoleAuthMenusFromModal ref="roleAuthMenusFromModal" @refreshData="refreshData"></RoleAuthMenusFromModal>
@@ -134,10 +137,15 @@ const LayoutSettingStore = useLayoutSettingStore()
 
 
 onMounted(() => {
+  LoadingStatus.value=LayoutSettingStore.setting.dataLoading
+  roleStore.tableLoading = true
  //手动触发更新页数的逻辑
- handleSizeChange(Number(LayoutSettingStore.size))
+ handleSizeChange(Number(LayoutSettingStore.setting.size))
   //进入页面初始化的数据
   searchList(roleStore.searchform)
+  setTimeout(() => {
+    roleStore.tableLoading = false
+  },500)
 })
 
 //表单对象
@@ -155,6 +163,7 @@ const dataList = reactive({
   page: 1,
   size: 10
 })
+const LoadingStatus = ref(false) 
 
 //根据搜索条件进行搜索
 const searchList = (searchData: any) => {
@@ -220,7 +229,7 @@ const disableItem = (item: any) => {
     roleStore
       .upStatusRole(item)
       .then((resp) => {
-        searchList(searchform)
+        searchList(roleStore.searchform)
         ElMessage.success({ message: '停用成功' })
       })
       .catch((error) => {

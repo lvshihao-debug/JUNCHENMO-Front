@@ -4,14 +4,9 @@
       class="block"
       style="display: flex; justify-content: flex-start; align-items: center"
     >
-      <el-avatar
-        :size="50"
-        src="https://images.pexels.com/photos/19561749/pexels-photo-19561749.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-        style="
-          /* 通过SVG过滤器应用微型阴影 */
-          filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.2));
-        "
-      />
+      <el-avatar :size="50" shape="square">
+          {{ userStore.getUserNameTextFirst }}
+        </el-avatar>
 
       <div>
         <div style="font-size: 23px; font-weight: 600; margin-left: 20px">
@@ -26,7 +21,7 @@
             color: #767676;
           "
         >
-          你跑得快 耳边全是风声 你跑得慢 自然会听到杂言碎语
+        五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。
         </div>
       </div>
     </div>

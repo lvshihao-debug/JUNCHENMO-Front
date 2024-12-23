@@ -12,23 +12,25 @@ const useSettinggStore = defineStore('SettinggStore', {
       refsh: false, //刷新按钮点击状态
       settingDrawer: false, //抽屉展开或收起状态
       fold: false, //menu展开或者收起状态
-      theme: true, //主题是否是暗黑模式还是白天模式
-      themeColor: "red", //主题颜色
-      size: "20", //数据默认条数设置
-      tabs: true, //tabs是否展示
-      tabsIcon: true, //tabs图标是否展示
-      navigationBar: true, //顶部导航栏是否展示
-      menu: true, //菜单是否展示
-      breadcrumb: true, //面包屑是否展示
-      copyright: true, //版权内容是否展示 
-      watermark: true, //用户水印是否展示
-      weakColor:false, //弱色模式
-      grayscale:false, //黑白模式
-      blur:false, //高斯模糊
-      contrast:false, //对比度降低
-      hueRotate:false, //色相旋转
-      saturate:false, //饱和度
-      dataLoding:true //是否开数据加载动画
+      setting:{
+        size: "20", //数据默认条数设置
+        theme: 0, //主题是否是暗黑模式还是白天模式
+        themeColor: "red", //主题颜色
+        navigationBar: true, //顶部导航栏是否展示
+        tabs: true, //tabs是否展示
+        tabsIcon: true, //tabs图标是否展示
+        breadcrumb: true, //面包屑是否展示
+        menu: true, //菜单是否展示
+        copyright: true, //版权内容是否展示 
+        watermark: true, //用户水印是否展示
+        weakColor:false, //弱色模式
+        grayscale:false, //黑白模式
+        blur:false, //高斯模糊
+        contrast:false, //对比度降低
+        hueRotate:false, //色相旋转
+        saturate:false, //饱和度
+        dataLoading:true //是否开数据加载动画
+      }
     }
   },
   actions: {
@@ -36,16 +38,25 @@ const useSettinggStore = defineStore('SettinggStore', {
    async userSettingInfo() {
     const result:any = await reqUserSettingInfo()
     if (result.code == 200) {
-      console.log(result)
       nextTick(() => {
-        this.theme = result.data.theme
-        this.themeColor = result.data.themeColor
-        this.size = result.data.size + ""
-        this.tabs = result.data.tabs
-        this.menu = result.data.menu
-        this.breadcrumb = result.data.breadcrumb
-        this.navigationBar = result.data.navigationBar
-        this.copyright = result.data.copyright
+        this.setting.theme = result.data.theme
+        this.setting.themeColor = result.data.themeColor
+        this.setting.navigationBar = result.data.navigationBar
+        this.setting.tabs = result.data.tabs
+        this.setting.tabsIcon = result.data.tabsIcon
+        this.setting.breadcrumb = result.data.breadcrumb
+        this.setting.menu = result.data.menu
+        this.setting.copyright = result.data.copyright
+        this.setting.watermark = result.data.watermark
+        this.setting.weakColor = result.data.weakColor
+        this.setting.grayscale = result.data.grayscale
+        this.setting.blur = result.data.blur
+        this.setting.contrast = result.data.contrast
+        this.setting.hueRotate = result.data.hueRotate
+        this.setting.saturate = result.data.saturate
+        this.setting.dataLoading = result.data.dataLoading
+        this.setting.size = result.data.size + ""
+        console.log(this.setting)
       })
       return Promise.resolve('ok')
     } else {
@@ -64,11 +75,14 @@ const useSettinggStore = defineStore('SettinggStore', {
 
   },
   getters: {
+    getThemeStatus: (state) => {
+      return state.setting.theme==0?true:false
+    },
     getTheme: (state) => {
-      return state.theme?"white":"black"
+      return state.setting.theme==0?"white":"black"
     },
     getThemeInvert: (state) => {
-      return state.theme?"black":"white"
+      return state.setting.theme==0?"black":"white"
     }
   },
 })

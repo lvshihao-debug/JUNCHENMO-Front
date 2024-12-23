@@ -18,6 +18,7 @@ const useOperationLogStore = defineStore('operationLog', {
       titleOptionSelect: [],//模块标题可选项
       businessNameOptionSelect: [],//业务名称可选项
       multipleSelection: [], //选的数据列表
+      tableLoading: true, //表格数据加载loading
       //搜索表单
       searchform: {
         operName: '',

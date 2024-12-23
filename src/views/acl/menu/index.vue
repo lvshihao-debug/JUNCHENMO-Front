@@ -193,14 +193,14 @@ const LayoutSettingStore = useLayoutSettingStore()
 const LoadingStatus = ref(false) 
 
 onMounted(() => {
-  LoadingStatus.value=LayoutSettingStore.dataLoding
+  LoadingStatus.value=LayoutSettingStore.setting.dataLoading
   menuStore.tableLoading = true
 
   //进入页面初始化的数据
   searchList(menuStore.searchform)
   setTimeout(() => {
   menuStore.tableLoading = false
-  },1000)
+  },500)
 })
 
 //表单对象
@@ -240,7 +240,7 @@ const deleteItemClick = (item: any) => {
 }
 
 //图标根据主题模式动态切换颜色
-const iconColor = computed(() => LayoutSettingStore.theme ? 'black' : 'white');
+const iconColor = computed(() => LayoutSettingStore.setting.theme==0 ? 'black' : 'white');
 
 //点击标签更改状态中的启用/禁用
 const tagUpdateStatusButtonClick = (item: any) => {

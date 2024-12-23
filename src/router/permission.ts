@@ -24,8 +24,6 @@ const whiteList = ['/login', '/register']
 // 全局守卫；项目当中任意路由切换都会触发的钩子
 // 全局前置守卫
 router.beforeEach((to, from, next) => {
-  console.log("路由守卫")
-  console.log(to.path)
   nprogress.start()
   const token = GET_TOKEN()
   //存在token

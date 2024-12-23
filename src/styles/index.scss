@@ -16,38 +16,29 @@ body {
   font-family: 'MyCustomFont';
  
   --el-box-shadow-light: 0px 4px 20px #00000008;
-  //light
-  // --el-card-border-have: 1px solid #e4e7ed;
+  
   --el-card-border-none: 0px;
   //主色彩
   --lvshihao-theme-color:#6F68F6;
-  //色弱度
+  //色彩滤镜
   --lvshihao-theme-filter-grayscale: 0%;
   --lvshihao-theme-filter-invert: 0%;
   --lvshihao-theme-filter-blur: 0px;
   --lvshihao-theme-filter-contrast: 100%;
   --lvshihao-theme-filter-hueRotate: 0deg;
   --lvshihao-theme-filter-saturate: 100%;
-
-
    filter: invert(var(--lvshihao-theme-filter-invert)) grayscale(var(--lvshihao-theme-filter-grayscale)) blur(var(--lvshihao-theme-filter-blur)) contrast(var(--lvshihao-theme-filter-contrast))  hue-rotate(var(--lvshihao-theme-filter-hueRotate)) saturate(var(--lvshihao-theme-filter-saturate));
-
-     //模糊
-   // filter: blur(3px);
-   //对比度
-   // filter: contrast(85%);
-   //透明度
-   // filter: opacity(70%);
-  //  灰度
-   // 色相想转
-   // filter: hue-rotate(180deg);
-   // filter: saturate(180%);
 }
 * {
   font-weight: 600 !important;
-
+  --el-datepicker-active-color: var(--lvshihao-theme-color);
+  --el-color-primary: var(--lvshihao-theme-color);
 }
 
+
+.el-avatar{
+  --el-avatar-bg-color:var(--lvshihao-theme-color)
+}
 
 //menu的箭头距离文字位置
 .el-sub-menu .el-sub-menu__icon-arrow {

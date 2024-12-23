@@ -33,6 +33,7 @@ const useUserStore = defineStore('User', {
       user: <User>{},
       permissions: [],
       roles: [],
+      tableLoading: true, //表格数据加载loading
       commonform: <User>{
         userId: 0,
         username: '',

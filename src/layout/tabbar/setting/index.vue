@@ -6,7 +6,7 @@
     <svg-icon  name="全屏"  />
   </el-button>
   <el-button
-    v-show="LayoutSettingStore.theme"
+    v-show="LayoutSettingStore.getThemeStatus"
     class="iconBtn"
     title="白天模式"
     @click="changeMoon"
@@ -14,7 +14,7 @@
   <svg-icon  name="白天"  />
 </el-button>
   <el-button
-    v-show="!LayoutSettingStore.theme"
+    v-show="!LayoutSettingStore.getThemeStatus"
     class="iconBtn"
     title="夜晚模式"
     @click="changeSunny"
@@ -28,12 +28,12 @@
   <el-dropdown trigger="hover" class="test">
     <span class="el-dropdown-link">
       <template v-if="setting.userHeadImageType == 'text'">
-        <el-avatar :size="avatarSize">
+        <el-avatar :size="avatarSize" shape="square">
           {{ userStore.getUserNameTextFirst }}
         </el-avatar>
       </template>
       <template v-if="setting.userHeadImageType == 'img'">
-        <el-avatar :size="avatarSize" :src="userStore.user.avatar" />
+        <el-avatar :size="avatarSize" shape="square" :src="userStore.user.avatar" />
       </template>
       <!-- {{ userStore.user.username }} -->
     </span>
@@ -63,7 +63,7 @@ let avatarSize = ref(30)
 
 onMounted(() => {
   //初始化切换主题
-  if(LayoutSettingStore.theme){
+  if(LayoutSettingStore.getThemeStatus){
      changeMoon()
   }else{
      changeSunny()
@@ -71,19 +71,20 @@ onMounted(() => {
 })
 // 刷新按钮点击回调
 const updateRefsh = () => {
+  console.log('刷新')
   LayoutSettingStore.refsh = !LayoutSettingStore.refsh
 }
 //切换夜晚模式
 const changeMoon = () => {
   let html = document.documentElement
-  LayoutSettingStore.theme = false
+  LayoutSettingStore.setting.theme = 1
   html.className = 'dark'
 }
 
 //切换白天模式
 const changeSunny = () => {
   let html = document.documentElement
-  LayoutSettingStore.theme = true
+  LayoutSettingStore.setting.theme = 0
   html.className = ''
 }
 //全屏按钮点击的回调
@@ -127,6 +128,7 @@ export default {
   height: 100%;
   align-items: center;
   padding: 10px;
+  margin-right: 5px;
 }
 .test:hover {
   background-color: var(--el-color-primary-light-9);

@@ -1,18 +1,18 @@
 <template>
   <el-watermark :content="useUserStore.user.username" :font="font">
     <div class="layout_container" :class="{
-      suuny: LayoutSettingStore.theme,
-      moon: !LayoutSettingStore.theme,
+      suuny: LayoutSettingStore.getThemeStatus,
+      moon:  !LayoutSettingStore.getThemeStatus,
     }">
 
       <!-- 偏好设置 -->
       <Drawer></Drawer>
       <!-- 左侧菜单 -->
       <div class="layout_slider" :class="{
-        suuny: LayoutSettingStore.theme,
-        moon: !LayoutSettingStore.theme,
+        suuny: LayoutSettingStore.getThemeStatus,
+        moon:  !LayoutSettingStore.getThemeStatus,
         fold: LayoutSettingStore.fold
-      }" v-show="LayoutSettingStore.menu">
+      }" v-show="LayoutSettingStore.setting.menu">
         <!-- logo -->
         <Logo class="logo"></Logo>
         <!-- 展示菜单 -->
@@ -25,53 +25,53 @@
         </el-scrollbar>
         <el-button class="foldwithExpand iconBtn" @click="changeIcon">
           <svg-icon :name="LayoutSettingStore.fold ? '折叠-展开' : '折叠-收起'"
-            :color="LayoutSettingStore.theme ? 'black' : 'white'" />
+            :color="LayoutSettingStore.setting.theme==1 ? 'black' : 'white'" />
         </el-button>
       </div>
       <!-- 顶部导航 -->
       <div class="layout_tabbar" :class="{
-        showNavigationBar: LayoutSettingStore.navigationBar,
-        hidenNavigationBar: !LayoutSettingStore.navigationBar,
-        suuny: LayoutSettingStore.theme,
-        moon: !LayoutSettingStore.theme,
+        showNavigationBar: LayoutSettingStore.setting.navigationBar,
+        hidenNavigationBar: !LayoutSettingStore.setting.navigationBar,
+        suuny: LayoutSettingStore.getThemeStatus,
+        moon:  !LayoutSettingStore.getThemeStatus,
         unfold: !LayoutSettingStore.fold,
         fold: LayoutSettingStore.fold,
-        showMenu: LayoutSettingStore.menu,
-        hidenMenu: !LayoutSettingStore.menu,
+        showMenu: LayoutSettingStore.setting.menu,
+        hidenMenu: !LayoutSettingStore.setting.menu,
       }">
         <Tabbar></Tabbar>
       </div>
       <!-- 顶部tabs -->
       <div class="layout_tabs" :class="{
-        showNavigationBar: LayoutSettingStore.navigationBar,
-        hidenNavigationBar: !LayoutSettingStore.navigationBar,
-        suuny: LayoutSettingStore.theme,
-        moon: !LayoutSettingStore.theme,
+        showNavigationBar: LayoutSettingStore.setting.navigationBar,
+        hidenNavigationBar: !LayoutSettingStore.setting.navigationBar,
+        suuny: LayoutSettingStore.getThemeStatus,
+        moon:  !LayoutSettingStore.getThemeStatus,
         fold: LayoutSettingStore.fold,
-        showMenu: LayoutSettingStore.menu,
-        hidenMenu: !LayoutSettingStore.menu,
-      }" v-show="LayoutSettingStore.tabs">
+        showMenu: LayoutSettingStore.setting.menu,
+        hidenMenu: !LayoutSettingStore.setting.menu,
+      }" v-show="LayoutSettingStore.setting.tabs">
         <Tabs></Tabs>
       </div>
 
       <!-- 内容展示区域 -->
       <div class="layout_main" :class="{
-        showNavigationBar: LayoutSettingStore.navigationBar,
-        hidenNavigationBar: !LayoutSettingStore.navigationBar,
-        suuny: LayoutSettingStore.theme,
-        moon: !LayoutSettingStore.theme,
+        showNavigationBar: LayoutSettingStore.setting.navigationBar,
+        hidenNavigationBar: !LayoutSettingStore.setting.navigationBar,
+        suuny: LayoutSettingStore.getThemeStatus,
+        moon:  !LayoutSettingStore.getThemeStatus,
         fold: LayoutSettingStore.fold,
         unfold: !LayoutSettingStore.fold,
-        showTabs: LayoutSettingStore.tabs,
-        hidenTabs: !LayoutSettingStore.tabs,
-        showMenu: LayoutSettingStore.menu,
-        hidenMenu: !LayoutSettingStore.menu,
+        showTabs: LayoutSettingStore.setting.tabs,
+        hidenTabs: !LayoutSettingStore.setting.tabs,
+        showMenu: LayoutSettingStore.setting.menu,
+        hidenMenu: !LayoutSettingStore.setting.menu,
       }">
 
-        <Breadcrumb class="breadcurmb" v-show="LayoutSettingStore.breadcrumb"></Breadcrumb>
+        <Breadcrumb class="breadcurmb" v-show="LayoutSettingStore.setting.breadcrumb"></Breadcrumb>
         <Main class="context" >
         </Main>
-        <copyright v-show="LayoutSettingStore.copyright"></copyright>
+        <copyright v-show="LayoutSettingStore.setting.copyright"></copyright>
       </div>
 
     </div>
@@ -107,18 +107,20 @@ const usePermissionStore = PermissionStore()
 const useUserStore = UserStore();
 const $route = useRoute()
 
+
 const font = reactive({
   color: 'rgba(0, 0, 255, .35)',
 })
 
 // 监听水印开启的数据变更
-watch(() => LayoutSettingStore.watermark, (v) => {
+watch(() => LayoutSettingStore.setting.watermark, (v) => {
   font.color = v
       ? 'rgba(100, 100, 100, .45)'
       : 'rgba(0, 0, 0, 0)'
 },{
   immediate: true,
 });
+
 
 
 const changeIcon = () => {
@@ -156,7 +158,7 @@ export default {
   }
 
   .layout_slider {
-
+    box-shadow: var(--el-box-shadow-light);
     //白天
     &.suuny {
       background-color: #ffffff;

@@ -16,6 +16,7 @@ const useDictTypeStore = defineStore('dictType', {
       dictData: [], //字典数据数组
       extraSchemas: [], //额外参数[{"parament":"name","type":"string"}]
       multipleSelection: [], //选的数据列表
+      tableLoading: true, //表格数据加载loading
       searchform: {
         name: undefined,
         description: undefined,

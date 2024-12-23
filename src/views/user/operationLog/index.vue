@@ -61,7 +61,7 @@
         </el-row>
       </el-form>
     </el-card>
-    <el-card class="card-table-style">
+    <el-card class="card-table-style" v-if="!operationLogStore.tableLoading||!LoadingStatus">
       <template #header>
         <div class="card-header-style">
           <div class="card-header">
@@ -141,13 +141,16 @@
       <template #footer>
         <div class="pagination-style">
           <!--分页-->
-          <el-pagination :page-sizes="[10, 20, 30, 40]" small="small" background="true"  :default-page-size="Number(LayoutSettingStore.size)"
+          <el-pagination :page-sizes="[10, 20, 30, 40]" small="small" background="true"  :default-page-size="Number(LayoutSettingStore.setting.size)"
             layout="total, sizes, prev, pager, next, jumper" :total="dataList.total" @size-change="handleSizeChange"
             @current-change="handleCurrentChange" />
         </div>
       </template>
     </el-card>
-
+   <!--加载动画-->
+   <div class="table-data-loading" v-else>
+      <Loading />
+    </div>
   </div>
 </template>
 
@@ -165,19 +168,25 @@ const LayoutSettingStore = useLayoutSettingStore()
 const instance: ComponentInternalInstance | null = getCurrentInstance();
 
 onMounted(() => {
+  LoadingStatus.value=LayoutSettingStore.setting.dataLoading
+  operationLogStore.tableLoading = true
   //手动触发更新页数的逻辑
-  handleSizeChange(Number(LayoutSettingStore.size))
+  handleSizeChange(Number(LayoutSettingStore.setting.size))
   //进入页面初始化的数据
   searchList(operationLogStore.searchform)
   //加载可选操作人员名称选项
   loadOperNameSelect()
   //加载可选操作模块选项
   loadTitleSelect()
+  setTimeout(() => {
+    operationLogStore.tableLoading = false
+  },500)
 })
 //表单对象
 const searchFormRef = ref<FormInstance>()
 //更多按钮状态
 const more = ref(false)
+const LoadingStatus = ref(false)
 //表格数据
 const dataList = reactive({
   list: [],

@@ -48,7 +48,7 @@
       </el-form>
     </el-card>
     
-    <el-card class="card-table-style">
+    <el-card class="card-table-style" v-if="!userStore.tableLoading||!LoadingStatus">
       <template #header>
         <div class="card-header-style">
           <div class="card-header">
@@ -124,12 +124,15 @@
         <div class="pagination-style">
           <!--分页-->
           <el-pagination :page-sizes="[10, 20, 30, 40]" small="small" background="true"
-            :default-page-size="Number(LayoutSettingStore.size)" layout="total, sizes, prev, pager, next, jumper"
-            :total="dataList.total" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+            :default-page-size="Number(LayoutSettingStore.setting.size)" layout="total, sizes, prev, pager, next, jumper"
+            :total="dataList.total"  @size-change="handleSizeChange"  @current-change="handleCurrentChange"/>
         </div>
       </template>
     </el-card>
-
+    <!--加载动画-->
+    <div class="table-data-loading" v-else>
+      <Loading />
+    </div>
     <!--弹出框组件列表-->
     <UserAddFromModal ref="userAddFromModal" @refreshData="refreshData"></UserAddFromModal>
     <UserUpdateFromModal ref="userUpdateFromModal" @refreshData="refreshData"></UserUpdateFromModal>
@@ -163,10 +166,15 @@ const LayoutSettingStore = useLayoutSettingStore()
 onMounted(() => {
   //清空搜索条件
   userStore.searchform = <User>{}
+  LoadingStatus.value=LayoutSettingStore.setting.dataLoading
+  userStore.tableLoading = true
   //手动触发更新页数的逻辑
-  handleSizeChange(Number(LayoutSettingStore.size))
+  handleSizeChange(Number(LayoutSettingStore.setting.size))
   //进入页面初始化的数据
   searchList(userStore.searchform)
+  setTimeout(() => {
+    userStore.tableLoading = false
+  },500)
 })
 
 //表单对象
@@ -178,6 +186,7 @@ const userRestPasswordFromModal = ref<FromModal>()
 const userAuthRolesFromModal = ref<FromModal>()
 //更多按钮状态
 const more = ref(false)
+const LoadingStatus = ref(false) 
 
 //表格数据,定义响应式的数据列表，初始为空
 const dataList = reactive({

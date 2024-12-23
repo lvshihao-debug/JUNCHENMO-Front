@@ -1,8 +1,8 @@
 <template>
     <div class="tabbar">
       <div class="tabbar_left">
-        <div style="margin-left: 30px"  class="animate__animated animate__backInRight">
-          人生就像下棋一样，每一步都要慎重考虑；
+        <div style="margin-left: 18px"  class="animate__animated animate__backInRight">
+          逆向决定高度，开发决定深度
         </div>
       </div>
       <div class="tabbar_right">
@@ -14,11 +14,6 @@
 <script setup lang="ts">
 //引入菜单组件
 import Setting from './setting/index.vue'
-//获取设置相关的小仓库
-import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
-//获取layout配置相关的仓库
-const LayoutSettingStore = useLayoutSettingStore()
-
 </script>
 <script lang="ts">
 export default {

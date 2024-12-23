@@ -13,6 +13,7 @@ const useDictDataStore = defineStore('dictData', {
       selectDictTypeExtra:[],  //选择的字典的以及额外参数
       extra:{},  //存储额外参数的对象
       multipleSelection:[], //选的数据列表
+      tableLoading: true, //表格数据加载loading
       searchform:{
         name: undefined,
         description: undefined,

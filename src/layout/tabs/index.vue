@@ -1,7 +1,7 @@
 <template>
   <el-row class="row-tabs animate__animated animate__fadeIn" :class="{
-      moon: !LayoutSettingStore.theme,
-      sunny: LayoutSettingStore.theme,
+      moon: !LayoutSettingStore.getThemeStatus,
+      sunny: LayoutSettingStore.getThemeStatus,
     }" >
     <el-col :span="23" >
       <el-scrollbar ref="scrollbarRef"   @wheel.prevent="handleScroll" height="100%">
@@ -23,7 +23,7 @@
                   >
                     <div style="display: flex; align-items: center">
                       <!-- 隐藏图标-->
-                      <div v-show="LayoutSettingStore.tabsIcon">
+                      <div v-show="LayoutSettingStore.setting.tabsIcon">
                         <svg-icon :name="tag.icon" :color="iconColor" :width="12" :height="12" />
                       </div>
                       <div  class="jcm-tabs-titleWithIcon">
@@ -45,7 +45,7 @@
                 >
                   <div style="display: flex; align-items: center">
                     <!--隐藏图标-->
-                    <div v-show="LayoutSettingStore.tabsIcon">
+                    <div v-show="LayoutSettingStore.setting.tabsIcon">
                       <svg-icon :name="tag.icon" :color="iconColor" :width="12" :height="12" />
                     </div>
                     <div class="jcm-tabs-titleWithIcon">
