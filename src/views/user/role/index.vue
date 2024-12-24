@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="animate__animated animate__fadeIn">
     <el-card>
       <el-form :inline="true" :model="roleStore.searchform" class="searchForm" label-position="right" label-width="auto"
         ref="searchFormRef">
@@ -17,12 +17,12 @@
             </el-select>
           </el-form-item>
           <div style="margin-left: auto" class="card-search-end">
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="resetSearchForm(searchFormRef)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="resetSearchForm(searchFormRef)">
               <template #icon>
                 <svg-icon name="擦除" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="searchList(roleStore.searchform)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList(roleStore.searchform)">
               <template #icon>
                 <svg-icon name="搜索" />
               </template>
@@ -31,19 +31,19 @@
         </el-row>
       </el-form>
     </el-card>
-    <el-card class="card-table-style" v-if="!roleStore.tableLoading||!LoadingStatus">
+    <el-card class="card-table-style" v-if="loadingStatus">
       <template #header>
         <div class="card-header-style">
           <div class="card-header">
             <span>用户列表</span>
           </div>
           <div class="card-end">
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="roleAddFromModal?.open()">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="roleAddFromModal?.open()">
               <template #icon>
                 <svg-icon name="加号" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="deleteItems()">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="deleteItems()">
               <template #icon>
                 <svg-icon name="垃圾桶" />
               </template>
@@ -101,9 +101,9 @@
       <template #footer>
         <div class="pagination-style">
           <!--分页-->
-          <el-pagination :page-sizes="[10, 20, 30, 40]" :default-page-size="Number(LayoutSettingStore.setting.size)" small="small"
-            background="true" layout="total, sizes, prev, pager, next, jumper" :total="dataList.total"
-            @size-change="handleSizeChange"  @current-change="handleCurrentChange"  />
+          <el-pagination :page-sizes="[10, 20, 30, 40]" :default-page-size="Number(layoutSettingStore.setting.size)"
+            small="small" background="true" layout="total, sizes, prev, pager, next, jumper" :total="dataList.total"
+            @size-change="handleSizeChange" @current-change="handleCurrentChange" />
         </div>
       </template>
     </el-card>
@@ -133,19 +133,14 @@ import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 import { isAdminById } from '@/utils/permission'
 
 const roleStore = useRoleStore()
-const LayoutSettingStore = useLayoutSettingStore()
+const layoutSettingStore = useLayoutSettingStore()
 
 
 onMounted(() => {
-  LoadingStatus.value=LayoutSettingStore.setting.dataLoading
-  roleStore.tableLoading = true
- //手动触发更新页数的逻辑
- handleSizeChange(Number(LayoutSettingStore.setting.size))
+  //手动触发更新页数的逻辑
+  handleSizeChange(Number(layoutSettingStore.setting.size))
   //进入页面初始化的数据
   searchList(roleStore.searchform)
-  setTimeout(() => {
-    roleStore.tableLoading = false
-  },500)
 })
 
 //表单对象
@@ -163,10 +158,10 @@ const dataList = reactive({
   page: 1,
   size: 10
 })
-const LoadingStatus = ref(false) 
 
 //根据搜索条件进行搜索
 const searchList = (searchData: any) => {
+  roleStore.tableLoading = true
   roleStore
     .roleList(searchData, dataList.page, dataList.size)
     .then((resp) => {
@@ -176,7 +171,14 @@ const searchList = (searchData: any) => {
     .catch((error) => {
       ElMessage.error({ message: error })
     })
+  setTimeout(() => {
+    roleStore.tableLoading = false
+  }, 500)
 }
+//页面数据加载的状态
+const loadingStatus = computed(() => {
+  return !roleStore.tableLoading || !layoutSettingStore.setting.dataLoading;
+});
 
 //页码变更处理方法
 const handleCurrentChange = (currentPage: number) => {
@@ -254,8 +256,4 @@ export default {
   name: 'role',
 }
 </script>
-<style scoped>
-* {
-  font-weight: 900;
-}
-</style>
+<style scoped></style>

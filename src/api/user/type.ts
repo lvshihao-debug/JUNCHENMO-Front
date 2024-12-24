@@ -34,6 +34,7 @@ export type loginResponseData = {
   data?: loginData
   msg: string
 }
+
 export type loginData = {
   access_token: string
   expires_in: number
@@ -57,7 +58,7 @@ export type userInfoReponseData = {
 //user-list-rep
 export type userListRep = {
   total?: string
-  rows?: user[]
+  rows?: User[]
   code: number
   msg: string
 }

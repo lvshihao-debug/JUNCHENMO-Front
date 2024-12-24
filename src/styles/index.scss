@@ -35,7 +35,11 @@ body {
   --el-color-primary: var(--lvshihao-theme-color);
 }
 
-
+.searchForm{
+  .el-row{
+    align-items: flex-start;
+  }
+}
 .el-avatar{
   --el-avatar-bg-color:var(--lvshihao-theme-color)
 }
@@ -53,10 +57,6 @@ body {
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
-}
-
-.searchForm .el-form-item {
-  margin-bottom: 0px !important;
 }
 
 /* 按钮区域样式 */
@@ -596,6 +596,13 @@ html {
   }
   .el-check-tag.is-checked.el-check-tag--primary {
     div{
+      div{
+        svg{
+          use{
+            fill:  var(--lvshihao-theme-color);
+          }
+        }
+      }
       .jcm-tabs-titleWithIcon{
         svg{
           use{
@@ -605,11 +612,31 @@ html {
       }
     }
   }
-  .el-check-tag.el-check-tag--primary,
-  .el-check-tag.el-check-tag--primary:hover {
+  .el-check-tag.el-check-tag--primary{
     color:$lvshihao-menu-suuny-item-div-svg-color;
     background-color: $lvshihao-menu-suuny-bg;
     box-shadow: --el-box-shadow-light;
+  }
+  .el-check-tag.el-check-tag--primary:hover {
+    color:var(--lvshihao-theme-color);
+    background-color: $lvshihao-menu-suuny-bg;
+    box-shadow: --el-box-shadow-light;
+    div{
+      div{
+        svg{
+          use{
+            fill:  var(--lvshihao-theme-color);
+          }
+        }
+      }
+      .jcm-tabs-titleWithIcon{
+        svg{
+          use{
+            fill:  var(--lvshihao-theme-color);
+          }
+        }
+      }
+    }
   }
 
   //文字按钮
@@ -618,7 +645,7 @@ html {
   }
     //图标按钮样式
   .el-button.iconBtn{
-    background-color: $lvshihao-menu-suuny-item-active-hover-bg;
+    background-color: $lvshihao-menu-suuny-bg;
     border-color: $lvshihao-menu-suuny-item-active-hover-bg;
   }
  
@@ -1160,13 +1187,31 @@ html.dark {
       }
     }
   }
-  .el-check-tag.el-check-tag--primary,
   .el-check-tag.el-check-tag--primary:hover {
+    background-color: $lvshihao-menu-moon-bg;
+    box-shadow: --el-box-shadow-dark;
+    color:var(--lvshihao-theme-color);
+    div{
+      div{
+        svg{
+          use{
+            fill:  var(--lvshihao-theme-color);
+          }
+        }
+      }
+      .jcm-tabs-titleWithIcon{
+        svg{
+          use{
+            fill:  var(--lvshihao-theme-color);
+          }
+        }
+      }
+    }
+  }
+  .el-check-tag.el-check-tag--primary{
     color:$lvshihao-menu-moon-item-div-svg-color;
     background-color: $lvshihao-menu-moon-bg;
     box-shadow: --el-box-shadow-dark;
-  }
-  .el-check-tag.el-check-tag--primary{
     div{
       .jcm-tabs-titleWithIcon{
         svg{

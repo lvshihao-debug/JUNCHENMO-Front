@@ -63,7 +63,7 @@ import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 import useDictDataStore from '@/store/modules/dictData'
 import { formRules } from '../types/form.rules'
 //仓库
-const LayoutSettingStore = useLayoutSettingStore()
+const layoutSettingStore = useLayoutSettingStore()
 const dictDataStore = useDictDataStore()
 
 //获取当前组件实例

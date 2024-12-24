@@ -13,11 +13,11 @@
 
 <script setup lang="ts">
 //获取设置仓库
-import LayoutSettingStore from '@/store/modules/layout/layoutSetting'
+import layoutSettingStore from '@/store/modules/layout/layoutSetting'
 //获取权限仓库
 import PermissionStore from '@/store/modules/menu'
 
-let useLayoutSettingStore = LayoutSettingStore()
+let useLayoutSettingStore = layoutSettingStore()
 let usePermissionStore = PermissionStore()
 //控制当前组件是否销毁重建
 let flag = ref(true)

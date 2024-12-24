@@ -6,7 +6,7 @@
         <h4 :id="titleId" :class="titleClass">{{ title }}</h4>
       </div>
     </template>
-    <editor v-model="value" :readonly="readonly" :theme="LayoutSettingStore.theme"/>
+    <editor v-model="value" :readonly="readonly" :theme="layoutSettingStore.theme"/>
   </el-dialog>
 
 </template>
@@ -15,7 +15,7 @@
 
 //获取设置相关的小仓库
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
-let LayoutSettingStore = useLayoutSettingStore()
+let layoutSettingStore = useLayoutSettingStore()
 
 const props = withDefaults(defineProps<Partial<{
   readonly: boolean;

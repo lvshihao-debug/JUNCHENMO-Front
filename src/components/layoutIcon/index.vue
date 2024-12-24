@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
-const LayoutSettingStore = useLayoutSettingStore()
+const layoutSettingStore = useLayoutSettingStore()
 // 定义接收的props，使用类型注解明确参数类型
 const props = defineProps({
   index: {
@@ -63,8 +63,8 @@ const props = defineProps({
 });
 const themeColor = ref<string>()
 const theme = ref<string>()
-themeColor.value=LayoutSettingStore.themeColor
-theme.value=LayoutSettingStore.theme?"white":"black"
+themeColor.value=layoutSettingStore.setting.themeColor
+theme.value=layoutSettingStore.setting.theme==0?"white":"black"
 // 用于标记是否是自定义宽度，方便添加相应的类名来处理样式
 const customLeftWidth = ref(false);
 const customRightWidth = ref(false);
@@ -74,11 +74,11 @@ const currentSelectedIndex = ref(0);
 const selectIndex = (index: number) => {
   currentSelectedIndex.value = index;
 };
-watch(() => LayoutSettingStore.themeColor, (newVal) => {
+watch(() => layoutSettingStore.setting.themeColor, (newVal) => {
   themeColor.value=newVal
 });
-watch(() => LayoutSettingStore.theme, (newVal) => {
-  theme.value=newVal?"white":"black"
+watch(() => layoutSettingStore.setting.theme, (newVal) => {
+  theme.value=newVal==0?"white":"black"
 });
 // 监听leftWidth和rightWidth的变化，当它们不等于默认值时，标记为自定义宽度
 watch(() => props.leftWidth, (newVal) => {

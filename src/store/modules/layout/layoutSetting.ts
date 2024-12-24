@@ -1,10 +1,8 @@
 //创建用户相关的小仓库
 import { defineStore } from 'pinia'
 //导入请求
-import {
-  reqUserSettingInfo,
-  reqUpUserSettinInfo
-} from '@/api/userSetting'
+import { reqUserSettingInfo, reqUpUserSettinInfo } from '@/api/userSetting'
+import setting from '@/setting'
 //创建用户小仓库
 const useSettinggStore = defineStore('SettinggStore', {
   state: () => {
@@ -12,33 +10,32 @@ const useSettinggStore = defineStore('SettinggStore', {
       refsh: false, //刷新按钮点击状态
       settingDrawer: false, //抽屉展开或收起状态
       fold: false, //menu展开或者收起状态
-      setting:{
-        size: "20", //数据默认条数设置
+      setting: {
+        size: '20', //数据默认条数设置
         theme: 0, //主题是否是暗黑模式还是白天模式
-        themeColor: "red", //主题颜色
+        themeColor: 'red', //主题颜色
         navigationBar: true, //顶部导航栏是否展示
         tabs: true, //tabs是否展示
         tabsIcon: true, //tabs图标是否展示
         breadcrumb: true, //面包屑是否展示
         menu: true, //菜单是否展示
-        copyright: true, //版权内容是否展示 
+        copyright: true, //版权内容是否展示
         watermark: true, //用户水印是否展示
-        weakColor:false, //弱色模式
-        grayscale:false, //黑白模式
-        blur:false, //高斯模糊
-        contrast:false, //对比度降低
-        hueRotate:false, //色相旋转
-        saturate:false, //饱和度
-        dataLoading:true //是否开数据加载动画
-      }
+        weakColor: false, //弱色模式
+        grayscale: false, //黑白模式
+        blur: false, //高斯模糊
+        contrast: false, //对比度降低
+        hueRotate: false, //色相旋转
+        saturate: false, //饱和度
+        dataLoading: true, //是否开数据加载动画
+      },
     }
   },
   actions: {
-   //获取用户设置信息
-   async userSettingInfo() {
-    const result:any = await reqUserSettingInfo()
-    if (result.code == 200) {
-      nextTick(() => {
+    //获取用户设置信息
+    async userSettingInfo() {
+      const result: any = await reqUserSettingInfo()
+      if (result.code == 200) {
         this.setting.theme = result.data.theme
         this.setting.themeColor = result.data.themeColor
         this.setting.navigationBar = result.data.navigationBar
@@ -55,35 +52,112 @@ const useSettinggStore = defineStore('SettinggStore', {
         this.setting.hueRotate = result.data.hueRotate
         this.setting.saturate = result.data.saturate
         this.setting.dataLoading = result.data.dataLoading
-        this.setting.size = result.data.size + ""
-        console.log(this.setting)
-      })
-      return Promise.resolve('ok')
-    } else {
-      return Promise.reject(result.msg)
-    }
-  },
-  //修改用户设置信息
-  async upUserSettinInfo(data: any) {
-    const result: any = await reqUpUserSettinInfo(data)
-    if (result.code == 200) {
-      return result
-    } else {
-      return Promise.reject(result.msg)
-    }
-  },
-
+        this.setting.size = result.data.size + ''
+        nextTick(() => {
+          this.setThemeColor(this.setting.themeColor);
+          this.setWeakColor();
+          this.setGrayscale();
+          this.setBlur();
+          this.setContrast();
+          this.setHueRotate();
+          this.setSaturate();
+        })
+        return Promise.resolve('ok')
+      } else {
+        return Promise.reject(result.msg)
+      }
+    },
+    //修改用户设置信息
+    async upUserSettinInfo(data: any) {
+      const result: any = await reqUpUserSettinInfo(data)
+      if (result.code == 200) {
+        return result
+      } else {
+        return Promise.reject(result.msg)
+      }
+    },
+    async setThemeColor(color:string){
+      const body = document.querySelector('body')
+      this.setting.themeColor = color;
+      body?.style.setProperty('--lvshihao-theme-color', color)
+    },
+    async setWeakColor(){
+      const body = document.querySelector('body')
+      if (this.setting.weakColor) {
+        body?.style.setProperty('--lvshihao-theme-filter-invert', "100%")
+      } else {
+        body?.style.setProperty('--lvshihao-theme-filter-invert', "0%")
+      }
+    },
+    async setGrayscale(){
+      const body = document.querySelector('body')
+      if (this.setting.grayscale) {
+        body?.style.setProperty('--lvshihao-theme-filter-grayscale', '100%')
+      } else {
+        body?.style.setProperty('--lvshihao-theme-filter-grayscale', '0%')
+      }
+    },
+    async setBlur(){
+      const body = document.querySelector('body')
+      if (this.setting.blur) {
+        body?.style.setProperty('--lvshihao-theme-filter-blur', "2px")
+      } else {
+        body?.style.setProperty('--lvshihao-theme-filter-blur', "0px")
+      }
+    },
+    async setContrast(){
+      const body = document.querySelector('body')
+      if (this.setting.contrast) {
+        body?.style.setProperty('--lvshihao-theme-filter-contrast', "75%")
+      } else {
+        body?.style.setProperty('--lvshihao-theme-filter-contrast', "100%")
+      }
+    },
+    async setHueRotate(){
+      const body = document.querySelector('body')
+      if (this.setting.hueRotate) {
+        body?.style.setProperty('--lvshihao-theme-filter-hueRotate', "80deg")
+      } else {
+        body?.style.setProperty('--lvshihao-theme-filter-hueRotate', "0deg")
+      }
+    },
+    async setSaturate(){
+      const body = document.querySelector('body')
+      if (this.setting.saturate) {
+        body?.style.setProperty('--lvshihao-theme-filter-saturate', "180%")
+      } else {
+        body?.style.setProperty('--lvshihao-theme-filter-saturate', "100%")
+      }
+    },
   },
   getters: {
     getThemeStatus: (state) => {
-      return state.setting.theme==0?true:false
+      const html = document.documentElement;
+      if(state.setting.theme == 0 ){
+        html.className = '';
+        return true
+      }else if (state.setting.theme == 1){
+        html.className = 'dark';
+        return false
+      }else{
+        const themeMedia = window.matchMedia('(prefers-color-scheme: light)')
+        console.log("当前主题")
+        console.log(themeMedia)
+        if (themeMedia.matches) {
+            html.className = '';
+          return true
+        } else {
+            html.className = 'dark';
+          return false
+        }
+      }
     },
     getTheme: (state) => {
-      return state.setting.theme==0?"white":"black"
+      return state.setting.theme == 0 ? 'white' : 'black'
     },
     getThemeInvert: (state) => {
-      return state.setting.theme==0?"black":"white"
-    }
+      return state.setting.theme == 0 ? 'black' : 'white'
+    },
   },
 })
 

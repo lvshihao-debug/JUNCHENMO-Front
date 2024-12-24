@@ -22,7 +22,7 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item v-show="!featureStatus" label="菜单图标" prop="icon">
-                <IconSelect :icon="menuStore.commonform.icon" style="width: 100%" @selected="selected" />
+                <JcmIconSelect :icon="menuStore.commonform.icon" style="width: 100%" @selected="selected" />
             </el-form-item>
             <el-form-item v-show="!featureStatus" label="组件" prop="component">
                 <el-input v-model="menuStore.commonform.component" autocomplete="off" placeholder="路由组件名称" />

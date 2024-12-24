@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="animate__animated animate__fadeIn">
     <el-card>
       <el-form :inline="true" :model="dictDataStore.searchform" class="searchForm" label-position="right"
         label-width="auto" ref="searchFormRef">
@@ -17,22 +17,22 @@
             <el-input v-model="dictDataStore.searchform.extra" />
           </el-form-item>
           <div style="margin-left: auto" class="card-search-end">
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="resetSearchForm(searchFormRef)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="resetSearchForm(searchFormRef)">
               <template #icon>
                 <svg-icon name="擦除" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="searchList(dictDataStore.searchform)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList(dictDataStore.searchform)">
               <template #icon>
                 <svg-icon name="搜索" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme"  @click="more = true" v-show="!more">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="more = true" v-show="!more">
               <template #icon>
                 <svg-icon name="展开" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="more = false" v-show="more">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="more = false" v-show="more">
               <template #icon>
                 <svg-icon name="收起" />
               </template>
@@ -41,19 +41,19 @@
         </el-row>
       </el-form>
     </el-card>
-    <el-card class="card-table-style">
+    <el-card class="card-table-style" v-if="loadingStatus">
       <template #header>
         <div class="card-header-style">
           <div class="card-header">
             <span>字典配置值列表</span>
           </div>
-          <div class="card-end" >
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="dictDataAddFromModal?.open()">
+          <div class="card-end">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="dictDataAddFromModal?.open()">
               <template #icon>
                 <svg-icon name="加号" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="deleteItems()">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="deleteItems()">
               <template #icon>
                 <svg-icon name="垃圾桶" />
               </template>
@@ -62,14 +62,14 @@
         </div>
       </template>
 
-      <el-table :data="dataList.list" table-layout="auto"  @selection-change="handleSelectionChange">
-        <el-table-column type="selection"  width="55" />
+      <el-table :data="dataList.list" table-layout="auto" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55" />
         <el-table-column prop="dictTypeId" label="ID" align="center" />
         <el-table-column prop="name" label="配置项" align="center" />
         <el-table-column prop="value" label="配置值" align="center" />
         <el-table-column prop="extra" width="240" label="额外参数" align="center" show-overflow-tooltip>
           <template #default="scope">
-              {{ scope.row.extra }}
+            {{ scope.row.extra }}
           </template>
         </el-table-column>
         <el-table-column prop="description" label="配置描述" align="center" />
@@ -103,16 +103,20 @@
       <template #footer>
         <div class="pagination-style">
           <!--分页-->
-          <el-pagination :page-sizes="[10, 20, 30, 40]" small="small" background="true"  :default-page-size="Number(LayoutSettingStore.setting.size)"
+          <el-pagination :page-sizes="[10, 20, 30, 40]" small="small" background="true"
+            :default-page-size="Number(layoutSettingStore.setting.size)"
             layout="total, sizes, prev, pager, next, jumper" :total="dataList.total" @size-change="handleSizeChange"
             @current-change="handleCurrentChange" />
         </div>
       </template>
     </el-card>
-
-  <!--弹出框组件列表-->
-  <DictDataAddFromModal  ref="dictDataAddFromModal" @refreshData="refreshData"></DictDataAddFromModal>
-  <DictDataUpdateFromModal  ref="dictDataUpdateFromModal" @refreshData="refreshData"></DictDataUpdateFromModal>
+    <!--加载动画-->
+    <div class="table-data-loading" v-else>
+      <Loading />
+    </div>
+    <!--弹出框组件列表-->
+    <DictDataAddFromModal ref="dictDataAddFromModal" @refreshData="refreshData"></DictDataAddFromModal>
+    <DictDataUpdateFromModal ref="dictDataUpdateFromModal" @refreshData="refreshData"></DictDataUpdateFromModal>
   </div>
 </template>
 
@@ -130,11 +134,11 @@ import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 
 const dictDataStore = useDictDataStore()
 const dictTypeStore = useDictTypeStore()
-const LayoutSettingStore = useLayoutSettingStore()
+const layoutSettingStore = useLayoutSettingStore()
 
 onMounted(() => {
   //手动触发更新页数的逻辑
-  handleSizeChange(Number(LayoutSettingStore.setting.size))
+  handleSizeChange(Number(layoutSettingStore.setting.size))
   //进入页面初始化的数据
   searchList(dictDataStore.searchform)
   //加载字典类型选项的数据
@@ -156,9 +160,13 @@ const dataList = reactive({
   page: 1,
   size: 10,
 })
-
+//页面数据加载的状态
+const loadingStatus = computed(() => {
+  return !dictDataStore.tableLoading || !layoutSettingStore.setting.dataLoading;
+});
 //根据搜索条件进行搜索
 const searchList = (searchData: any) => {
+  dictDataStore.tableLoading = true
   dictDataStore
     .dictDataList(searchData, dataList.page, dataList.size)
     .then((resp) => {
@@ -168,6 +176,9 @@ const searchList = (searchData: any) => {
     .catch((error) => {
       ElMessage.error({ message: error })
     })
+  setTimeout(() => {
+    dictDataStore.tableLoading = false
+  }, 500)
 }
 
 //页码变更处理方法
@@ -216,7 +227,7 @@ const deleteItems = () => {
 }
 
 //加载字典类型选项的数据
-const loadDictTypeSelect=()=>{
+const loadDictTypeSelect = () => {
   dictTypeStore
     .dictTypeOptionSelect()
     .then((resp) => {
@@ -243,11 +254,4 @@ export default {
   name: 'dictData',
 }
 </script>
-<style scoped>
-.searchForm .el-form-item {
-  margin-bottom: v-bind(more ? '18px' : '0px') !important;
-}
-* {
-  font-weight: 900;
-}
-</style>
+<style scoped></style>

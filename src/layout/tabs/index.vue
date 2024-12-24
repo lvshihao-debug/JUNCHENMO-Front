@@ -1,8 +1,5 @@
 <template>
-  <el-row class="row-tabs animate__animated animate__fadeIn" :class="{
-      moon: !LayoutSettingStore.getThemeStatus,
-      sunny: LayoutSettingStore.getThemeStatus,
-    }" >
+  <el-row class="row-tabs" :class="themeClass" >
     <el-col :span="23" >
       <el-scrollbar ref="scrollbarRef"   @wheel.prevent="handleScroll" height="100%">
         <!-- 面包屑动态的展示路由名字与标题 -->
@@ -23,7 +20,7 @@
                   >
                     <div style="display: flex; align-items: center">
                       <!-- 隐藏图标-->
-                      <div v-show="LayoutSettingStore.setting.tabsIcon">
+                      <div v-show="layoutSettingStore.setting.tabsIcon">
                         <svg-icon :name="tag.icon" :color="iconColor" :width="12" :height="12" />
                       </div>
                       <div  class="jcm-tabs-titleWithIcon">
@@ -45,7 +42,7 @@
                 >
                   <div style="display: flex; align-items: center">
                     <!--隐藏图标-->
-                    <div v-show="LayoutSettingStore.setting.tabsIcon">
+                    <div v-show="layoutSettingStore.setting.tabsIcon">
                       <svg-icon :name="tag.icon" :color="iconColor" :width="12" :height="12" />
                     </div>
                     <div class="jcm-tabs-titleWithIcon">
@@ -62,7 +59,7 @@
     </el-col>
     <el-col :span="1">
       <el-dropdown class="el-dropdown-jcm">
-         <svg-icon class="tabs-dropdown-icon-jcm" name="下选"  width="20px" height="20px" :color="LayoutSettingStore.getThemeInvert"/>
+         <svg-icon class="tabs-dropdown-icon-jcm" name="下选"  width="20px" height="20px" :color="layoutSettingStore.getThemeInvert"/>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item
@@ -92,7 +89,7 @@ import { ElScrollbar } from 'element-plus'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 //创建Tabs相关的小仓库
 import useTabsStore from '@/store/modules/layout/tabs'
-const LayoutSettingStore = useLayoutSettingStore()
+const layoutSettingStore = useLayoutSettingStore()
 const TabsStore = useTabsStore()
 
 const $router = useRouter()
@@ -105,8 +102,12 @@ let currentPosition = 0
 
 TabsStore.initTabs($router,route)
 
+//获取主题样式
+const themeClass = computed(() => {
+  return layoutSettingStore.getThemeStatus? 'sunny' :'moon';
+});
 //图标根据主题模式动态切换颜色
-const iconColor = computed(() => LayoutSettingStore.theme? 'black' : 'white');
+const iconColor = computed(() => layoutSettingStore.setting.theme == 0 ? 'black' : 'white');
 
 const handleScroll = (e: WheelEvent) => {
   const delta = Math.sign(e.deltaY) // get the direction of the scroll (1 for down, -1 for up)

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="animate__animated animate__fadeIn">
     <el-card>
       <el-form :inline="true" :model="operationLogStore.searchform" class="searchForm" label-position="right"
         label-width="auto" ref="searchFormRef">
@@ -32,27 +32,27 @@
             </el-select>
           </el-form-item>
           <el-form-item v-show="more" prop="searchTime" label="执行时间">
-            <el-date-picker v-model="operationLogStore.searchform.searchTime" type="datetimerange" value-format="YYYY-MM-DD HH:mm:ss"
-              start-placeholder="开始日期" end-placeholder="结束日期" format="YYYY-MM-DD HH:mm:ss" date-format="YYYY/MM/DD ddd"
-              time-format="A hh:mm:ss" />
+            <el-date-picker v-model="operationLogStore.searchform.searchTime" type="datetimerange"
+              value-format="YYYY-MM-DD HH:mm:ss" start-placeholder="开始日期" end-placeholder="结束日期"
+              format="YYYY-MM-DD HH:mm:ss" date-format="YYYY/MM/DD ddd" time-format="A hh:mm:ss" />
           </el-form-item>
           <div style="margin-left: auto" class="card-search-end">
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="resetSearchForm(searchFormRef)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="resetSearchForm(searchFormRef)">
               <template #icon>
                 <svg-icon name="擦除" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="searchList(operationLogStore.searchform)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList(operationLogStore.searchform)">
               <template #icon>
                 <svg-icon name="搜索" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme"  @click="more = true" v-show="!more">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="more = true" v-show="!more">
               <template #icon>
                 <svg-icon name="展开" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="more = false" v-show="more">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="more = false" v-show="more">
               <template #icon>
                 <svg-icon name="收起" />
               </template>
@@ -61,19 +61,19 @@
         </el-row>
       </el-form>
     </el-card>
-    <el-card class="card-table-style" v-if="!operationLogStore.tableLoading||!LoadingStatus">
+    <el-card class="card-table-style" v-if="loadingStatus">
       <template #header>
         <div class="card-header-style">
           <div class="card-header">
             <span>操作日志列表</span>
           </div>
           <div class="card-end">
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="clearItems()">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="clearItems()">
               <template #icon>
                 <svg-icon name="清空" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="deleteItems()">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="deleteItems()">
               <template #icon>
                 <svg-icon name="垃圾桶" />
               </template>
@@ -93,7 +93,7 @@
         <el-table-column prop="status" label="执行结果" align="center">
           <template #default="scope">
             <template v-if="scope.row.status === 0">
-              <el-tag checked size="small" >
+              <el-tag checked size="small">
                 成功
               </el-tag>
             </template>
@@ -104,11 +104,11 @@
             </template>
           </template>
         </el-table-column>
-        <el-table-column prop="description" label="操作日志" align="center" >
+        <el-table-column prop="description" label="操作日志" align="center">
           <template #default="scope">
             <div><span v-html="scope.row.description"></span></div>
-            <template v-if="scope.row.errorMsg!=''">
-              <div class="ellipsis-text"><span v-html="scope.row.errorMsg" ></span></div>
+            <template v-if="scope.row.errorMsg != ''">
+              <div class="ellipsis-text"><span v-html="scope.row.errorMsg"></span></div>
             </template>
           </template>
         </el-table-column>
@@ -141,14 +141,15 @@
       <template #footer>
         <div class="pagination-style">
           <!--分页-->
-          <el-pagination :page-sizes="[10, 20, 30, 40]" small="small" background="true"  :default-page-size="Number(LayoutSettingStore.setting.size)"
+          <el-pagination :page-sizes="[10, 20, 30, 40]" small="small" background="true"
+            :default-page-size="Number(layoutSettingStore.setting.size)"
             layout="total, sizes, prev, pager, next, jumper" :total="dataList.total" @size-change="handleSizeChange"
             @current-change="handleCurrentChange" />
         </div>
       </template>
     </el-card>
-   <!--加载动画-->
-   <div class="table-data-loading" v-else>
+    <!--加载动画-->
+    <div class="table-data-loading" v-else>
       <Loading />
     </div>
   </div>
@@ -162,31 +163,25 @@ import useOperationLogStore from '@/store/modules/operationLog'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 
 const operationLogStore = useOperationLogStore()
-const LayoutSettingStore = useLayoutSettingStore()
+const layoutSettingStore = useLayoutSettingStore()
 
 //获取当前组件实例
 const instance: ComponentInternalInstance | null = getCurrentInstance();
 
 onMounted(() => {
-  LoadingStatus.value=LayoutSettingStore.setting.dataLoading
-  operationLogStore.tableLoading = true
   //手动触发更新页数的逻辑
-  handleSizeChange(Number(LayoutSettingStore.setting.size))
+  handleSizeChange(Number(layoutSettingStore.setting.size))
   //进入页面初始化的数据
   searchList(operationLogStore.searchform)
   //加载可选操作人员名称选项
   loadOperNameSelect()
   //加载可选操作模块选项
   loadTitleSelect()
-  setTimeout(() => {
-    operationLogStore.tableLoading = false
-  },500)
 })
 //表单对象
 const searchFormRef = ref<FormInstance>()
 //更多按钮状态
 const more = ref(false)
-const LoadingStatus = ref(false)
 //表格数据
 const dataList = reactive({
   list: [],
@@ -195,9 +190,13 @@ const dataList = reactive({
   size: 10,
 })
 
-
+//页面数据加载的状态
+const loadingStatus = computed(() => {
+  return !operationLogStore.tableLoading || !layoutSettingStore.setting.dataLoading;
+});
 //根据搜索条件进行搜索
 const searchList = (searchData: any) => {
+  operationLogStore.tableLoading = true
   searchData.startRequestTime = searchData.searchTime[0]
   searchData.endRequestTime = searchData.searchTime[1]
   operationLogStore
@@ -209,6 +208,9 @@ const searchList = (searchData: any) => {
     .catch((error) => {
       ElMessage.error({ message: error })
     })
+  setTimeout(() => {
+    operationLogStore.tableLoading = false
+  }, 500)
 }
 
 //页码变更处理方法
@@ -290,8 +292,8 @@ const loadTitleSelect = () => {
     })
 }
 
-const changeTitle =()=>{
-  const title =operationLogStore.searchform.title
+const changeTitle = () => {
+  const title = operationLogStore.searchform.title
   operationLogStore
     .getBusinessNameOptionSelect(title)
     .then((resp) => {
@@ -314,14 +316,11 @@ export default {
 }
 </script>
 <style scoped>
-/* 这里可以添加组件内部特有的样式 */
-.searchForm .el-form-item {
-  margin-bottom: v-bind(more ? '18px' : '0px') !important;
-}
-
 .ellipsis-text {
-  display: inline-block; /* 确保可以设置宽度等样式，对于行内元素生效 */
-  max-width: 100px; /* 根据需要设置最大宽度，超出此宽度的文本将被省略 */
+  display: inline-block;
+  /* 确保可以设置宽度等样式，对于行内元素生效 */
+  max-width: 100px;
+  /* 根据需要设置最大宽度，超出此宽度的文本将被省略 */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

@@ -12,8 +12,8 @@
         @click="tabClick(item)"
       >
       <div style="display: flex; align-items: center;" class="jcm-breadcurmb">
-        <div><svg-icon :name="item.meta.icon" :color="LayoutSettingStore.getThemeInvert"/></div>
-        <div><span style="margin: 0px 5px;" :style="{color: LayoutSettingStore.getThemeInvert}" >{{ item.meta.title }}</span></div>
+        <div><svg-icon :name="item.meta.icon" :color="layoutSettingStore.getThemeInvert"/></div>
+        <div><span style="margin: 0px 5px;" :style="{color: layoutSettingStore.getThemeInvert}" >{{ item.meta.title }}</span></div>
       </div>
       </el-breadcrumb-item>
     </transition-group>
@@ -31,7 +31,7 @@ import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 const route = useRoute()
 const $router = useRouter()
 //获取layout配置相关的仓库
-const LayoutSettingStore = useLayoutSettingStore()
+const layoutSettingStore = useLayoutSettingStore()
 
 const TabsStore = useTabsStore()
 

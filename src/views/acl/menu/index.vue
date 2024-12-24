@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="animate__animated animate__fadeIn">
 
     <!--权限列表条件卡片-->
     <el-card>
@@ -17,34 +17,34 @@
           </el-form-item>
 
           <div style="margin-left: auto" class="card-search-end">
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="menuAddFromModal?.open(undefined)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="menuAddFromModal?.open(undefined)">
               <template #icon>
                 <svg-icon name="加号" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="searchList(menuStore.searchform)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList(menuStore.searchform)">
               <template #icon>
                 <svg-icon name="搜索" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="resetSearchForm(searchFormRef)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="resetSearchForm(searchFormRef)">
               <template #icon>
                 <svg-icon name="擦除" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="expandHandle"
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="expandHandle"
               v-show="menuStore.expandStatus">
               <template #icon>
                 <svg-icon name="收起" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="expandHandle"
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="expandHandle"
               v-show="!menuStore.expandStatus">
               <template #icon>
                 <svg-icon name="展开" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="refreshCacheMenu()">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="refreshCacheMenu()">
               <template #icon>
                 <svg-icon name="刷新" />
               </template>
@@ -55,24 +55,24 @@
     </el-card>
     <!-- 权限列表卡片 -->
     <el-card class="card-table-style" v-if="!menuStore.tableLoading||!LoadingStatus">
-      <el-table :data="menuStore.dataList" table-layout="auto" row-key="menuId"
-        :default-expand-all="menuStore.expandStatus" :default-sort="{ prop: 'sort', order: 'ascending' }"
+      <el-table :data="menuStore.dataList" table-layout="auto" row-key="menuId"  
+        :default-expand-all="menuStore.expandStatus" :default-sort="{ prop: 'sort', order: 'ascending' }"  :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
         v-if="menuStore.refreshTable">
-        <el-table-column prop="name" label="菜单名称" />
-        <el-table-column prop="icon" label="图标" align="center">
+        <el-table-column prop="name" label="菜单名称"   />
+        <el-table-column prop="icon" label="图标" width="60px" align="center">
           <template #default="scope">
             <svg-icon :name="scope.row.icon" :color="iconColor" />
           </template>
         </el-table-column>
-        <el-table-column prop="type" label="类型" align="center">
+        <el-table-column prop="type" label="类型" width="25px" align="center">
           <template #default="scope">
             <el-tag size="small">
               {{ getStatusByType(scope.row.type) }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="sort" label="排序" align="center" />
-        <el-table-column prop="status" label="状态" align="center">
+        <el-table-column prop="sort" label="排序" width="100px" align="center" />
+        <el-table-column prop="status" label="状态" width="150px" align="center">
           <template #default="scope">
             <!--状态-->
             <el-popconfirm width="200" icon-color="#626AEF"
@@ -130,20 +130,20 @@
             </el-popconfirm>
           </template>
         </el-table-column>
-        <el-table-column prop="permission" label="权限标识" align="center">
+        <el-table-column prop="permission" label="权限标识"  width="230px" align="center" show-overflow-tooltip>
           <template #default="scope">
             <span @click="instance?.proxy?.$copyText(scope.row.permission)" class="copy-span">{{
               scope.row.permission }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="component" label="组件名称" align="center">
+        <el-table-column prop="component" label="组件名称" width="100px" align="center" show-overflow-tooltip>
           <template #default="scope">
             <span @click="instance?.proxy?.$copyText(scope.row.component)" class="copy-span">{{
               scope.row.component }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="link" label="链接路径" align="center" />
-        <el-table-column prop="remark" label="操作" align="center">
+        <el-table-column prop="link" label="链接路径" width="240px" align="center" show-overflow-tooltip/>
+        <el-table-column prop="remark" label="操作" width="250px" align="center">
           <template #default="scope">
             <el-button size="small" type="primary" @click="menuAddFromModal?.open(scope.row)" text
               v-show="scope.row.type != 2">
@@ -189,11 +189,11 @@ import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 //获取当前组件实例
 const instance: ComponentInternalInstance | null = getCurrentInstance();
 const menuStore = useMenuStore()
-const LayoutSettingStore = useLayoutSettingStore()
+const layoutSettingStore = useLayoutSettingStore()
 const LoadingStatus = ref(false) 
 
 onMounted(() => {
-  LoadingStatus.value=LayoutSettingStore.setting.dataLoading
+  LoadingStatus.value=layoutSettingStore.setting.dataLoading
   menuStore.tableLoading = true
 
   //进入页面初始化的数据
@@ -213,8 +213,6 @@ const menuUpdateFromModal = ref<FromModal>()
 
 //根据搜索条件进行搜索
 const searchList = (searchData: any) => {
-  menuStore.expandStatus = true
-
   menuStore
     .menuList(searchData)
     .then((resp: any) => {
@@ -240,7 +238,7 @@ const deleteItemClick = (item: any) => {
 }
 
 //图标根据主题模式动态切换颜色
-const iconColor = computed(() => LayoutSettingStore.setting.theme==0 ? 'black' : 'white');
+const iconColor = computed(() => layoutSettingStore.setting.theme==0 ? 'black' : 'white');
 
 //点击标签更改状态中的启用/禁用
 const tagUpdateStatusButtonClick = (item: any) => {
@@ -321,7 +319,4 @@ const refreshCacheMenu = () => {
   margin-left: 5px;
 }
 
-* {
-  font-weight: 900;
-}
 </style>

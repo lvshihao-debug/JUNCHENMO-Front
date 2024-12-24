@@ -1,26 +1,11 @@
 <template>
-  <el-button title="刷新"  class="iconBtn turn"  @click="updateRefsh">
+  <el-button title="刷新"  class="iconBtn"  @click="updateRefsh">
     <svg-icon  name="顶部刷新"  />
   </el-button>
   <el-button title="全屏" class="iconBtn"   @click="fullScreen">
     <svg-icon  name="全屏"  />
   </el-button>
-  <el-button
-    v-show="LayoutSettingStore.getThemeStatus"
-    class="iconBtn"
-    title="白天模式"
-    @click="changeMoon"
-  >
-  <svg-icon  name="白天"  />
-</el-button>
-  <el-button
-    v-show="!LayoutSettingStore.getThemeStatus"
-    class="iconBtn"
-    title="夜晚模式"
-    @click="changeSunny"
-  >
-  <svg-icon  name="夜晚"  />
-</el-button>
+
   <el-button  class="iconBtn" title="设置"  @click="settingDrawer">
     <svg-icon  name="设置"  />
   </el-button>
@@ -55,38 +40,17 @@ import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 //获取用户相关的小仓库
 import useUserStore from '@/store/modules/user'
 
-let LayoutSettingStore = useLayoutSettingStore()
+let layoutSettingStore = useLayoutSettingStore()
 const $router = useRouter()
 let userStore = useUserStore()
 //设置头像的大小
 let avatarSize = ref(30)
 
-onMounted(() => {
-  //初始化切换主题
-  if(LayoutSettingStore.getThemeStatus){
-     changeMoon()
-  }else{
-     changeSunny()
-  }
-})
 // 刷新按钮点击回调
 const updateRefsh = () => {
-  console.log('刷新')
-  LayoutSettingStore.refsh = !LayoutSettingStore.refsh
-}
-//切换夜晚模式
-const changeMoon = () => {
-  let html = document.documentElement
-  LayoutSettingStore.setting.theme = 1
-  html.className = 'dark'
+  layoutSettingStore.refsh = !layoutSettingStore.refsh
 }
 
-//切换白天模式
-const changeSunny = () => {
-  let html = document.documentElement
-  LayoutSettingStore.setting.theme = 0
-  html.className = ''
-}
 //全屏按钮点击的回调
 const fullScreen = () => {
   // DOM对象的一个属性:可以用来判断当前是不是全屏模式[全屏:true,不是全屏:false]
@@ -102,7 +66,7 @@ const fullScreen = () => {
 }
 //设置按钮点击的回调
 const settingDrawer = () => {
-  LayoutSettingStore.settingDrawer = true
+  layoutSettingStore.settingDrawer = true
 }
 //退出登录按钮点击的回调
 const userLogout = async () => {

@@ -33,7 +33,7 @@
             <el-input v-model="param.parameter" autocomplete="off" placeholder="参数名称" style="width: 60%;" />
 
             <el-button size="small" @click="deleteExtraClick(index)" text style="width: 10%;height: 100%;">
-              <svg-icon name="减号" width="18px" height="18px" :color="LayoutSettingStore.theme ? 'black' : 'white'" />
+              <svg-icon name="减号" width="18px" height="18px" :color="layoutSettingStore.theme ? 'black' : 'white'" />
             </el-button>
 
           </el-form-item>
@@ -45,7 +45,7 @@
           </div>
           <div class="button-wrapper">
             <el-button size="small" type="info" @click="addExtraClick(null,null)" style="width: 100%;" text>
-              <svg-icon name="加号" width="18px" height="18px" :color="LayoutSettingStore.theme ? 'black' : 'white'" />
+              <svg-icon name="加号" width="18px" height="18px" :color="layoutSettingStore.theme ? 'black' : 'white'" />
             </el-button>
           </div>
         </div>
@@ -69,7 +69,7 @@ import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 import useDictTypeStore from '@/store/modules/dictType'
 import { formRules } from '../types/form.rules'
 //仓库
-const LayoutSettingStore = useLayoutSettingStore()
+const layoutSettingStore = useLayoutSettingStore()
 const dictTypeStore = useDictTypeStore()
 //获取当前组件实例
 const instance: ComponentInternalInstance | null = getCurrentInstance();

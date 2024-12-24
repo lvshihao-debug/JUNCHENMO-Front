@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="animate__animated animate__fadeIn">
     <el-card>
       <el-form :inline="true" :model="userStore.searchform" class="searchForm" label-position="right" label-width="auto"
         ref="searchFormRef">
@@ -23,22 +23,22 @@
             <el-input v-model="userStore.searchform.email" />
           </el-form-item>
           <div style="margin-left: auto" class="card-search-end">
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="resetSearchForm(searchFormRef)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="resetSearchForm(searchFormRef)">
               <template #icon>
                 <svg-icon name="擦除" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="searchList(userStore.searchform)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList(userStore.searchform)">
               <template #icon>
                 <svg-icon name="搜索" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme"  @click="more = true" v-show="!more">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="more = true" v-show="!more">
               <template #icon>
                 <svg-icon name="展开" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="more = false" v-show="more">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="more = false" v-show="more">
               <template #icon>
                 <svg-icon name="收起" />
               </template>
@@ -47,15 +47,15 @@
         </el-row>
       </el-form>
     </el-card>
-    
-    <el-card class="card-table-style" v-if="!userStore.tableLoading||!LoadingStatus">
+
+    <el-card class="card-table-style" v-if="loadingStatus">
       <template #header>
         <div class="card-header-style">
           <div class="card-header">
             <span>用户列表</span>
           </div>
           <div class="card-end">
-            <JcmButton :buttonBgColor="LayoutSettingStore.getTheme" @click="userAddFromModal?.open()">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="userAddFromModal?.open()">
               <template #icon>
                 <svg-icon name="加号" />
               </template>
@@ -67,8 +67,9 @@
         <el-table-column prop="userId" label="ID" align="center" />
         <el-table-column prop="username" label="用户名" align="center">
           <template #default="scope">
-            <span @click="instance?.proxy?.$copyText(scope.row.username)" class="copy-span">{{
-              scope.row.username }}</span>
+            <span @click="instance?.proxy?.$copyText(scope.row.username)" class="copy-span">
+              {{ scope.row.username }}
+            </span>
           </template>
         </el-table-column>
         <el-table-column prop="nickname" label="昵称" align="center" />
@@ -77,14 +78,10 @@
         <el-table-column prop="status" label="状态" align="center">
           <template #default="scope">
             <template v-if="scope.row.status === 0">
-              <el-tag checked size="small">
-                启用
-              </el-tag>
+              <el-tag checked size="small">启用</el-tag>
             </template>
             <template v-if="scope.row.status === 1">
-              <el-tag checked size="small" color="#393e46">
-                停用
-              </el-tag>
+              <el-tag checked size="small" color="#393e46">停用</el-tag>
             </template>
           </template>
         </el-table-column>
@@ -124,8 +121,9 @@
         <div class="pagination-style">
           <!--分页-->
           <el-pagination :page-sizes="[10, 20, 30, 40]" small="small" background="true"
-            :default-page-size="Number(LayoutSettingStore.setting.size)" layout="total, sizes, prev, pager, next, jumper"
-            :total="dataList.total"  @size-change="handleSizeChange"  @current-change="handleCurrentChange"/>
+            :default-page-size="Number(layoutSettingStore.setting.size)"
+            layout="total, sizes, prev, pager, next, jumper" :total="dataList.total" @size-change="handleSizeChange"
+            @current-change="handleCurrentChange" />
         </div>
       </template>
     </el-card>
@@ -159,22 +157,17 @@ import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 import { isAdminById } from '@/utils/permission'
 
 //获取当前组件实例
-const instance: ComponentInternalInstance | null = getCurrentInstance();
+const instance: ComponentInternalInstance | null = getCurrentInstance()
 const userStore = useUserStore()
-const LayoutSettingStore = useLayoutSettingStore()
+const layoutSettingStore = useLayoutSettingStore()
 
 onMounted(() => {
   //清空搜索条件
   userStore.searchform = <User>{}
-  LoadingStatus.value=LayoutSettingStore.setting.dataLoading
-  userStore.tableLoading = true
   //手动触发更新页数的逻辑
-  handleSizeChange(Number(LayoutSettingStore.setting.size))
+  handleSizeChange(Number(layoutSettingStore.setting.size))
   //进入页面初始化的数据
   searchList(userStore.searchform)
-  setTimeout(() => {
-    userStore.tableLoading = false
-  },500)
 })
 
 //表单对象
@@ -186,18 +179,18 @@ const userRestPasswordFromModal = ref<FromModal>()
 const userAuthRolesFromModal = ref<FromModal>()
 //更多按钮状态
 const more = ref(false)
-const LoadingStatus = ref(false) 
 
 //表格数据,定义响应式的数据列表，初始为空
 const dataList = reactive({
   list: [],
   total: 0,
   page: 1,
-  size: 10
+  size: 10,
 })
 
 //根据搜索条件进行搜索
 const searchList = (searchData: any) => {
+  userStore.tableLoading = true
   userStore
     .userList(searchData, dataList.page, dataList.size)
     .then((resp) => {
@@ -207,8 +200,14 @@ const searchList = (searchData: any) => {
     .catch((error) => {
       ElMessage.error({ message: error })
     })
+  setTimeout(() => {
+    userStore.tableLoading = false
+  }, 500)
 }
-
+//页面数据加载的状态
+const loadingStatus = computed(() => {
+  return !userStore.tableLoading || !layoutSettingStore.setting.dataLoading;
+});
 //页码变更触发的方法
 const handleCurrentChange = (currentPage: number) => {
   dataList.page = currentPage
@@ -229,7 +228,7 @@ const deleteItem = (item: any) => {
       ElMessage.success({ message: '删除成功' })
     })
     .catch((error) => {
-      ElMessage.error({ message: "失败信息: " + error })
+      ElMessage.error({ message: '失败信息: ' + error })
     })
 }
 //停用用户触发的事件
@@ -244,7 +243,7 @@ const disableItem = (item: any) => {
         ElMessage.success({ message: '停用成功' })
       })
       .catch((error) => {
-        ElMessage.error({ message: "失败信息: " + error })
+        ElMessage.error({ message: '失败信息: ' + error })
       })
   }
 }
@@ -267,10 +266,5 @@ export default {
 }
 </script>
 <style scoped>
-/* 这里可以添加组件内部特有的样式 */
-.searchForm .el-form-item {
-  margin-bottom: v-bind(more ? '18px' : '0px') !important;
-}
-
 
 </style>

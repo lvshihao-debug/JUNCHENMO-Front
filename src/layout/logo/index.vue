@@ -1,13 +1,13 @@
 <template>
-  <div class="logo logo-fold noselect" v-show="!LayoutSettingStore.fold">
+  <div class="logo logo-fold noselect" v-show="!layoutSettingStore.fold">
     <div class="animate__animated animate__bounceIn">
-      <svg-icon name="logo"  width="20px" height="20px" :color="LayoutSettingStore.getThemeInvert"/>
+      <svg-icon name="logo"  width="20px" height="20px" :color="layoutSettingStore.getThemeInvert"/>
       <span >{{ setting.title }}</span>
     </div>
   </div>
-  <div class="logo logo-unfold noselect"  v-show="LayoutSettingStore.fold" >
+  <div class="logo logo-unfold noselect"  v-show="layoutSettingStore.fold" >
     <div>
-      <svg-icon name="logo"  width="20px" height="20px" :color="LayoutSettingStore.getThemeInvert"/>
+      <svg-icon name="logo"  width="20px" height="20px" :color="layoutSettingStore.getThemeInvert"/>
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@
 <script setup lang="ts">
 //获取设置相关的小仓库
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
-let LayoutSettingStore = useLayoutSettingStore()
+let layoutSettingStore = useLayoutSettingStore()
 //引入设置标题与logog配置文件
 import setting from '@/setting'
 </script>
