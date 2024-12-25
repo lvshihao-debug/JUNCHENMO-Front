@@ -185,19 +185,22 @@ import MenuUpdateFromModal from './components/menu-update-from-modal.vue'
 //仓库
 import useMenuStore from '@/store/modules/menu'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
+import useDictDataStore from '@/store/modules/dictData'
 
 //获取当前组件实例
 const instance: ComponentInternalInstance | null = getCurrentInstance();
 const menuStore = useMenuStore()
 const layoutSettingStore = useLayoutSettingStore()
+const dictDataStore = useDictDataStore()
 const LoadingStatus = ref(false) 
 
 onMounted(() => {
   LoadingStatus.value=layoutSettingStore.setting.dataLoading
   menuStore.tableLoading = true
-
   //进入页面初始化的数据
   searchList(menuStore.searchform)
+  //初始化字典数据
+  loadDictData()
   setTimeout(() => {
   menuStore.tableLoading = false
   },500)
@@ -299,6 +302,19 @@ const expandHandle = async () => {
   menuStore.expandStatus = !menuStore.expandStatus;
   await nextTick()
   menuStore.refreshTable = true
+}
+
+//加载所需要的字典数据
+const loadDictData = () => {
+  const dictNames = ['menuType'];
+  dictDataStore
+    .dictDataInfoList(dictNames)
+    .then((resp) => {
+      menuStore.dictData = resp.data
+    })
+    .catch((error) => {
+      ElMessage.error({ message: error })
+    })
 }
 
 //刷新缓存

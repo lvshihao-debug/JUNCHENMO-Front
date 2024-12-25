@@ -21,6 +21,7 @@ const useMenuStore = defineStore('Menu', {
       expandStatus: false, //表格展开状态
       refreshTable: true, //重新渲染表格状态
       tableLoading: true, //表格数据加载loading
+      dictData: [], //字典数据数组
       searchform: {
         name: '',
         status: '',

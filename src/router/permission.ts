@@ -29,7 +29,6 @@ router.beforeEach((to, from, next) => {
   //存在token
   if (token) {
     document.title = `${setting.title} - ${to.meta.title}`
-
     //访问登录，就给他转到主页
     if (to.path === '/login') {
       next('/')
@@ -55,16 +54,18 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
+    //没有Token在白名单内直接通过
     if (whiteList.indexOf(to.path) !== -1) {
       next()
     } else {
       next(`/login?redirect=${to.fullPath}`)
+      nprogress.done()
     }
   }
 })
 
 //全局后置守卫
-router.afterEach((to: any, from: any) => {
+router.afterEach(() => {
   nprogress.done()
 })
 

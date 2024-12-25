@@ -13,8 +13,8 @@
 
     </div>
   </div>
-    <!--系统主题色-->
-    <div>
+  <!--系统主题色-->
+  <div>
     <div>
       <el-divider>系统主题色</el-divider>
     </div>
@@ -23,7 +23,7 @@
         <div :class="['dot', { 'active': selectedColor === color }]" :style="{ backgroundColor: color }">
           <template v-if="selectedColor === color">
             <div class="icon-container" style="background-color: transparent;">
-              <svg-icon name="对号"  width="12px" height="20px" />
+              <svg-icon name="对号" width="12px" height="20px" />
             </div>
           </template>
         </div>
@@ -142,14 +142,15 @@
   </div>
 
   <!--保存-->
-  <div  class="save" >
-      <div><svg-icon name="保存" :color="layoutSettingStore.getThemeInvert"  width="45px" height="45px"  @click="saveSetting()"/></div>
+  <div class="save">
+    <div><svg-icon name="保存" :color="layoutSettingStore.getThemeInvert" width="45px" height="45px"
+        @click="saveSetting()" /></div>
   </div>
 </template>
 
 <script setup lang="ts">
 //获取设置相关的小仓库
-import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
+import uselayoutSettingStore from '@/store/modules/layout/layoutSetting'
 
 onMounted(() => {
   showDot(layoutSettingStore.setting.theme)
@@ -157,20 +158,10 @@ onMounted(() => {
 })
 
 //获取layout配置相关的仓库
-const layoutSettingStore = useLayoutSettingStore()
+const layoutSettingStore = uselayoutSettingStore()
 const colors = ref(['#FF80C8', '#6F68F6', '#dc440d', '#4a18ee', '#ee1871', '#2174FF']);
 const selectedColor = ref('');
-// 使用解构赋值提取出需要监听的属性
-const {
-  setting: {
-    weakColor,
-    grayscale,
-    blur,
-    contrast,
-    hueRotate,
-    saturate
-  }
-} = reactive(layoutSettingStore);
+
 
 // 定义layoutIcons数组，存放各个LayoutIcon组件的配置信息
 const layoutIcons = ref([
@@ -198,8 +189,7 @@ const layoutIcons = ref([
 ]);
 
 //保存设置信息
-const saveSetting=() => {
-  console.log(layoutSettingStore.setting)
+const saveSetting = () => {
   layoutSettingStore
     .upUserSettinInfo(layoutSettingStore.setting)
     .then((resp) => {
@@ -216,7 +206,7 @@ const layoutIconRefs = reactive([]);
 
 //主题模式的变化
 watch(() => layoutSettingStore.setting.theme, (v) => {
-    showDot(v)
+  showDot(v)
 });
 
 // 点击LayoutIcon时触发的函数，用于切换对应小圆点的显示状态以及执行其他相关逻辑
@@ -234,16 +224,16 @@ const showDot = (index: number) => {
     html.className = 'dark';
   } else {
     const themeMedia = window.matchMedia("(prefers-color-scheme: light)");
-    changeTheme(themeMedia,html);
+    changeTheme(themeMedia, html);
   }
 };
 
-const changeTheme = (themeMedia:any,html:any) => {
+const changeTheme = (themeMedia: any, html: any) => {
   if (themeMedia.matches) {
-      html.className = '';
-    } else {
-      html.className = 'dark';
-    }
+    html.className = '';
+  } else {
+    html.className = 'dark';
+  }
 }
 
 //设置主题色
@@ -253,30 +243,35 @@ const selectColor = (color: string) => {
 };
 
 
-
-// 使用watchEffect监听属性变化并执行相应方法
-watchEffect(() => {
-  
-  if (weakColor) {
-    layoutSettingStore.setWeakColor();
-  }
-  if (grayscale) {
-    layoutSettingStore.setGrayscale();
-  }
-  if (blur) {
-    layoutSettingStore.setBlur();
-  }
-  if (contrast) {
-    layoutSettingStore.setContrast();
-  }
-  if (hueRotate) {
-    layoutSettingStore.setHueRotate();
-  }
-  if (saturate) {
-    layoutSettingStore.setSaturate();
-  }
+// 监听色弱数据变更
+watch(() => layoutSettingStore.setting.weakColor, (v) => {
+  layoutSettingStore.setWeakColor();
 });
 
+// 监听黑白模式数据变更
+watch(() => layoutSettingStore.setting.grayscale, (v) => {
+  layoutSettingStore.setGrayscale();
+});
+
+// 监听模糊模式数据变更
+watch(() => layoutSettingStore.setting.blur, (v) => {
+  layoutSettingStore.setBlur();
+});
+
+// 监听对比度数据变更
+watch(() => layoutSettingStore.setting.contrast, (v) => {
+  layoutSettingStore.setContrast();
+});
+
+// 监听色相旋转数据变更
+watch(() => layoutSettingStore.setting.hueRotate, (v) => {
+  layoutSettingStore.setHueRotate();
+});
+
+// 监听色饱和度数据变更
+watch(() => layoutSettingStore.setting.saturate, (v) => {
+  layoutSettingStore.setSaturate();
+});
 
 </script>
 
@@ -286,13 +281,14 @@ export default {
 }
 </script>
 <style scoped>
-.save{
+.save {
   display: flex;
   justify-content: center;
   margin-top: 10px;
   cursor: pointer;
   box-shadow: 0px 4px 20px #00000008;
 }
+
 .setting-context {
   margin-left: 24px
 }

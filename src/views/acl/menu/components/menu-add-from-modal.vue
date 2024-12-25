@@ -16,9 +16,9 @@
             </el-form-item>
             <el-form-item label="菜单类型" prop="type" required>
                 <el-radio-group v-model="menuStore.commonform.type" size="small">
-                    <el-radio-button label="目录" value="0" />
-                    <el-radio-button label="菜单" value="1" />
-                    <el-radio-button label="按钮" value="2" />
+                  <template v-for="item in loadDictDataByName('menuType')">
+                    <el-radio-button :label="item.label" :value="item.value" />
+                  </template>
                 </el-radio-group>
             </el-form-item>
             <el-form-item v-show="!featureStatus" label="菜单图标" prop="icon">
@@ -78,7 +78,6 @@ let treeData = ref([]) as any;
 //菜单选项显示隐藏状态
 const catalogueStatus = ref(false)
 const featureStatus = ref(false)
-
 
 // 打开modal框
 const open = (item: any) => {
@@ -140,6 +139,12 @@ watch(() => menuStore.commonform.type, (newVal) => {
     featureStatus.value = (newVal== 2)
 });
 
+//根据名称加载字典数据
+const loadDictDataByName = (name:string) => {
+ return menuStore.dictData.filter((item: any) => item.name === name)
+}
+
+
 /**
  *  commonform表单重置
  *  将commonform的parentId,type,visible,keepAlive
@@ -155,9 +160,7 @@ const clearCommonFrom = ()=>{
       menuStore.commonform.parentId = "0";
     }else if(key=="type"){
       menuStore.commonform.type = 0;
-    }else if(key=="visible"){
-      menuStore.commonform.visible = true;
-    }else if(key=="keepAlive"){
+    }else if(key=="keepAlive"||"visible"){
       menuStore.commonform.keepAlive = false;
     }else{
       menuStore.commonform[key] = '';

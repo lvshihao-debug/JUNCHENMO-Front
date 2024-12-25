@@ -26,9 +26,11 @@ const useOperationLogStore = defineStore('operationLog', {
         businessName: '',
         status: '',
         requestTime: '',
-        searchTime:[],
-        startRequestTime: '',
-        endRequestTime: '',
+        requestTimeRange:'',
+        params:{
+          requestTimeBeginTime:'',
+          requestTimeEndTime:'',
+        }
       },
     }
   },

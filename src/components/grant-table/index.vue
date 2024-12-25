@@ -66,7 +66,6 @@ const init = () => {
   .menuList({name: '',status: ''})
   .then((resp: any) => {
       menuData.value = resp
-      console.log(menuData.value)
   })
   .catch((error) => {
       ElMessage.error({ message: error })

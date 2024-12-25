@@ -1,44 +1,77 @@
 <template>
   <el-watermark :content="useUserStore.user.username" :font="font">
-    <div class="layout_container" :class="themeClass">
+    <div class="layout_container" :class="{
+      suuny: LayoutSettingStore.getThemeStatus,
+      moon:  !LayoutSettingStore.getThemeStatus,
+    }">
 
       <!-- 偏好设置 -->
       <Drawer></Drawer>
       <!-- 左侧菜单 -->
-      <div class="layout_slider animate__animated animate__bounceInLeft" :class="themeClass, menuFoldClass"
-        v-show="layoutSettingStore.setting.menu">
+      <div class="layout_slider animate__animated animate__bounceInLeft" :class="{
+        suuny: LayoutSettingStore.getThemeStatus,
+        moon:  !LayoutSettingStore.getThemeStatus,
+        fold: LayoutSettingStore.fold
+      }" v-show="LayoutSettingStore.setting.menu">
         <!-- logo -->
         <Logo class="logo"></Logo>
         <!-- 展示菜单 -->
         <el-scrollbar class="scrollbar">
           <!-- 菜单组件 -->
-          <el-menu :collapse="layoutSettingStore.fold" :default-active="$route.path" :collapse-transition="false"
+          <el-menu :collapse="LayoutSettingStore.fold" :default-active="$route.path" :collapse-transition="false" 
             router>
             <Menu :menuList="usePermissionStore.sidebarRouters"></Menu>
           </el-menu>
         </el-scrollbar>
         <el-button class="foldwithExpand iconBtn" @click="changeIcon">
-          <svg-icon :name="layoutSettingStore.fold ? '折叠-展开' : '折叠-收起'"
-            :color="layoutSettingStore.setting.theme == 0 ? 'black' : 'white'" />
+          <svg-icon :name="LayoutSettingStore.fold ? '折叠-展开' : '折叠-收起'"
+            :color="LayoutSettingStore.setting.theme==0 ? 'black' : 'white'" />
         </el-button>
       </div>
       <!-- 顶部导航 -->
-      <div class="layout_tabbar" :class="themeClass, menuClass, navigationBarClass, menuFoldClass">
+      <div class="layout_tabbar" :class="{
+        showNavigationBar: LayoutSettingStore.setting.navigationBar,
+        hidenNavigationBar: !LayoutSettingStore.setting.navigationBar,
+        suuny: LayoutSettingStore.getThemeStatus,
+        moon:  !LayoutSettingStore.getThemeStatus,
+        unfold: !LayoutSettingStore.fold,
+        fold: LayoutSettingStore.fold,
+        showMenu: LayoutSettingStore.setting.menu,
+        hidenMenu: !LayoutSettingStore.setting.menu,
+      }">
         <Tabbar></Tabbar>
       </div>
       <!-- 顶部tabs -->
-      <div class="layout_tabs" :class="themeClass, menuClass, navigationBarClass, menuFoldClass"
-        v-show="layoutSettingStore.setting.tabs">
+      <div class="layout_tabs" :class="{
+        showNavigationBar: LayoutSettingStore.setting.navigationBar,
+        hidenNavigationBar: !LayoutSettingStore.setting.navigationBar,
+        suuny: LayoutSettingStore.getThemeStatus,
+        moon:  !LayoutSettingStore.getThemeStatus,
+        fold: LayoutSettingStore.fold,
+        showMenu: LayoutSettingStore.setting.menu,
+        hidenMenu: !LayoutSettingStore.setting.menu,
+      }" v-show="LayoutSettingStore.setting.tabs">
         <Tabs></Tabs>
       </div>
 
       <!-- 内容展示区域 -->
-      <div class="layout_main" :class="themeClass, menuClass, tabsClass, navigationBarClass, menuFoldClass">
+      <div class="layout_main" :class="{
+        showNavigationBar: LayoutSettingStore.setting.navigationBar,
+        hidenNavigationBar: !LayoutSettingStore.setting.navigationBar,
+        suuny: LayoutSettingStore.getThemeStatus,
+        moon:  !LayoutSettingStore.getThemeStatus,
+        fold: LayoutSettingStore.fold,
+        unfold: !LayoutSettingStore.fold,
+        showTabs: LayoutSettingStore.setting.tabs,
+        hidenTabs: !LayoutSettingStore.setting.tabs,
+        showMenu: LayoutSettingStore.setting.menu,
+        hidenMenu: !LayoutSettingStore.setting.menu,
+      }">
 
-        <Breadcrumb class="breadcurmb" v-show="layoutSettingStore.setting.breadcrumb"></Breadcrumb>
-        <Main class="context">
+        <Breadcrumb class="breadcurmb" v-show="LayoutSettingStore.setting.breadcrumb"></Breadcrumb>
+        <Main class="context" >
         </Main>
-        <copyright v-show="layoutSettingStore.setting.copyright"></copyright>
+        <copyright v-show="LayoutSettingStore.setting.copyright"></copyright>
       </div>
 
     </div>
@@ -69,49 +102,29 @@ import PermissionStore from '@/store/modules/menu'
 //获取设置相关的小仓库
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 //获取layout配置相关的仓库
-const layoutSettingStore = useLayoutSettingStore()
+const LayoutSettingStore = useLayoutSettingStore()
 const usePermissionStore = PermissionStore()
 const useUserStore = UserStore();
 const $route = useRoute()
 
-//水印默认字体颜色
+
 const font = reactive({
   color: 'rgba(0, 0, 255, .35)',
 })
 
 // 监听水印开启的数据变更
-watch(() => layoutSettingStore.setting.watermark, (v) => {
+watch(() => LayoutSettingStore.setting.watermark, (v) => {
   font.color = v
-    ? 'rgba(100, 100, 100, .45)'
-    : 'rgba(0, 0, 0, 0)'
-}, {
+      ? 'rgba(100, 100, 100, .45)'
+      : 'rgba(0, 0, 0, 0)'
+},{
   immediate: true,
 });
 
 
-//获取主题样式
-const themeClass = computed(() => {
-  return layoutSettingStore.getThemeStatus ? 'sunny' : 'moon';
-});
-//获取tabs显示隐藏样式
-const tabsClass = computed(() => {
-  return layoutSettingStore.setting.tabs ? 'showTabs' : 'hidenTabs';
-});
-//获取导航栏显示隐藏样式
-const navigationBarClass = computed(() => {
-  return layoutSettingStore.setting.navigationBar ? 'showNavigationBar' : 'hidenNavigationBar';
-});
-//获取侧边导航栏显示隐藏样式
-const menuClass = computed(() => {
-  return layoutSettingStore.setting.menu ? 'showMenu' : 'hidenMenu';
-});
-//获取侧边导航栏则折叠隐藏样式
-const menuFoldClass = computed(() => {
-  return layoutSettingStore.fold ? 'fold' : 'unfold';
-});
 
 const changeIcon = () => {
-  layoutSettingStore.fold = !layoutSettingStore.fold
+  LayoutSettingStore.fold = !LayoutSettingStore.fold
 }
 
 </script>
@@ -121,6 +134,7 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+
 .layout_container {
   position: relative;
   width: 100%;
@@ -138,7 +152,6 @@ export default {
 
   .layout_slider {
     box-shadow: var(--el-box-shadow-light);
-
     //白天
     &.suuny {
       background-color: #ffffff;
@@ -339,4 +352,5 @@ export default {
 
 
 }
+
 </style>

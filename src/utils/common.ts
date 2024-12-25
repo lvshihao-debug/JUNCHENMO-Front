@@ -4,7 +4,7 @@ export const isNotHttp = (url: any) => {
 }
 //判断是http || https开头的字符串
 export const isHttp = (url: any) => {
-  return !(url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1)
+  return (url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1)
 }
 
 //获取当前是早上||中文||下午||晚上的方法

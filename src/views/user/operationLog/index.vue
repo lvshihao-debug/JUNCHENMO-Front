@@ -31,8 +31,8 @@
               <el-option label="失败" value="1" />
             </el-select>
           </el-form-item>
-          <el-form-item v-show="more" prop="searchTime" label="执行时间">
-            <el-date-picker v-model="operationLogStore.searchform.searchTime" type="datetimerange"
+          <el-form-item v-show="more" prop="requestTimeRange" label="执行时间">
+            <el-date-picker v-model="operationLogStore.searchform.requestTimeRange" type="datetimerange"
               value-format="YYYY-MM-DD HH:mm:ss" start-placeholder="开始日期" end-placeholder="结束日期"
               format="YYYY-MM-DD HH:mm:ss" date-format="YYYY/MM/DD ddd" time-format="A hh:mm:ss" />
           </el-form-item>
@@ -197,8 +197,8 @@ const loadingStatus = computed(() => {
 //根据搜索条件进行搜索
 const searchList = (searchData: any) => {
   operationLogStore.tableLoading = true
-  searchData.startRequestTime = searchData.searchTime[0]
-  searchData.endRequestTime = searchData.searchTime[1]
+  searchData.params.requestTimeBeginTime = searchData.requestTimeRange[0]
+  searchData.params.requestTimeEndTime = searchData.requestTimeRange[1]
   operationLogStore
     .operationLogList(searchData, dataList.page, dataList.size)
     .then((resp) => {

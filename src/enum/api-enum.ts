@@ -46,6 +46,11 @@ enum SERVER_MODE_NAME {
    * 用户设置相关接口
    */
   SYSTEM_USER_SETTING = '/system/sys-user-setting',
+
+  /**
+   * 缓存列表管理相关接口
+   */
+    SYSTEM_CACHE_LIST = '/system/cacheList',
 }
 
 export default {

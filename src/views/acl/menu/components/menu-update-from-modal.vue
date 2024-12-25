@@ -16,9 +16,9 @@
             </el-form-item>
             <el-form-item label="菜单类型" prop="type" required>
                 <el-radio-group v-model="menuStore.commonform.type" size="small">
-                    <el-radio-button label="目录" value="0" />
-                    <el-radio-button label="菜单" value="1" />
-                    <el-radio-button label="按钮" value="2" />
+                    <template v-for="item in loadDictDataByName('menuType')">
+                        <el-radio-button :label="item.label" :value="item.value" />
+                    </template>
                 </el-radio-group>
             </el-form-item>
             <el-form-item v-show="!featureStatus" label="菜单图标" prop="icon">
@@ -31,7 +31,8 @@
                 <el-input v-model="menuStore.commonform.link" autocomplete="off" placeholder="组件名称与外联地址二选一" />
             </el-form-item>
             <el-form-item v-show="featureStatus" label="菜单权限" prop="permission">
-                <el-input v-model="menuStore.commonform.permission" autocomplete="off" placeholder="菜单权限 system:user:list" />
+                <el-input v-model="menuStore.commonform.permission" autocomplete="off"
+                    placeholder="菜单权限 system:user:list" />
             </el-form-item>
             <el-form-item label="菜单顺序" prop="sort" required>
                 <el-input-number v-model="menuStore.commonform.sort" :min="0" />
@@ -78,52 +79,56 @@ const catalogueStatus = ref(false)
 const featureStatus = ref(false)
 
 // 打开modal框
-const open =  (item: any)  => {
-  treeData = menuStore.getTreeSelectData(menuStore.dataList)
-  fromOpenStatus.value = true
-  Object.keys(menuStore.commonform).forEach((key) => {
-    if(key=="parentId"){
-        menuStore.commonform.parentId = ""+item[key];
-    }else{
-        menuStore.commonform[key] = item[key];
-    }
-  });
+const open = (item: any) => {
+    treeData = menuStore.getTreeSelectData(menuStore.dataList)
+    fromOpenStatus.value = true
+    Object.keys(menuStore.commonform).forEach((key) => {
+        if (key == "parentId") {
+            menuStore.commonform.parentId = "" + item[key];
+        } else {
+            menuStore.commonform[key] = item[key];
+        }
+    });
 }
 
 //点击修改按钮触发的事件
 const updateInfoItem = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.validate((valid) => {
-    if (valid) {
-      menuStore
-        .upInfoMenu(menuStore.commonform)
-        .then(() => {
-          fromOpenStatus.value = false
-          emit('refreshData');
-          ElMessage.success({ message: '信息修改成功' })
-        })
-        .catch((error) => {
-          ElMessage.error({ message: error })
-        })
-    } else {
-      //弹出数据校验失败的message
-      ElMessage.error({ message: '请将信息填写完整' })
-    }
-  })
+    if (!formEl) return
+    formEl.validate((valid) => {
+        if (valid) {
+            menuStore
+                .upInfoMenu(menuStore.commonform)
+                .then(() => {
+                    fromOpenStatus.value = false
+                    emit('refreshData');
+                    ElMessage.success({ message: '信息修改成功' })
+                })
+                .catch((error) => {
+                    ElMessage.error({ message: error })
+                })
+        } else {
+            //弹出数据校验失败的message
+            ElMessage.error({ message: '请将信息填写完整' })
+        }
+    })
 }
 
 //监听新增弹窗中，菜单的类型，如果是目录，则不展示父菜单选项，默认父菜单id是0
 watch(() => menuStore.commonform.type, (newVal) => {
-    catalogueStatus.value = (newVal== 0)
-    featureStatus.value = (newVal== 2)
+    catalogueStatus.value = (newVal == 0)
+    featureStatus.value = (newVal == 2)
 });
 
 //选择图标子组件调用的方法
-const selected = (val:any) => {menuStore.commonform.icon = val}
+const selected = (val: any) => { menuStore.commonform.icon = val }
+
+//根据名称加载字典数据
+const loadDictDataByName = (name:string) => {
+ return menuStore.dictData.filter((item: any) => item.name === name)
+}
 
 
 defineExpose({ open })
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

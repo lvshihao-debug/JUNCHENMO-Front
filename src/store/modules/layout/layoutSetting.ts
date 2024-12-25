@@ -2,7 +2,6 @@
 import { defineStore } from 'pinia'
 //导入请求
 import { reqUserSettingInfo, reqUpUserSettinInfo } from '@/api/userSetting'
-import setting from '@/setting'
 //创建用户小仓库
 const useSettinggStore = defineStore('SettinggStore', {
   state: () => {

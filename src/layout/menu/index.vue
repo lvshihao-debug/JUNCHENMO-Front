@@ -75,12 +75,9 @@
 <script setup lang="ts">
 //导入Router
 import { useRouter } from 'vue-router'
-//创建Tabs相关的小仓库
-import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 import useTabsStore from '@/store/modules/layout/tabs'
 const $router = useRouter()
 const TabsStore = useTabsStore()
-const layoutSettingStore = useLayoutSettingStore()
 //获取父组件传递过来的全部路由数组
 defineProps(['menuList'])
 //外联点击跳转

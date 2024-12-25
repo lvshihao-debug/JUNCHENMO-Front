@@ -43,7 +43,7 @@
                 <svg-icon name="加号" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="addButtenClick()">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="refreshCache()">
               <template #icon>
                 <svg-icon name="刷新" />
               </template>
@@ -183,7 +183,6 @@ const searchList = (searchData: any) => {
   dictTypeStore
     .dictTypeList(searchData, dataList.page, dataList.size)
     .then((resp) => {
-      console.log(resp.rows)
       dataList.list = resp.rows
       dataList.total = resp.total
     })
@@ -249,9 +248,19 @@ const getInfoButtonClick = (item: any) => {
     .catch((error) => {
       ElMessage.error({ message: error })
     })
-  console.log(extras)
 }
 
+//刷新字典数据列表缓存
+const refreshCache = () => {
+  dictDataStore
+    .dictDataRefreshCache()
+    .then((resp) => {
+      ElMessage.success({ message: '刷新成功' })
+    })
+    .catch((error) => {
+      ElMessage.error({ message: error })
+    })
+}
 //加载所需要的字典数据
 const loadDictData = () => {
   const dictNames = ['extrasDefaultTag', 'extrasDefaultStatus']
@@ -266,7 +275,6 @@ const loadDictData = () => {
 }
 
 const extraStrToJson = (item: any) => {
-  console.log(item)
   if (undefined === item || item === '') return
   return JSON.parse(item)
 }

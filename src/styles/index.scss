@@ -14,12 +14,12 @@
 body {
   /* 设置字体 */
   font-family: 'MyCustomFont';
- 
+
   --el-box-shadow-light: 0px 4px 20px #00000008;
-  
+
   --el-card-border-none: 0px;
   //主色彩
-  --lvshihao-theme-color:#6F68F6;
+  --lvshihao-theme-color: #6f68f6;
   //色彩滤镜
   --lvshihao-theme-filter-grayscale: 0%;
   --lvshihao-theme-filter-invert: 0%;
@@ -27,7 +27,12 @@ body {
   --lvshihao-theme-filter-contrast: 100%;
   --lvshihao-theme-filter-hueRotate: 0deg;
   --lvshihao-theme-filter-saturate: 100%;
-   filter: invert(var(--lvshihao-theme-filter-invert)) grayscale(var(--lvshihao-theme-filter-grayscale)) blur(var(--lvshihao-theme-filter-blur)) contrast(var(--lvshihao-theme-filter-contrast))  hue-rotate(var(--lvshihao-theme-filter-hueRotate)) saturate(var(--lvshihao-theme-filter-saturate));
+  filter: invert(var(--lvshihao-theme-filter-invert))
+    grayscale(var(--lvshihao-theme-filter-grayscale))
+    blur(var(--lvshihao-theme-filter-blur))
+    contrast(var(--lvshihao-theme-filter-contrast))
+    hue-rotate(var(--lvshihao-theme-filter-hueRotate))
+    saturate(var(--lvshihao-theme-filter-saturate));
 }
 * {
   font-weight: 600 !important;
@@ -35,13 +40,13 @@ body {
   --el-color-primary: var(--lvshihao-theme-color);
 }
 
-.searchForm{
-  .el-row{
+.searchForm {
+  .el-row {
     align-items: flex-start;
   }
 }
-.el-avatar{
-  --el-avatar-bg-color:var(--lvshihao-theme-color)
+.el-avatar {
+  --el-avatar-bg-color: var(--lvshihao-theme-color);
 }
 
 //menu的箭头距离文字位置
@@ -71,7 +76,7 @@ body {
 
 /* 设置卡片的样式 */
 .el-card {
-  border-radius: 15px  !important;
+  border-radius: 15px !important;
   .el-card__header {
     border-bottom: 0;
   }
@@ -138,7 +143,7 @@ body {
     }
   }
 }
-.el-sub-menu__title *{
+.el-sub-menu__title * {
   vertical-align: text-top;
 }
 
@@ -147,7 +152,7 @@ body {
   justify-content: flex-start;
   align-items: center;
 }
-.card-search-end{
+.card-search-end {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -157,81 +162,91 @@ body {
 .el-scrollbar__thumb {
   display: none;
   //可设置滚动条颜色
-  background: transparent;//这里我设置成了透明色,可以根据需求添加自己想要的颜色
+  background: transparent; //这里我设置成了透明色,可以根据需求添加自己想要的颜色
 }
 
-
 //表格数据加载动画
-.table-data-loading{
-  display: flex; 
+.table-data-loading {
+  display: flex;
   justify-content: center;
   height: 450px;
   width: 100%;
   align-items: center;
 }
+// 默认主题
+
+
 
 html {
-  
+  // 暗黑主题
+  --vxe-ui-font-color: #000000;
+  --vxe-ui-font-primary-color: #000000;
+  --vxe-ui-table-header-background-color: $lvshihao-menu-suuny-bg;
+  --vxe-ui-layout-background-color: $lvshihao-menu-suuny-bg;
   //面包屑的样式
-  .el-breadcrumb.breadcurmb .el-breadcrumb__item:first-child .jcm-breadcurmb div:nth-child(2) span:hover {
-    color:  var(--lvshihao-theme-color);
+  .el-breadcrumb.breadcurmb
+    .el-breadcrumb__item:first-child
+    .jcm-breadcurmb
+    div:nth-child(2)
+    span:hover {
+    color: var(--lvshihao-theme-color);
   }
   //图标选择器样式
-  .icon-container{
-    background-color:  var(--lvshihao-theme-color);
-    svg{
-      use{
+  .icon-container {
+    background-color: var(--lvshihao-theme-color);
+    svg {
+      use {
         fill: $lvshihao-menu-suuny-item-active-div-svg-color;
       }
     }
   }
 
   //搜索的工具栏样式
-  .card-search-end{
-    .custom-button{
-      svg{
-        use{
-          fill:   var(--lvshihao-theme-color);
+  .card-search-end {
+    .custom-button {
+      svg {
+        use {
+          fill: var(--lvshihao-theme-color);
         }
       }
     }
   }
-  
+
   //表end工具栏的样式
-  .card-end{
-    .custom-button{
-      svg{
-        use{
-          fill:   var(--lvshihao-theme-color);
+  .card-end {
+    .custom-button {
+      svg {
+        use {
+          fill: var(--lvshihao-theme-color);
         }
       }
     }
   }
   //输入框的样式
-  .el-input{
-    .el-input__wrapper.is-focus{
-      box-shadow: 0 0 0 2px   var(--lvshihao-theme-color) inset; 
+  .el-input {
+    .el-input__wrapper.is-focus {
+      box-shadow: 0 0 0 2px var(--lvshihao-theme-color) inset;
     }
   }
   //多选输入框
-  .el-select{
-    .el-select__wrapper.is-focused{
-      box-shadow: 0 0 0 2px   var(--lvshihao-theme-color) inset; 
+  .el-select {
+    .el-select__wrapper.is-focused {
+      box-shadow: 0 0 0 2px var(--lvshihao-theme-color) inset;
     }
   }
-  .el-select-dropdown__item.is-selected{
-    color:  var(--lvshihao-theme-color);
+  .el-select-dropdown__item.is-selected {
+    color: var(--lvshihao-theme-color);
   }
   //switch的样式
-  .el-switch.is-checked .el-switch__core{
-    background-color:   var(--lvshihao-theme-color);
-    border-color:   var(--lvshihao-theme-color);
+  .el-switch.is-checked .el-switch__core {
+    background-color: var(--lvshihao-theme-color);
+    border-color: var(--lvshihao-theme-color);
   }
 
   //标签的文字颜色
   .el-tag.el-tag--primary {
     color: aliceblue !important;
-    background-color:   var(--lvshihao-theme-color);
+    background-color: var(--lvshihao-theme-color);
     border-color: transparent;
   }
   .el-card {
@@ -252,8 +267,8 @@ html {
     .el-menu-item.is-active {
       background-color: $lvshihao-menu-suuny-item-active-bg;
       box-shadow: 10px 10px 5px -4px $lvshihao-menu-suuny-item-active-box-shadow;
-      span{
-        color:  var(--lvshihao-theme-color);
+      span {
+        color: var(--lvshihao-theme-color);
       }
       div {
         margin-right: 10px;
@@ -263,7 +278,7 @@ html {
         align-items: center;
         justify-content: center;
         border-radius: 4px;
-        background-color:   var(--lvshihao-theme-color);
+        background-color: var(--lvshihao-theme-color);
         svg {
           use {
             fill: $lvshihao-menu-suuny-item-active-div-svg-color;
@@ -313,7 +328,7 @@ html {
           align-items: center;
           justify-content: center;
           border-radius: 4px;
-          background-color:   var(--lvshihao-theme-color);
+          background-color: var(--lvshihao-theme-color);
           svg {
             use {
               fill: $lvshihao-menu-suuny-item-active-div-svg-color;
@@ -371,7 +386,7 @@ html {
         }
         //第二层的sub-men被选中的样式
         .el-sub-menu.is-active {
-          margin-top:5px;
+          margin-top: 5px;
           .el-sub-menu__title {
             background-color: $lvshihao-menu-suuny-bg;
             box-shadow: 10px 10px 5px -4px $lvshihao-menu-suuny-item-active-box-shadow;
@@ -383,7 +398,7 @@ html {
               align-items: center;
               justify-content: center;
               border-radius: 4px;
-              background-color:   var(--lvshihao-theme-color);
+              background-color: var(--lvshihao-theme-color);
               svg {
                 use {
                   fill: $lvshihao-menu-suuny-item-active-div-svg-color;
@@ -392,15 +407,15 @@ html {
             }
           }
           .el-menu.el-menu--inline {
-             //第三层的单个标签被选择的样式
+            //第三层的单个标签被选择的样式
             .el-menu-item.is-active {
               margin: 5px 0px;
               background-color: $lvshihao-menu-suuny-bg;
               box-shadow: none;
-              color:   var(--lvshihao-theme-color);
+              color: var(--lvshihao-theme-color);
               svg {
                 use {
-                  fill:   var(--lvshihao-theme-color);
+                  fill: var(--lvshihao-theme-color);
                 }
               }
             }
@@ -411,13 +426,13 @@ html {
           margin: 5px 0px;
           background-color: $lvshihao-menu-suuny-bg;
           box-shadow: none;
-          color:   var(--lvshihao-theme-color);
-          div{
-            margin-right:0px;
+          color: var(--lvshihao-theme-color);
+          div {
+            margin-right: 0px;
             background-color: $lvshihao-menu-suuny-bg;
             svg {
               use {
-                fill:   var(--lvshihao-theme-color);
+                fill: var(--lvshihao-theme-color);
               }
             }
           }
@@ -444,7 +459,7 @@ html {
           }
         }
       }
-       //标签子标签未被选中的时候，但是触摸的样式
+      //标签子标签未被选中的时候，但是触摸的样式
       .el-sub-menu__title:hover {
         background-color: $lvshihao-menu-suuny-item-hover-bg;
       }
@@ -463,89 +478,88 @@ html {
         }
       }
     }
-   
   }
-  .el-menu.el-menu--vertical.el-menu--collapse{
+  .el-menu.el-menu--vertical.el-menu--collapse {
     display: flex;
     flex-direction: column;
     padding: 0px 5px;
     margin: 0px;
-    .el-menu-item{
-      .el-menu-tooltip__trigger.el-tooltip__trigger.el-tooltip__trigger{
+    .el-menu-item {
+      .el-menu-tooltip__trigger.el-tooltip__trigger.el-tooltip__trigger {
         width: 100%;
         height: 100%;
-        div{
-          margin-right:0px
+        div {
+          margin-right: 0px;
         }
       }
     }
-    .el-sub-menu.is-active{
-      .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger{
+    .el-sub-menu.is-active {
+      .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger {
         padding: 0px;
         width: 100%;
         height: 100%;
-        div{
-          margin-right:0px
+        div {
+          margin-right: 0px;
         }
       }
     }
   }
-  .el-popper.is-pure{
+  .el-popper.is-pure {
     border-radius: 8px;
     background: $lvshihao-menu-suuny-bg;
-    .el-menu--vertical.el-menu--popup-container{
+    .el-menu--vertical.el-menu--popup-container {
       border-radius: 8px;
-      .el-menu.el-menu--popup.el-menu--popup-right-start{
+      .el-menu.el-menu--popup.el-menu--popup-right-start {
         border-radius: 8px;
         padding: 5px 10px;
-        .el-menu-item{
-          span{
+        .el-menu-item {
+          span {
             margin-left: 5px;
           }
         }
         /* 菜单偏上一点 */
-        .el-menu-item *{
-          vertical-align:text-top;
+        .el-menu-item * {
+          vertical-align: text-top;
         }
-        .el-menu-item:hover{
+        .el-menu-item:hover {
           border-radius: 8px;
-           background-color: rgb(242, 242, 248);
+          background-color: rgb(242, 242, 248);
         }
         //单菜单被点击状态
-        .el-menu-item.is-active{
+        .el-menu-item.is-active {
           border-radius: 8px;
-          background-color:   var(--lvshihao-theme-color);
+          background-color: var(--lvshihao-theme-color);
           color: $lvshihao-menu-suuny-item-active-div-svg-color;
-          div{
-            svg{
-              use{
+          div {
+            svg {
+              use {
                 fill: $lvshihao-menu-suuny-item-active-div-svg-color;
               }
             }
           }
         }
         //多级菜单
-        .el-sub-menu{
-          .el-sub-menu__title{
-            span{
+        .el-sub-menu {
+          .el-sub-menu__title {
+            span {
               margin-left: 5px;
             }
             margin: 0px;
           }
-          .el-sub-menu__title:hover{
+          .el-sub-menu__title:hover {
             border-radius: 8px;
-             background-color: rgb(242, 242, 248);
+            background-color: rgb(242, 242, 248);
           }
         }
-         //多级菜单被点击
-        .el-sub-menu.is-active{
-          .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger{
-            background-color:   var(--lvshihao-theme-color);
-            color: $lvshihao-menu-suuny-item-active-div-svg-color ;
+        //多级菜单被点击
+        .el-sub-menu.is-active {
+          .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger {
+            background-color: var(--lvshihao-theme-color);
+            color: $lvshihao-menu-suuny-item-active-div-svg-color;
           }
-          div{
-            svg{
-              use{
+          div {
+            svg {
+              use {
                 fill: $lvshihao-menu-suuny-item-active-div-svg-color;
               }
             }
@@ -554,85 +568,85 @@ html {
       }
     }
   }
- 
+
   /* 多选框选择的背景颜色 */
   .el-checkbox__input.is-checked .el-checkbox__inner {
-    background-color:    var(--lvshihao-theme-color);
-    border-color:    var(--lvshihao-theme-color);
+    background-color: var(--lvshihao-theme-color);
+    border-color: var(--lvshihao-theme-color);
   }
-  .el-checkbox__input.is-checked+.el-checkbox__label {
-    color:   var(--lvshihao-theme-color);
+  .el-checkbox__input.is-checked + .el-checkbox__label {
+    color: var(--lvshihao-theme-color);
   }
   .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-    background-color:    var(--lvshihao-theme-color);
-    border-color:   var(--lvshihao-theme-color);
+    background-color: var(--lvshihao-theme-color);
+    border-color: var(--lvshihao-theme-color);
   }
   .el-checkbox__inner:hover {
-    border-color:    var(--lvshihao-theme-color);
+    border-color: var(--lvshihao-theme-color);
   }
 
   /* 单选框选中的背景颜色 */
   .el-radio-button__original-radio:checked + .el-radio-button__inner {
-    border:   var(--lvshihao-theme-color);
-    background-color:    var(--lvshihao-theme-color);
-    box-shadow:none;
+    border: var(--lvshihao-theme-color);
+    background-color: var(--lvshihao-theme-color);
+    box-shadow: none;
   }
-  .el-radio-button__inner:hover{
+  .el-radio-button__inner:hover {
     color: $lvshihao-menu-suuny-item-div-svg-color;
   }
   /*分页选中的背景颜色*/
   .el-pagination.is-background .btn-next.is-active,
   .el-pagination.is-background .btn-prev.is-active,
   .el-pagination.is-background .el-pager li.is-active {
-    background-color:   var(--lvshihao-theme-color);
+    background-color: var(--lvshihao-theme-color);
   }
 
   //tab标签页
   .el-check-tag--primary,
   .el-check-tag.is-checked.el-check-tag--primary,
   .el-check-tag.is-checked.el-check-tag--primary:hover {
-    color:  var(--lvshihao-theme-color);
+    color: var(--lvshihao-theme-color);
     background-color: $lvshihao-menu-suuny-bg;
   }
   .el-check-tag.is-checked.el-check-tag--primary {
-    div{
-      div{
-        svg{
-          use{
-            fill:  var(--lvshihao-theme-color);
+    div {
+      div {
+        svg {
+          use {
+            fill: var(--lvshihao-theme-color);
           }
         }
       }
-      .jcm-tabs-titleWithIcon{
-        svg{
-          use{
-            fill:  var(--lvshihao-theme-color);
+      .jcm-tabs-titleWithIcon {
+        svg {
+          use {
+            fill: var(--lvshihao-theme-color);
           }
         }
       }
     }
   }
-  .el-check-tag.el-check-tag--primary{
-    color:$lvshihao-menu-suuny-item-div-svg-color;
+  .el-check-tag.el-check-tag--primary {
+    color: $lvshihao-menu-suuny-item-div-svg-color;
     background-color: $lvshihao-menu-suuny-bg;
     box-shadow: --el-box-shadow-light;
   }
   .el-check-tag.el-check-tag--primary:hover {
-    color:var(--lvshihao-theme-color);
+    color: var(--lvshihao-theme-color);
     background-color: $lvshihao-menu-suuny-bg;
     box-shadow: --el-box-shadow-light;
-    div{
-      div{
-        svg{
-          use{
-            fill:  var(--lvshihao-theme-color);
+    div {
+      div {
+        svg {
+          use {
+            fill: var(--lvshihao-theme-color);
           }
         }
       }
-      .jcm-tabs-titleWithIcon{
-        svg{
-          use{
-            fill:  var(--lvshihao-theme-color);
+      .jcm-tabs-titleWithIcon {
+        svg {
+          use {
+            fill: var(--lvshihao-theme-color);
           }
         }
       }
@@ -640,112 +654,120 @@ html {
   }
 
   //文字按钮
-  .el-button.is-text{
-    color:  var(--lvshihao-theme-color);
+  .el-button.is-text {
+    color: var(--lvshihao-theme-color);
   }
-    //图标按钮样式
-  .el-button.iconBtn{
-    background-color: $lvshihao-menu-suuny-bg;
+  //图标按钮样式
+  .el-button.iconBtn {
+    background-color: $lvshihao-menu-suuny-item-active-bg;
     border-color: $lvshihao-menu-suuny-item-active-hover-bg;
   }
- 
+
   //图标按钮样式
-  .el-button.iconBtn:hover{
-      background-color: var($lvshihao-menu-suuny-item-active-hover-bg);
-      transform: scale(0.85);
-      transition: all 0.6s ease;
-      svg{
-        use{
-          fill:  var(--lvshihao-theme-color);
-        }
+  .el-button.iconBtn:hover {
+    background-color: var($lvshihao-menu-suuny-item-active-hover-bg);
+    transform: scale(0.85);
+    transition: all 0.6s ease;
+    svg {
+      use {
+        fill: var(--lvshihao-theme-color);
       }
+    }
   }
 
   .el-dialog {
-    filter: drop-shadow(0px 0px 5px   var(--lvshihao-theme-color));
+    filter: drop-shadow(0px 0px 5px var(--lvshihao-theme-color));
   }
   .el-drawer {
-    filter: drop-shadow(5px 0px 30px   var(--lvshihao-theme-color));
+    filter: drop-shadow(5px 0px 30px var(--lvshihao-theme-color));
     opacity: 0.8;
   }
 
   .copy-span:hover {
     text-decoration: underline;
-    color:   var(--lvshihao-theme-color);
+    color: var(--lvshihao-theme-color);
     cursor: pointer;
   }
-  
+
   .height-light-span {
     margin: 0px 2px;
-    color:   var(--lvshihao-theme-color);
+    color: var(--lvshihao-theme-color);
   }
-  
+
   .height-light-span-error {
     color: red;
   }
-
 }
 
 html.dark {
+  // 暗黑主题
+  --vxe-ui-font-color: #ffffff;
+  --vxe-ui-font-primary-color: #ffffff;
+  --vxe-ui-table-header-background-color: $lvshihao-menu-moon-bg;
+  --vxe-ui-layout-background-color: $lvshihao-menu-moon-bg;
   //面包屑的样式
-  .el-breadcrumb.breadcurmb .el-breadcrumb__item:first-child .jcm-breadcurmb div:nth-child(2) span:hover {
-    color:  var(--lvshihao-theme-color) !important;
+  .el-breadcrumb.breadcurmb
+    .el-breadcrumb__item:first-child
+    .jcm-breadcurmb
+    div:nth-child(2)
+    span:hover {
+    color: var(--lvshihao-theme-color) !important;
   }
 
   //图标选择器样式
-  .icon-container{
-    background-color:  var(--lvshihao-theme-color);
-    svg{
-      use{
+  .icon-container {
+    background-color: var(--lvshihao-theme-color);
+    svg {
+      use {
         fill: $lvshihao-menu-suuny-item-active-div-svg-color;
       }
     }
   }
   //搜索的工具栏样式
-  .card-search-end{
-    .custom-button{
-      svg{
-        use{
-          fill:   var(--lvshihao-theme-color);
+  .card-search-end {
+    .custom-button {
+      svg {
+        use {
+          fill: var(--lvshihao-theme-color);
         }
       }
     }
   }
   //表end工具栏的样式
-  .card-end{
-    .custom-button{
-      svg{
-        use{
-          fill:  var(--lvshihao-theme-color);
+  .card-end {
+    .custom-button {
+      svg {
+        use {
+          fill: var(--lvshihao-theme-color);
         }
       }
     }
   }
   //输入框的样式
-  .el-input{
-    .el-input__wrapper.is-focus{
-      box-shadow: 0 0 0 2px  var(--lvshihao-theme-color) inset; 
+  .el-input {
+    .el-input__wrapper.is-focus {
+      box-shadow: 0 0 0 2px var(--lvshihao-theme-color) inset;
     }
   }
   //多选输入框
-  .el-select{
-    .el-select__wrapper.is-focused{
-      box-shadow: 0 0 0 2px  var(--lvshihao-theme-color) inset; 
+  .el-select {
+    .el-select__wrapper.is-focused {
+      box-shadow: 0 0 0 2px var(--lvshihao-theme-color) inset;
     }
   }
-  .el-select-dropdown__item.is-selected{
+  .el-select-dropdown__item.is-selected {
     color: var(--lvshihao-theme-color);
   }
   //switch的样式
-  .el-switch.is-checked .el-switch__core{
-    background-color:  var(--lvshihao-theme-color);
-    border-color:  var(--lvshihao-theme-color);
+  .el-switch.is-checked .el-switch__core {
+    background-color: var(--lvshihao-theme-color);
+    border-color: var(--lvshihao-theme-color);
   }
- 
+
   //标签的文字颜色
   .el-tag.el-tag--primary {
     color: aliceblue !important;
-    background-color:  var(--lvshihao-theme-color);
+    background-color: var(--lvshihao-theme-color);
     border-color: transparent;
   }
   .el-card {
@@ -766,8 +788,8 @@ html.dark {
       background-color: $lvshihao-menu-moon-item-active-bg;
       // box-shadow: 10px 10px 5px -4px  var(--lvshihao-theme-color);
       box-shadow: none;
-      span{
-        color:$lvshihao-menu-moon-item-div-svg-color;
+      span {
+        color: $lvshihao-menu-moon-item-div-svg-color;
       }
       div {
         margin-right: 10px;
@@ -777,7 +799,7 @@ html.dark {
         align-items: center;
         justify-content: center;
         border-radius: 4px;
-        background-color:  var(--lvshihao-theme-color);
+        background-color: var(--lvshihao-theme-color);
         svg {
           use {
             fill: $lvshihao-menu-moon-bg;
@@ -820,8 +842,8 @@ html.dark {
         background-color: $lvshihao-menu-moon-item-active-bg;
         // box-shadow: 10px 10px 5px -4px  var(--lvshihao-theme-color);
         box-shadow: none;
-        span{
-           color:$lvshihao-menu-moon-item-div-svg-color !important;
+        span {
+          color: $lvshihao-menu-moon-item-div-svg-color !important;
         }
         div {
           margin-right: 10px;
@@ -831,15 +853,15 @@ html.dark {
           align-items: center;
           justify-content: center;
           border-radius: 4px;
-          background-color:   var(--lvshihao-theme-color);
+          background-color: var(--lvshihao-theme-color);
           svg {
             use {
-              fill:  $lvshihao-menu-moon-bg;
+              fill: $lvshihao-menu-moon-bg;
             }
           }
         }
-        span{
-          color:  var(--lvshihao-theme-color);
+        span {
+          color: var(--lvshihao-theme-color);
         }
       }
       //多标签子标签被选中的时候，但是触摸的样式
@@ -892,7 +914,7 @@ html.dark {
         }
         //第二层的sub-men被选中的样式
         .el-sub-menu.is-active {
-          margin-top:5px;
+          margin-top: 5px;
           .el-sub-menu__title {
             background-color: $lvshihao-menu-moon-bg;
             // box-shadow: 10px 10px 5px -4px  var(--lvshihao-theme-color);
@@ -905,25 +927,24 @@ html.dark {
               align-items: center;
               justify-content: center;
               border-radius: 4px;
-              background-color:   var(--lvshihao-theme-color);
+              background-color: var(--lvshihao-theme-color);
               svg {
                 use {
                   fill: $lvshihao-menu-moon-bg;
                 }
               }
             }
-            
           }
           .el-menu.el-menu--inline {
-             //第三层的单个标签被选择的样式
+            //第三层的单个标签被选择的样式
             .el-menu-item.is-active {
               margin: 5px 0px;
               background-color: $lvshihao-menu-moon-bg;
               box-shadow: none;
-              color:  var(--lvshihao-theme-color);
+              color: var(--lvshihao-theme-color);
               svg {
                 use {
-                  fill:  var(--lvshihao-theme-color);
+                  fill: var(--lvshihao-theme-color);
                 }
               }
             }
@@ -934,15 +955,15 @@ html.dark {
           margin: 5px 0px;
           background-color: $lvshihao-menu-moon-bg;
           box-shadow: none;
-          span{
-            color:  var(--lvshihao-theme-color) ;
+          span {
+            color: var(--lvshihao-theme-color);
           }
-          div{
-            margin-right:0px;
+          div {
+            margin-right: 0px;
             background-color: $lvshihao-menu-moon-bg;
             svg {
               use {
-                fill:  var(--lvshihao-theme-color);
+                fill: var(--lvshihao-theme-color);
               }
             }
           }
@@ -954,7 +975,6 @@ html.dark {
     .el-sub-menu {
       margin-top: 5px;
       .el-sub-menu__title {
-      
         div {
           margin-right: 0px;
           width: 25px;
@@ -969,11 +989,11 @@ html.dark {
             }
           }
         }
-        span{
-          color:$lvshihao-menu-moon-item-div-svg-color !important;
-         }
+        span {
+          color: $lvshihao-menu-moon-item-div-svg-color !important;
+        }
       }
-       //标签子标签未被选中的时候，但是触摸的样式
+      //标签子标签未被选中的时候，但是触摸的样式
       .el-sub-menu__title:hover {
         background-color: $lvshihao-menu-moon-item-hover-bg;
       }
@@ -992,101 +1012,100 @@ html.dark {
         }
       }
     }
-   
   }
-  .el-menu.el-menu--vertical.el-menu--collapse{
+  .el-menu.el-menu--vertical.el-menu--collapse {
     display: flex;
     flex-direction: column;
     padding: 0px 5px;
     margin: 0px;
-    .el-menu-item{
-      .el-menu-tooltip__trigger.el-tooltip__trigger.el-tooltip__trigger{
+    .el-menu-item {
+      .el-menu-tooltip__trigger.el-tooltip__trigger.el-tooltip__trigger {
         width: 100%;
         height: 100%;
-        div{
-          margin-right:0px
+        div {
+          margin-right: 0px;
         }
       }
     }
-    .el-sub-menu.is-active{
-      .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger{
+    .el-sub-menu.is-active {
+      .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger {
         padding: 0px;
         width: 100%;
         height: 100%;
-        div{
-          margin-right:0px
+        div {
+          margin-right: 0px;
         }
       }
     }
   }
-  .el-popper.is-pure{
+  .el-popper.is-pure {
     border-radius: 8px;
     background: $lvshihao-menu-moon-bg;
-    .el-menu--vertical.el-menu--popup-container{
+    .el-menu--vertical.el-menu--popup-container {
       border-radius: 8px;
-      .el-menu.el-menu--popup.el-menu--popup-right-start{
+      .el-menu.el-menu--popup.el-menu--popup-right-start {
         border-radius: 8px;
         padding: 5px 10px;
-        .el-menu-item{
-          span{
+        .el-menu-item {
+          span {
             margin-left: 5px;
           }
-          div{
-            svg{
-              use{
+          div {
+            svg {
+              use {
                 fill: $lvshihao-menu-moon-item-div-svg-color;
               }
             }
           }
         }
         /* 菜单偏上一点 */
-        .el-menu-item *{
-          vertical-align:text-top;
+        .el-menu-item * {
+          vertical-align: text-top;
         }
-        .el-menu-item:hover{
+        .el-menu-item:hover {
           border-radius: 8px;
-           background-color: rgb(14, 14, 14);
+          background-color: rgb(14, 14, 14);
         }
         //单菜单被点击状态
-        .el-menu-item.is-active{
+        .el-menu-item.is-active {
           border-radius: 8px;
           background-color: $lvshihao-menu-moon-item-active-div-svg-bg;
-          color:  var(--lvshihao-theme-color);
-          div{
-            svg{
-              use{
-                fill:  var(--lvshihao-theme-color);
+          color: var(--lvshihao-theme-color);
+          div {
+            svg {
+              use {
+                fill: var(--lvshihao-theme-color);
               }
             }
           }
         }
         //多级菜单
-        .el-sub-menu{
-          .el-sub-menu__title{
-            span{
+        .el-sub-menu {
+          .el-sub-menu__title {
+            span {
               margin-left: 5px;
             }
             margin: 0px;
-            div{
-              svg{
-                use{
+            div {
+              svg {
+                use {
                   fill: $lvshihao-menu-moon-item-div-svg-color;
                 }
               }
             }
           }
-          .el-sub-menu__title:hover{
+          .el-sub-menu__title:hover {
             border-radius: 8px;
-             background-color: rgb(14, 14, 14);
+            background-color: rgb(14, 14, 14);
           }
-          .el-popper.is-pure.is-light{
-            .el-menu--vertical.el-menu--popup-container{
-              .el-menu.el-menu--popup.el-menu--popup-right-start{
-                .el-menu-item.is-active{
-                  div{
-                    svg{
-                      use{
-                        fill:  var(--lvshihao-theme-color);
+          .el-popper.is-pure.is-light {
+            .el-menu--vertical.el-menu--popup-container {
+              .el-menu.el-menu--popup.el-menu--popup-right-start {
+                .el-menu-item.is-active {
+                  div {
+                    svg {
+                      use {
+                        fill: var(--lvshihao-theme-color);
                       }
                     }
                   }
@@ -1095,27 +1114,27 @@ html.dark {
             }
           }
         }
-         //多级菜单被点击
-        .el-sub-menu.is-active{
-          .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger{
+        //多级菜单被点击
+        .el-sub-menu.is-active {
+          .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger {
             background-color: $lvshihao-menu-moon-item-active-div-svg-bg;
-            color:  var(--lvshihao-theme-color) ;
+            color: var(--lvshihao-theme-color);
           }
-          div{
-            svg{
-              use{
-                fill:  var(--lvshihao-theme-color);
+          div {
+            svg {
+              use {
+                fill: var(--lvshihao-theme-color);
               }
             }
           }
-          .el-popper.is-pure{
-            .el-menu--vertical.el-menu--popup-container{
-              .el-menu.el-menu--popup.el-menu--popup-right-start{
-                .el-menu-item{
-                  div{
-                    svg{
-                      use{
-                        fill:$lvshihao-menu-moon-item-div-svg-color;
+          .el-popper.is-pure {
+            .el-menu--vertical.el-menu--popup-container {
+              .el-menu.el-menu--popup.el-menu--popup-right-start {
+                .el-menu-item {
+                  div {
+                    svg {
+                      use {
+                        fill: $lvshihao-menu-moon-item-div-svg-color;
                       }
                     }
                   }
@@ -1127,30 +1146,30 @@ html.dark {
       }
     }
   }
- 
+
   /* 多选框选择的背景颜色 */
   .el-checkbox__input.is-checked .el-checkbox__inner {
-    background-color:   var(--lvshihao-theme-color);
-    border-color:  var(--lvshihao-theme-color);
+    background-color: var(--lvshihao-theme-color);
+    border-color: var(--lvshihao-theme-color);
   }
-  .el-checkbox__input.is-checked+.el-checkbox__label {
+  .el-checkbox__input.is-checked + .el-checkbox__label {
     color: var(--lvshihao-theme-color);
   }
   .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-    background-color:   var(--lvshihao-theme-color);
-    border-color:  var(--lvshihao-theme-color);
+    background-color: var(--lvshihao-theme-color);
+    border-color: var(--lvshihao-theme-color);
   }
   .el-checkbox__inner:hover {
-    border-color:   var(--lvshihao-theme-color);
+    border-color: var(--lvshihao-theme-color);
   }
 
   /* 单选框选中的背景颜色 */
   .el-radio-button__original-radio:checked + .el-radio-button__inner {
-    box-shadow:none;
-    background-color:  var(--lvshihao-theme-color);
-    border:  var(--lvshihao-theme-color);
+    box-shadow: none;
+    background-color: var(--lvshihao-theme-color);
+    border: var(--lvshihao-theme-color);
   }
-  .el-radio-button__inner:hover{
+  .el-radio-button__inner:hover {
     color: $lvshihao-menu-moon-item-div-svg-color;
   }
 
@@ -1158,15 +1177,15 @@ html.dark {
   .el-pagination.is-background .btn-next.is-active,
   .el-pagination.is-background .btn-prev.is-active,
   .el-pagination.is-background .el-pager li.is-active {
-    background-color:  var(--lvshihao-theme-color);
+    background-color: var(--lvshihao-theme-color);
   }
 
   /**
     表格样式
   **/
-  .el-table{
-    --el-table-tr-bg-color:$lvshihao-menu-moon-bg;
-    --el-table-header-bg-color:$lvshihao-menu-moon-bg;
+  .el-table {
+    --el-table-tr-bg-color: $lvshihao-menu-moon-bg;
+    --el-table-header-bg-color: $lvshihao-menu-moon-bg;
   }
 
   //tab标签页
@@ -1177,10 +1196,10 @@ html.dark {
     background-color: $lvshihao-menu-moon-bg;
   }
   .el-check-tag.is-checked.el-check-tag--primary {
-    div{
-      .jcm-tabs-titleWithIcon{
-        svg{
-          use{
+    div {
+      .jcm-tabs-titleWithIcon {
+        svg {
+          use {
             fill: var(--lvshihao-theme-color);
           }
         }
@@ -1190,72 +1209,71 @@ html.dark {
   .el-check-tag.el-check-tag--primary:hover {
     background-color: $lvshihao-menu-moon-bg;
     box-shadow: --el-box-shadow-dark;
-    color:var(--lvshihao-theme-color);
-    div{
-      div{
-        svg{
-          use{
-            fill:  var(--lvshihao-theme-color);
+    color: var(--lvshihao-theme-color);
+    div {
+      div {
+        svg {
+          use {
+            fill: var(--lvshihao-theme-color);
           }
         }
       }
-      .jcm-tabs-titleWithIcon{
-        svg{
-          use{
-            fill:  var(--lvshihao-theme-color);
+      .jcm-tabs-titleWithIcon {
+        svg {
+          use {
+            fill: var(--lvshihao-theme-color);
           }
         }
       }
     }
   }
-  .el-check-tag.el-check-tag--primary{
-    color:$lvshihao-menu-moon-item-div-svg-color;
+  .el-check-tag.el-check-tag--primary {
+    color: $lvshihao-menu-moon-item-div-svg-color;
     background-color: $lvshihao-menu-moon-bg;
     box-shadow: --el-box-shadow-dark;
-    div{
-      .jcm-tabs-titleWithIcon{
-        svg{
-          use{
-            fill:$lvshihao-menu-moon-item-active-div-svg-bg;
+    div {
+      .jcm-tabs-titleWithIcon {
+        svg {
+          use {
+            fill: $lvshihao-menu-moon-item-active-div-svg-bg;
           }
         }
       }
     }
   }
 
-
-  .el-button.is-text{
+  .el-button.is-text {
     color: var(--lvshihao-theme-color);
   }
-    //图标按钮样式
-  .el-button.iconBtn{
+  //图标按钮样式
+  .el-button.iconBtn {
     background-color: #000000;
     border-color: #000000;
-    span{
-      svg{
-        use{
+    span {
+      svg {
+        use {
           fill: $lvshihao-menu-moon-item-div-svg-color;
         }
       }
     }
   }
- 
+
   //图标按钮样式
-  .el-button.iconBtn:hover{
-      background-color: var($lvshihao-menu-suuny-item-active-hover-bg);
-      transition: all 0.6s ease;
-      svg{
-        use{
-          fill: var(--lvshihao-theme-color);
-        }
+  .el-button.iconBtn:hover {
+    background-color: var($lvshihao-menu-suuny-item-active-hover-bg);
+    transition: all 0.6s ease;
+    svg {
+      use {
+        fill: var(--lvshihao-theme-color);
       }
+    }
   }
 
   .el-dialog {
-    filter: drop-shadow(0px 0px 5px  var(--lvshihao-theme-color));
+    filter: drop-shadow(0px 0px 5px var(--lvshihao-theme-color));
   }
   .el-drawer {
-    filter: drop-shadow(5px 0px 30px  var(--lvshihao-theme-color));
+    filter: drop-shadow(5px 0px 30px var(--lvshihao-theme-color));
     opacity: 0.8;
   }
 
@@ -1264,14 +1282,13 @@ html.dark {
     color: $lvshihao-menu-moon-item-active-div-svg-bg;
     cursor: pointer;
   }
-  
+
   .height-light-span {
     margin: 0px 2px;
     color: $lvshihao-menu-moon-item-active-div-svg-bg;
   }
-  
+
   .height-light-span-error {
     color: red;
   }
-
 }

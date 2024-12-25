@@ -2,6 +2,12 @@ import { createApp } from 'vue'
 import router from '@/router'
 import App from '@/App.vue'
 import pinia from '@/store'
+
+import VxeUI from 'vxe-pc-ui'
+import 'vxe-pc-ui/lib/style.css'
+import VxeUITable from 'vxe-table'
+import 'vxe-table/lib/style.css'
+
 import { copyText,resetObj } from './utils/common.js';
 //配置ElementUIDark样式
 import 'element-plus/theme-chalk/dark/css-vars.css'
@@ -20,6 +26,8 @@ app.use(router)
 app.use(pinia)
 app.config.globalProperties.$copyText = copyText;
 app.config.globalProperties.$resetObj = resetObj;
+app.use(VxeUITable)
+app.use(VxeUI)
 // 全局注册自定义组件的插件
 app.use(gloablComponent)
 app.mount('#app')

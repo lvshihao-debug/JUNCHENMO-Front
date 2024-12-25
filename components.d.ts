@@ -10,6 +10,7 @@ declare module 'vue' {
     Copyright: typeof import('./src/components/copyright/index.vue')['default']
     Editor: typeof import('./src/components/editor/index.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
+    ElAutoResizer: typeof import('element-plus/es')['ElAutoResizer']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
     ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
@@ -49,6 +50,7 @@ declare module 'vue' {
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTableV2: typeof import('element-plus/es')['ElTableV2']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTimeSelect: typeof import('element-plus/es')['ElTimeSelect']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
@@ -58,6 +60,7 @@ declare module 'vue' {
     IconSelect: typeof import('./src/components/icon-select/index.vue')['default']
     JcmButton: typeof import('./src/components/JcmButton/index.vue')['default']
     JcmIconSelect: typeof import('./src/components/JcmIconSelect/index.vue')['default']
+    JcmiFrame: typeof import('./src/components/JcmiFrame/index.vue')['default']
     JsonEditor: typeof import('./src/components/json-editor/index.vue')['default']
     LayoutIcon: typeof import('./src/components/layoutIcon/index.vue')['default']
     Loading: typeof import('./src/components/loading/index.vue')['default']
@@ -65,5 +68,8 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./src/components/svg-icon/index.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

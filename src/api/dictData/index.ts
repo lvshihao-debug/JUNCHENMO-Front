@@ -16,6 +16,8 @@ export const API = {
   DICT_DATA_INFO_LIST_URL : `${API_ENUM.SERVER_MODE_NAME.SYSTEM_DICT_DATA}/getInfoByNames`,
   //获取字典数据项详情数据
   DICT_DATA_INFO_URL : `${API_ENUM.SERVER_MODE_NAME.SYSTEM_DICT_DATA}/getInfoByName`,
+  //刷新字典数据项详情数据列表
+  DICT_DATA_REFRESH_CACHE_LIST_URL : `${API_ENUM.SERVER_MODE_NAME.SYSTEM_DICT_DATA}/refreshDictDataCache`,
 }
 
 //获取字典值列表
@@ -73,4 +75,11 @@ export const reqUpInfoDictData = (data: any) =>
     method: 'put',
     url: API.DICT_DATA_UP_INFO_URL,
     data,
+})
+
+//刷新所有的字典项值的数据值和扩展参数
+export const reqDictDataRefreshCache = () =>
+  request<any>({
+    method: 'get',
+    url: API.DICT_DATA_REFRESH_CACHE_LIST_URL
 })
