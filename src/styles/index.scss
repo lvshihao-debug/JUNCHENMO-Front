@@ -147,6 +147,7 @@ body {
   vertical-align: text-top;
 }
 
+/*卡片区域样式*/
 .card-end {
   display: flex;
   justify-content: flex-start;
@@ -173,16 +174,36 @@ body {
   width: 100%;
   align-items: center;
 }
-// 默认主题
-
+//vxe样式区域
+.vxe-table--render-default .vxe-table--border-line{
+  border: none !important;
+}
 
 
 html {
-  // 暗黑主题
+  // vxe白天主题
   --vxe-ui-font-color: #000000;
   --vxe-ui-font-primary-color: #000000;
-  --vxe-ui-table-header-background-color: $lvshihao-menu-suuny-bg;
-  --vxe-ui-layout-background-color: $lvshihao-menu-suuny-bg;
+  //vxe表格样式
+  .vxe-table--header-wrapper.body--wrapper{
+    color: #68696D;
+    .vxe-table--header{
+      background-color: white;
+    }
+    .vxe-table--header-border-line{
+      border-bottom: 1px solid #ebeef5;
+    }
+  }
+  .vxe-table--body-wrapper.body--wrapper{
+    color: #68696D;
+    .vxe-body--row{
+      .vxe-body--column{
+        background-image: none !important;
+        border-bottom: 1px solid #ebeef5;
+      }
+    }
+  }
+
   //面包屑的样式
   .el-breadcrumb.breadcurmb
     .el-breadcrumb__item:first-child
@@ -700,11 +721,31 @@ html {
 }
 
 html.dark {
-  // 暗黑主题
+  //vxe暗黑主题
   --vxe-ui-font-color: #ffffff;
   --vxe-ui-font-primary-color: #ffffff;
   --vxe-ui-table-header-background-color: $lvshihao-menu-moon-bg;
   --vxe-ui-layout-background-color: $lvshihao-menu-moon-bg;
+  //vxe表格样式
+  .vxe-table--header-wrapper.body--wrapper {
+    color: #a3a6ad;
+    .vxe-table--header{
+      background-color: #1D1E1F;
+    }
+    .vxe-table--header-border-line {
+      border-bottom: 1px solid #363637;
+    }
+  }
+  .vxe-table--body-wrapper.body--wrapper {
+    color: #cfd3dc;
+    .vxe-body--row {
+      .vxe-body--column {
+        background-image: none !important;
+        border-bottom: 1px solid #363637;
+      }
+    }
+  }
+
   //面包屑的样式
   .el-breadcrumb.breadcurmb
     .el-breadcrumb__item:first-child

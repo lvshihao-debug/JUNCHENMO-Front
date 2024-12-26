@@ -1,79 +1,80 @@
 <template>
-  
-  <div class="layout-icon" onclick="toggleTwoColumnLayout()">
-    <div class="left-column">
-      <div class="left-menu-item"></div>
-      <div class="left-menu-item"></div>
-      <div class="left-menu-item"></div>
+    <div class="web-1735213190257">
+      <el-form ref="formRef" :model="customStore.commonform" :rules="formRules" size="default"
+        label-width="100px">
+        <el-form-item label="一级标题" prop="undefined">
+          <h1 class="head-title-h1">一级标题</h1>
+        </el-form-item>
+        <el-row type="flex" justify="start" align="top" gutter="15">
+          <el-col :span="12">
+            <el-form-item label="单行文本" prop="field102">
+              <el-input v-model="customStore.commonform.field102" placeholder="请输入" clearable
+                :style="{width: '100%'}"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="小数" prop="field103">
+              <el-input v-model="customStore.commonform.field103" type="number" placeholder="请输入" clearable
+                :style="{width: '100%'}"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="整数" prop="field104">
+          <el-input v-model="customStore.commonform.field104" type="number" placeholder="请输入" clearable
+            :style="{width: '100%'}"></el-input>
+        </el-form-item>
+        <el-form-item label="多行文本" prop="field105">
+          <el-input v-model="customStore.commonform.field105" type="textarea" placeholder="请输入多行文本"
+            :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="field107">
+          <el-input v-model="customStore.commonform.field107" placeholder="请输入" clearable show-password
+            :style="{width: '100%'}"></el-input>
+        </el-form-item>
+        <el-form-item size="large">
+          <el-button type="primary" @click="submitForm">提交</el-button>
+          <el-button @click="resetForm">重置</el-button>
+        </el-form-item>
+      </el-form>
     </div>
-    <div class="right-column">
-      <div class="right-item"></div>
-      <div class="right-item"></div>
-      <div class="right-item"></div>
-    </div>
-  </div>
-</template>
-
-<script setup lang="ts">
-
-</script>
-<script lang="ts">
-export default {
-  name: 'ceshi1',
-}
-</script>
-<style scoped>
-    /* 整体图标容器样式 */
-    .layout-icon {
-        width: 66px;
-        height: 45px;
-        background-color: white;
-        display: flex;
-        cursor: pointer;
-        margin-bottom: 10px;
-        border-radius: 6px;
-        box-shadow: 0 2px 8px #00003;
-        border: 2px solid #f9f9f9;
-    }
-    .layout-icon:active{
-      
-    }
-    /* 左侧栏样式 */
-  .left-column {
-        width: 35%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        padding: 5px;
-    }
-
-    /* 左侧栏中的每个长条样式 */
-  .left-menu-item {
-        width: 100%;
-        height: 4px;
-        background-color: #EDEEF0;
-    }
-
-  .left-menu-item:nth-child(2) {
-    width: 80%; 
+  </template>
+  <script setup lang="ts">
+  /** 
+   *  作者: JUN CHEN MO
+   *  time: 2024/12/26 19:39:50  
+   */
+  import type {FormInstance } from 'element-plus'
+  //TODO 导入你的store
+  import useCustomStore from '@/store/modules/custom'
+  //导入表单规则
+  import { formRules } from './types/form.rules'
+  //表单对象引用
+  const formRef = ref < FormInstance > () //TODO 使用你的store 仓库
+  const customStore = useCustomStore();
+  const submitForm = ()=> {
+    formRef.value.validate(valid => {
+      if (!valid) return
+      // TODO 提交表单
+    })
   }
-    /* 右侧栏样式 */
-  .right-column {
-        padding: 5px;
-        width: 60%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
+  
+  const resetForm = ()=> {
+    formRef.value.resetFields()
+  }
+  
+  </script>
+  <style lang="scss">
+  .web-1735213190257 {
+    .head-title-h1 {
+      color: #1A93F9;
+      font-size: 18px;
+      height: 25px;
+      line-height: 25px;
+      text-shadow: #5B96E9AB 2px 2px 3px;
+      border-left: 5px solid #3f92d991;
+      padding-left: 10px;
     }
-
-    /* 右侧栏中的每个长条样式 */
-  .right-item {
-        width: 90%;
-        height: 7px;
-        background-color: #EDEEF0;
-    }
-
-    .right-item:nth-child(2) {
-        width: 70%; /* 让右侧第二个长条稍微短一些 */
-    }
-</style>
+  }
+  
+  </style>
+  

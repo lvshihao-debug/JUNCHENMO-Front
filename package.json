@@ -26,7 +26,6 @@
     "pinia-plugin-persistedstate": "^4.2.0",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
-    "vxe-pc-ui": "4.3.44",
     "vxe-table": "4.9.35"
   },
   "devDependencies": {

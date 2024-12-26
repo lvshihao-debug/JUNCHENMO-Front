@@ -1,8 +1,10 @@
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
 import useUserStore from '@/store/modules/user'
 import type { AxiosRequestConfig } from 'axios'
+import {  ElMessageBox, ElMessage} from 'element-plus'
 
+import type { Action } from 'element-plus'
+import { set } from 'nprogress'
 //创建axios实例
 const service = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -18,33 +20,32 @@ service.interceptors.request.use((config) => {
 })
 //响应拦截器
 service.interceptors.response.use(
-  (response) => {
-    return response.data
+  (res) => {
+    // 未设置状态码则默认成功状态
+    const code = res.data.code || 200;
+    if (code === 401) {
+      ElMessage.error({message:'系统提示:登录状态已过期', type: 'error', duration: 3 * 1000})
+      setTimeout(() => {
+        useUserStore().userLogout().then(() => {
+          location.href = '/home';
+        })
+      },3000)
+      return Promise.reject('请您重新登录')
+    } else{
+      return Promise.resolve(res.data)
+    }
   },
   (error) => {
-    //处理网络错误
-    let msg = ''
-    const status = error.response.status
-    switch (status) {
-      case 401:
-        msg = 'token过期'
-        break
-      case 403:
-        msg = '无权访问'
-        break
-      case 404:
-        msg = '请求地址错误'
-        break
-      case 500:
-        msg = '服务器出现问题'
-        break
-      default:
-        msg = '无网络'
+    console.log('err' + error)
+    let { message } = error;
+    if (message == "Network Error") {
+      message = "后端接口连接异常";
+    } else if (message.includes("timeout")) {
+      message = "系统接口请求超时";
+    } else if (message.includes("Request failed with status code")) {
+      message = "系统接口" + message.substr(message.length - 3) + "异常";
     }
-    ElMessage({
-      type: 'error',
-      message: msg,
-    })
+    ElMessage({ message: message, type: 'error', duration: 5 * 1000 })
     return Promise.reject(error)
   },
 )
