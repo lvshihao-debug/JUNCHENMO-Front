@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import type { FormInstance} from 'element-plus'
-import type { ComponentInternalInstance } from 'vue'
+
 import useRoleStore from '@/store/modules/role'
 import { formRules } from '../types/form.rules'
 //仓库
@@ -46,7 +46,7 @@ const emit = defineEmits(['refreshData']);
 
 // 打开
 const open = (item: any) => {
-  instance?.proxy?.$resetObj(roleStore.commonform)
+  (instance?.proxy as any).$resetObj(roleStore.commonform)
   Object.keys(roleStore.commonform).forEach((key) => {
     roleStore.commonform[key] = item[key];
   });

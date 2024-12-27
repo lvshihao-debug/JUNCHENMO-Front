@@ -51,6 +51,11 @@ enum SERVER_MODE_NAME {
    * 缓存列表管理相关接口
    */
     SYSTEM_CACHE_LIST = '/system/cacheList',
+
+  /**
+   * 缓存监控相关接口
+   */
+    SYSTEM_CACHE_MONITOR = '/system/cacheMonitor',
 }
 
 export default {

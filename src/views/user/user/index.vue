@@ -67,7 +67,7 @@
         <el-table-column prop="userId" label="ID" align="center" />
         <el-table-column prop="username" label="用户名" align="center">
           <template #default="scope">
-            <span @click="instance?.proxy?.$copyText(scope.row.username)" class="copy-span">
+            <span @click="(instance?.proxy as any).$copyText(scope.row.username)" class="copy-span">
               {{ scope.row.username }}
             </span>
           </template>
@@ -142,7 +142,7 @@
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
 import type { FromModal } from '@/utils/commonType'
-import type { ComponentInternalInstance } from 'vue'
+
 //导入类型
 import type { User } from '@/api/user/type'
 //弹出窗
@@ -157,7 +157,7 @@ import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 import { isAdminById } from '@/utils/permission'
 
 //获取当前组件实例
-const instance: ComponentInternalInstance | null = getCurrentInstance()
+const instance = getCurrentInstance()
 const userStore = useUserStore()
 const layoutSettingStore = useLayoutSettingStore()
 

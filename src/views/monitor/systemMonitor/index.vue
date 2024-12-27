@@ -1,0 +1,61 @@
+<template>
+    <div>
+        <!--Redis基本信息-->
+        <el-row :gutter="10">
+            <el-col :span="6">
+                <InfoCard :iconName="'服务器'" :title="'服务信息'" :infoData="cacheMonitorStore?.baseInfo?.server" />
+            </el-col>
+            <el-col :span="6">
+                <InfoCard :iconName="'内存'" :title="'内存信息'" :infoData="cacheMonitorStore?.baseInfo?.memory" />
+            </el-col>
+            <el-col :span="6">
+                <InfoCard :iconName="'状态'" :title="'状态信息'" :infoData="cacheMonitorStore?.baseInfo?.stats" />
+            </el-col>
+            <el-col :span="6">
+                <InfoCard :iconName="'数据库'" :title="'DB 0 信息'" :infoData="cacheMonitorStore?.baseInfo?.db0" />
+            </el-col>
+        </el-row>
+        <el-row :gutter="10">
+            <el-col :span="6">
+                <InfoCard :iconName="'其他'" :title="'其他信息'" :infoData="cacheMonitorStore?.baseInfo?.other" />
+            </el-col>
+            <el-col :span="6">
+                <InfoCard :iconName="'持久化'" :title="'持久化信息'" :infoData="cacheMonitorStore?.baseInfo?.persistenceInfo" />
+            </el-col>
+            <el-col :span="12">
+                <el-card class="card-table-style">
+                    <template #header>
+                        <div class="card-header-style">
+                            <div class="card-header">
+                                <span>Redis全部信息</span>
+                            </div>
+                        </div>  
+                    </template>
+                    <vxe-table border="inner" height="345" :data="cacheMonitorStore.info" empty-text="没有更多数据了！"
+                        :scroll-y="{ enabled: true, gt: 0 }">
+                        <vxe-column field="configName" title="key" width="300"></vxe-column>
+                        <vxe-column field="configValue" title="value"></vxe-column>
+                    </vxe-table>
+                </el-card>
+            </el-col>
+        </el-row>
+    </div>
+</template>
+
+<script setup lang="ts">
+import useCacheMonitorStore from '@/store/modules/montior/cacheMonitor'
+
+const cacheMonitorStore = useCacheMonitorStore()
+
+onMounted(() => {
+    cacheMonitorStore.getCacheBaseInfo()
+    cacheMonitorStore.getCacheInfo();
+})
+
+</script>
+<script lang="ts">
+export default {
+    name: 'systemMonitor',
+}
+</script>
+<style lang="scss" scoped></style>

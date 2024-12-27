@@ -132,13 +132,13 @@
         </el-table-column>
         <el-table-column prop="permission" label="权限标识"  width="230px" align="center" show-overflow-tooltip>
           <template #default="scope">
-            <span @click="instance?.proxy?.$copyText(scope.row.permission)" class="copy-span">{{
+            <span @click="(instance?.proxy as any).$copyText(scope.row.permission)" class="copy-span">{{
               scope.row.permission }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="component" label="组件名称" width="100px" align="center" show-overflow-tooltip>
           <template #default="scope">
-            <span @click="instance?.proxy?.$copyText(scope.row.component)" class="copy-span">{{
+            <span @click="(instance?.proxy as any).$copyText(scope.row.component)" class="copy-span">{{
               scope.row.component }}</span>
           </template>
         </el-table-column>
@@ -178,7 +178,7 @@ export default {
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import type { FromModal } from '@/utils/commonType'
-import type { ComponentInternalInstance } from 'vue'
+
 //弹出窗
 import MenuAddFromModal from './components/menu-add-from-modal.vue'
 import MenuUpdateFromModal from './components/menu-update-from-modal.vue'
@@ -188,7 +188,7 @@ import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 import useDictDataStore from '@/store/modules/dictData'
 
 //获取当前组件实例
-const instance: ComponentInternalInstance | null = getCurrentInstance();
+const instance = getCurrentInstance();
 const menuStore = useMenuStore()
 const layoutSettingStore = useLayoutSettingStore()
 const dictDataStore = useDictDataStore()

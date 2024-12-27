@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
-import type { ComponentInternalInstance } from 'vue'
+
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 import useDictDataStore from '@/store/modules/dictData'
 import { formRules } from '../types/form.rules'
@@ -66,7 +66,7 @@ import { formRules } from '../types/form.rules'
 const layoutSettingStore = useLayoutSettingStore()
 const dictDataStore = useDictDataStore()
 //获取当前组件实例
-const instance: ComponentInternalInstance | null = getCurrentInstance();
+const instance = getCurrentInstance();
 //表单对象引用
 const formRef = ref<FormInstance>()
 //表单打开的状态

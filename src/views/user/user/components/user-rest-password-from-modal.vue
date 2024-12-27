@@ -32,13 +32,13 @@
 
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
-import type { ComponentInternalInstance } from 'vue'
+
 import useUserStore from '@/store/modules/user'
 import { formRules } from '../types/form.rules'
 //仓库
 const userStore = useUserStore()
 //获取当前组件实例
-const instance: ComponentInternalInstance | null = getCurrentInstance();
+const instance = getCurrentInstance();
 //表单对象引用
 const formRef = ref<FormInstance>()
 //表单打开的状态
@@ -64,7 +64,7 @@ const updatePasswordItem = (formEl: FormInstance | undefined) => {
         .upPasswordUser(userStore.commonform)
         .then(() => {
           fromOpenStatus.value = false
-          instance?.proxy?.$resetObj(userStore.commonform)
+          (instance?.proxy as any).$resetObj(userStore.commonform)
           ElMessage.success({ message: '密码重置成功' })
         })
         .catch((error) => {

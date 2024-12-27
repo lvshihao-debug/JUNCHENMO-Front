@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
-import type { ComponentInternalInstance } from 'vue'
+
 import useUserStore from '@/store/modules/user'
 import useRoleStore from '@/store/modules/role'
 //仓库
@@ -73,7 +73,7 @@ let userRoleList = ref([])
 
 // 打开modal框
 const open = async (item: any) => {
-  instance?.proxy?.$resetObj(userStore.commonform)
+  (instance?.proxy as any).$resetObj(userStore.commonform)
   // 1. 更新表单信息
   userStore.commonform.userId = item.userId
   userStore.commonform.username = item.username

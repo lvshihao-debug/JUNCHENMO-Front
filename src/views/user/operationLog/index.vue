@@ -116,7 +116,7 @@
         <el-table-column label="留痕地址" align="center">
           <template #default="scope">
             <span style="font-size: 13px;">{{ scope.row.operLocation }}</span><br />
-            <span @click="instance?.proxy?.$copyText(scope.row.operIp)" class="copy-span"
+            <span @click="(instance?.proxy as any).$copyText(scope.row.operIp)" class="copy-span"
               style="font-size: 12px;color: rgb( 134,144,156 );">{{ scope.row.operIp }}</span>
           </template>
         </el-table-column>
@@ -157,7 +157,7 @@
 
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
-import type { ComponentInternalInstance } from 'vue'
+
 //仓库
 import useOperationLogStore from '@/store/modules/operationLog'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
@@ -166,7 +166,7 @@ const operationLogStore = useOperationLogStore()
 const layoutSettingStore = useLayoutSettingStore()
 
 //获取当前组件实例
-const instance: ComponentInternalInstance | null = getCurrentInstance();
+const instance = getCurrentInstance();
 
 onMounted(() => {
   //手动触发更新页数的逻辑

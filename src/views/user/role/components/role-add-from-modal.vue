@@ -32,13 +32,13 @@
   
   <script setup lang="ts">
   import type { FormInstance } from 'element-plus'
-  import type { ComponentInternalInstance } from 'vue'
+  
   import useRoleStore from '@/store/modules/role'
   import { formRules } from '../types/form.rules'
   //仓库
   const roleStore = useRoleStore()
   //获取当前组件实例
-  const instance: ComponentInternalInstance | null = getCurrentInstance();
+  const instance = getCurrentInstance();
   //表单对象引用
   const formRef = ref<FormInstance>()
   //表单打开的状态
@@ -48,7 +48,7 @@
   
   // 打开modal框
   const open = () => {
-    instance?.proxy?.$resetObj(roleStore.commonform)
+    (instance?.proxy as any).$resetObj(roleStore.commonform)
     fromOpenStatus.value = true;
   };
   

@@ -178,8 +178,116 @@ body {
 .vxe-table--render-default .vxe-table--border-line{
   border: none !important;
 }
+.vxe-table--render-default.border--inner .vxe-table--header-wrapper{
+  background-color: transparent !important;
+}
+/**我的scss**/
+.card-info-item-value{
+  color: var(--lvshihao-theme-color);
+}
 
+/*
+element表单区域
 
+*/
+
+//搜索的工具栏样式
+.card-search-end {
+  .custom-button {
+    svg {
+      use {
+        fill: var(--lvshihao-theme-color);
+      }
+    }
+  }
+}
+//表end工具栏的样式
+.card-end {
+  .custom-button {
+    svg {
+      use {
+        fill: var(--lvshihao-theme-color);
+      }
+    }
+  }
+}
+//卡片
+.el-card {
+  border: 0px !important;
+}
+//多行文本
+.el-textarea__inner{
+  box-shadow: 0 0 0 2px var(--lvshihao-theme-color) inset;
+}
+//输入框的样式
+.el-input {
+  .el-input__wrapper.is-focus {
+    box-shadow: 0 0 0 2px var(--lvshihao-theme-color) inset;
+  }
+}
+//多选输入框
+.el-select {
+  .el-select__wrapper.is-focused {
+    box-shadow: 0 0 0 2px var(--lvshihao-theme-color) inset;
+  }
+}
+//下拉选择
+.el-select-dropdown__item.is-selected {
+  color: var(--lvshihao-theme-color);
+}
+//switch的样式
+.el-switch.is-checked .el-switch__core {
+  background-color: var(--lvshihao-theme-color);
+  border-color: var(--lvshihao-theme-color);
+}
+//标签的文字颜色
+.el-tag.el-tag--primary {
+  color: aliceblue !important;
+  background-color: var(--lvshihao-theme-color);
+  border-color: transparent;
+}
+/* 单选框选中的背景颜色 */
+.el-radio-button__original-radio:checked + .el-radio-button__inner {
+  border: var(--lvshihao-theme-color);
+  background-color: var(--lvshihao-theme-color);
+  box-shadow: none;
+}
+/* 多选框选择的背景颜色 */
+.el-checkbox__input.is-checked .el-checkbox__inner {
+  background-color: var(--lvshihao-theme-color);
+  border-color: var(--lvshihao-theme-color);
+}
+.el-checkbox__input.is-checked + .el-checkbox__label {
+  color: var(--lvshihao-theme-color);
+}
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: var(--lvshihao-theme-color);
+  border-color: var(--lvshihao-theme-color);
+}
+.el-checkbox__inner:hover {
+  border-color: var(--lvshihao-theme-color);
+}
+/*分页选中的背景颜色*/
+.el-pagination.is-background .btn-next.is-active,
+.el-pagination.is-background .btn-prev.is-active,
+.el-pagination.is-background .el-pager li.is-active {
+  background-color: var(--lvshihao-theme-color);
+}
+//文字按钮
+.el-button.is-text {
+  color: var(--lvshihao-theme-color);
+}
+//对话框
+.el-dialog {
+  filter: drop-shadow(0px 0px 5px var(--lvshihao-theme-color));
+}
+//侧边抽屉
+.el-drawer {
+  filter: drop-shadow(5px 0px 30px var(--lvshihao-theme-color));
+  opacity: 0.8;
+}
+
+//白天主题
 html {
   // vxe白天主题
   --vxe-ui-font-color: #000000;
@@ -204,6 +312,12 @@ html {
     }
   }
 
+  .card-info-item {
+    color: #999CA1;
+    background-color: #F4F4F5;
+  }
+
+
   //面包屑的样式
   .el-breadcrumb.breadcurmb
     .el-breadcrumb__item:first-child
@@ -222,47 +336,7 @@ html {
     }
   }
 
-  //搜索的工具栏样式
-  .card-search-end {
-    .custom-button {
-      svg {
-        use {
-          fill: var(--lvshihao-theme-color);
-        }
-      }
-    }
-  }
-
-  //表end工具栏的样式
-  .card-end {
-    .custom-button {
-      svg {
-        use {
-          fill: var(--lvshihao-theme-color);
-        }
-      }
-    }
-  }
-  //输入框的样式
-  .el-input {
-    .el-input__wrapper.is-focus {
-      box-shadow: 0 0 0 2px var(--lvshihao-theme-color) inset;
-    }
-  }
-  //多选输入框
-  .el-select {
-    .el-select__wrapper.is-focused {
-      box-shadow: 0 0 0 2px var(--lvshihao-theme-color) inset;
-    }
-  }
-  .el-select-dropdown__item.is-selected {
-    color: var(--lvshihao-theme-color);
-  }
-  //switch的样式
-  .el-switch.is-checked .el-switch__core {
-    background-color: var(--lvshihao-theme-color);
-    border-color: var(--lvshihao-theme-color);
-  }
+ 
 
   //标签的文字颜色
   .el-tag.el-tag--primary {
@@ -270,9 +344,7 @@ html {
     background-color: var(--lvshihao-theme-color);
     border-color: transparent;
   }
-  .el-card {
-    border: 0px;
-  }
+  
   //隐藏全局的横向滚动条
   overflow-x: hidden;
   //修改侧边菜单栏
@@ -590,36 +662,8 @@ html {
     }
   }
 
-  /* 多选框选择的背景颜色 */
-  .el-checkbox__input.is-checked .el-checkbox__inner {
-    background-color: var(--lvshihao-theme-color);
-    border-color: var(--lvshihao-theme-color);
-  }
-  .el-checkbox__input.is-checked + .el-checkbox__label {
-    color: var(--lvshihao-theme-color);
-  }
-  .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-    background-color: var(--lvshihao-theme-color);
-    border-color: var(--lvshihao-theme-color);
-  }
-  .el-checkbox__inner:hover {
-    border-color: var(--lvshihao-theme-color);
-  }
-
-  /* 单选框选中的背景颜色 */
-  .el-radio-button__original-radio:checked + .el-radio-button__inner {
-    border: var(--lvshihao-theme-color);
-    background-color: var(--lvshihao-theme-color);
-    box-shadow: none;
-  }
   .el-radio-button__inner:hover {
     color: $lvshihao-menu-suuny-item-div-svg-color;
-  }
-  /*分页选中的背景颜色*/
-  .el-pagination.is-background .btn-next.is-active,
-  .el-pagination.is-background .btn-prev.is-active,
-  .el-pagination.is-background .el-pager li.is-active {
-    background-color: var(--lvshihao-theme-color);
   }
 
   //tab标签页
@@ -674,10 +718,6 @@ html {
     }
   }
 
-  //文字按钮
-  .el-button.is-text {
-    color: var(--lvshihao-theme-color);
-  }
   //图标按钮样式
   .el-button.iconBtn {
     background-color: $lvshihao-menu-suuny-item-active-bg;
@@ -696,14 +736,6 @@ html {
     }
   }
 
-  .el-dialog {
-    filter: drop-shadow(0px 0px 5px var(--lvshihao-theme-color));
-  }
-  .el-drawer {
-    filter: drop-shadow(5px 0px 30px var(--lvshihao-theme-color));
-    opacity: 0.8;
-  }
-
   .copy-span:hover {
     text-decoration: underline;
     color: var(--lvshihao-theme-color);
@@ -720,6 +752,7 @@ html {
   }
 }
 
+//暗黑主题
 html.dark {
   //vxe暗黑主题
   --vxe-ui-font-color: #ffffff;
@@ -746,6 +779,11 @@ html.dark {
     }
   }
 
+  .card-info-item {
+    color: #999CA1;
+    background-color: #000000;
+  }
+
   //面包屑的样式
   .el-breadcrumb.breadcurmb
     .el-breadcrumb__item:first-child
@@ -764,56 +802,8 @@ html.dark {
       }
     }
   }
-  //搜索的工具栏样式
-  .card-search-end {
-    .custom-button {
-      svg {
-        use {
-          fill: var(--lvshihao-theme-color);
-        }
-      }
-    }
-  }
-  //表end工具栏的样式
-  .card-end {
-    .custom-button {
-      svg {
-        use {
-          fill: var(--lvshihao-theme-color);
-        }
-      }
-    }
-  }
-  //输入框的样式
-  .el-input {
-    .el-input__wrapper.is-focus {
-      box-shadow: 0 0 0 2px var(--lvshihao-theme-color) inset;
-    }
-  }
-  //多选输入框
-  .el-select {
-    .el-select__wrapper.is-focused {
-      box-shadow: 0 0 0 2px var(--lvshihao-theme-color) inset;
-    }
-  }
-  .el-select-dropdown__item.is-selected {
-    color: var(--lvshihao-theme-color);
-  }
-  //switch的样式
-  .el-switch.is-checked .el-switch__core {
-    background-color: var(--lvshihao-theme-color);
-    border-color: var(--lvshihao-theme-color);
-  }
 
-  //标签的文字颜色
-  .el-tag.el-tag--primary {
-    color: aliceblue !important;
-    background-color: var(--lvshihao-theme-color);
-    border-color: transparent;
-  }
-  .el-card {
-    border: 0px;
-  }
+
   overflow-x: hidden;
   //修改侧边菜单栏
   .el-menu {
@@ -1188,37 +1178,8 @@ html.dark {
     }
   }
 
-  /* 多选框选择的背景颜色 */
-  .el-checkbox__input.is-checked .el-checkbox__inner {
-    background-color: var(--lvshihao-theme-color);
-    border-color: var(--lvshihao-theme-color);
-  }
-  .el-checkbox__input.is-checked + .el-checkbox__label {
-    color: var(--lvshihao-theme-color);
-  }
-  .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-    background-color: var(--lvshihao-theme-color);
-    border-color: var(--lvshihao-theme-color);
-  }
-  .el-checkbox__inner:hover {
-    border-color: var(--lvshihao-theme-color);
-  }
-
-  /* 单选框选中的背景颜色 */
-  .el-radio-button__original-radio:checked + .el-radio-button__inner {
-    box-shadow: none;
-    background-color: var(--lvshihao-theme-color);
-    border: var(--lvshihao-theme-color);
-  }
   .el-radio-button__inner:hover {
     color: $lvshihao-menu-moon-item-div-svg-color;
-  }
-
-  /*分页选中的背景颜色*/
-  .el-pagination.is-background .btn-next.is-active,
-  .el-pagination.is-background .btn-prev.is-active,
-  .el-pagination.is-background .el-pager li.is-active {
-    background-color: var(--lvshihao-theme-color);
   }
 
   /**
@@ -1283,9 +1244,7 @@ html.dark {
     }
   }
 
-  .el-button.is-text {
-    color: var(--lvshihao-theme-color);
-  }
+
   //图标按钮样式
   .el-button.iconBtn {
     background-color: #000000;
@@ -1310,13 +1269,6 @@ html.dark {
     }
   }
 
-  .el-dialog {
-    filter: drop-shadow(0px 0px 5px var(--lvshihao-theme-color));
-  }
-  .el-drawer {
-    filter: drop-shadow(5px 0px 30px var(--lvshihao-theme-color));
-    opacity: 0.8;
-  }
 
   .copy-span:hover {
     text-decoration: underline;

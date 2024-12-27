@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import type { FormInstance} from 'element-plus'
-import type { ComponentInternalInstance } from 'vue'
+
 import useUserStore from '@/store/modules/user'
 import { formRules } from '../types/form.rules'
 //仓库
@@ -59,7 +59,7 @@ const emit = defineEmits(['refreshData']);
 
 // 打开
 const open = (item: any) => {
-  instance?.proxy?.$resetObj(userStore.commonform)
+  (instance?.proxy as any).$resetObj(userStore.commonform)
   Object.keys(userStore.commonform).forEach((key) => {
     userStore.commonform[key] = item[key];
   });
