@@ -30,15 +30,15 @@ enum SERVER_MODE_NAME {
    * 系统菜单相关接口
    */
   SYSTEM_MENU = '/system/menu',
-   /**
+  /**
    * 系统字典项相关接口
    */
   SYSTEM_DICT_TYPE = '/system/dict-type',
-   /**
+  /**
    * 系统字典值相关接口
    */
   SYSTEM_DICT_DATA = '/system/dict-data',
-   /**
+  /**
    * 系统日志相关接口
    */
   OPERACTION_LOG_DATA = '/system/operlog',
@@ -50,12 +50,17 @@ enum SERVER_MODE_NAME {
   /**
    * 缓存列表管理相关接口
    */
-    SYSTEM_CACHE_LIST = '/system/cacheList',
+  SYSTEM_CACHE_LIST = '/system/cacheList',
 
   /**
    * 缓存监控相关接口
    */
-    SYSTEM_CACHE_MONITOR = '/system/cacheMonitor',
+  SYSTEM_CACHE_MONITOR = '/system/cacheMonitor',
+
+  /**
+   * 系统监控相关接口
+   */
+  SYSTEM_MONITOR = '/system/systemMonitor',
 }
 
 export default {

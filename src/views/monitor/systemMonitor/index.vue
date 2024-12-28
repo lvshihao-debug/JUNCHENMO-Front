@@ -1,61 +1,100 @@
 <template>
     <div>
-        <!--Redis基本信息-->
+        <div v-if="loadingStatus">
+        <!--系统基本信息-->
         <el-row :gutter="10">
             <el-col :span="6">
-                <InfoCard :iconName="'服务器'" :title="'服务信息'" :infoData="cacheMonitorStore?.baseInfo?.server" />
+                <JcmInfoCard iconName="服务器" title="系统信息" :infoData="systemMonitorStore?.baseInfo?.server" />
             </el-col>
             <el-col :span="6">
-                <InfoCard :iconName="'内存'" :title="'内存信息'" :infoData="cacheMonitorStore?.baseInfo?.memory" />
+                <JcmInfoCard iconName="cpu" title="系统CPU" :infoData="systemMonitorStore?.baseInfo?.cpu" />
             </el-col>
             <el-col :span="6">
-                <InfoCard :iconName="'状态'" :title="'状态信息'" :infoData="cacheMonitorStore?.baseInfo?.stats" />
+                <JcmInfoCard iconName="内存" title="系统内存" :infoData="systemMonitorStore?.baseInfo?.memory" />
             </el-col>
             <el-col :span="6">
-                <InfoCard :iconName="'数据库'" :title="'DB 0 信息'" :infoData="cacheMonitorStore?.baseInfo?.db0" />
+                <JcmInfoCard iconName="内存" title="JVM内存" :infoData="systemMonitorStore?.baseInfo?.jvmMemory" />
             </el-col>
         </el-row>
         <el-row :gutter="10">
-            <el-col :span="6">
-                <InfoCard :iconName="'其他'" :title="'其他信息'" :infoData="cacheMonitorStore?.baseInfo?.other" />
-            </el-col>
-            <el-col :span="6">
-                <InfoCard :iconName="'持久化'" :title="'持久化信息'" :infoData="cacheMonitorStore?.baseInfo?.persistenceInfo" />
-            </el-col>
-            <el-col :span="12">
+            <el-col :span="24">
                 <el-card class="card-table-style">
-                    <template #header>
-                        <div class="card-header-style">
-                            <div class="card-header">
-                                <span>Redis全部信息</span>
-                            </div>
-                        </div>  
-                    </template>
-                    <vxe-table border="inner" height="345" :data="cacheMonitorStore.info" empty-text="没有更多数据了！"
-                        :scroll-y="{ enabled: true, gt: 0 }">
-                        <vxe-column field="configName" title="key" width="300"></vxe-column>
-                        <vxe-column field="configValue" title="value"></vxe-column>
-                    </vxe-table>
-                </el-card>
+                        <template #header>
+                            <div class="card-header-style">
+                                <div class="card-header">
+                                    <span>系统进程信息</span>
+                                </div>
+                            </div>  
+                        </template>
+                        <vxe-table border="inner" height="345" :data="systemMonitorStore?.baseInfo?.processes" empty-text="没有更多数据了！"
+                            :scroll-y="{ enabled: true, gt: 0 }">
+                            <vxe-column field="PID" title="PID" width="170"></vxe-column>
+                            <vxe-column field="Name" title="Name"></vxe-column>
+                            <vxe-column field="%CPU" title="%CPU"></vxe-column>
+                            <vxe-column field="%MEM" title="%MEM"></vxe-column>
+                            <vxe-column field="VSZ" title="VSZ"></vxe-column>
+                            <vxe-column field="RSS" title="RSS"></vxe-column>
+                        </vxe-table>
+                    </el-card>
             </el-col>
         </el-row>
+        <el-row :gutter="10">
+            <el-col :span="24">
+                <el-card class="card-table-style">
+                        <template #header>
+                            <div class="card-header-style">
+                                <div class="card-header">
+                                    <span>文件系统信息</span>
+                                </div>
+                            </div>  
+                        </template>
+                        <vxe-table border="inner" height="200" :data="systemMonitorStore?.baseInfo?.fileSystem" empty-text="没有更多数据了！"
+                            :scroll-y="{ enabled: true, gt: 0 }">
+                            <vxe-column field="name" title="name" width="170"></vxe-column>
+                            <vxe-column field="total_space" title="total_space"></vxe-column>
+                            <vxe-column field="usable_space" title="usable_space"></vxe-column>
+                            <vxe-column field="usage" title="usage"></vxe-column>
+                            <vxe-column field="description" title="description"></vxe-column>
+                            <vxe-column field="type" title="type"></vxe-column>
+                           
+                        </vxe-table>
+                    </el-card>
+            </el-col>
+        </el-row>
+        </div>
+       
+        <!--加载动画-->
+        <div class="table-data-loading" v-else>
+            <Loading />
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import useCacheMonitorStore from '@/store/modules/montior/cacheMonitor'
+import useSystemMonitorStore from '@/store/modules/montior/systemMonitor'
+import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 
-const cacheMonitorStore = useCacheMonitorStore()
+const systemMonitorStore = useSystemMonitorStore()
+const layoutSettingStore = useLayoutSettingStore()
 
 onMounted(() => {
-    cacheMonitorStore.getCacheBaseInfo()
-    cacheMonitorStore.getCacheInfo();
+    systemMonitorStore.loading = true
+    systemMonitorStore.getSystemBaseInfo()
+    setTimeout(() => {
+        systemMonitorStore.loading = false
+  }, 1000)
 })
 
+//页面数据加载的状态
+const loadingStatus = computed(() => {
+  return !systemMonitorStore.loading || !layoutSettingStore.setting.dataLoading;
+});
 </script>
 <script lang="ts">
 export default {
     name: 'systemMonitor',
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>

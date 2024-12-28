@@ -16,7 +16,6 @@ const useCacheMonitorStore = defineStore('cacheMonitor', {
       //登录请求
       const result = await reqRedisBaseInfo()
       if (result.code == 200) {
-        console.log(result.data)
         this.baseInfo=result.data
         return Promise.resolve(result.data)
       } else {
@@ -27,7 +26,6 @@ const useCacheMonitorStore = defineStore('cacheMonitor', {
       //登录请求
       const result = await reqRedisInfo()
       if (result.code == 200) {
-        console.log(result.data)
         this.info=result.data
         return Promise.resolve(result.data)
       } else {

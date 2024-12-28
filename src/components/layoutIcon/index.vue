@@ -123,6 +123,7 @@ defineExpose({
 }
 
 .left-menu-item {
+  border-radius: 5px;
   width: 100%;
   height: 4px;
 }
@@ -140,6 +141,7 @@ defineExpose({
 }
 
 .right-item {
+  border-radius: 5px;
   width: 90%;
   height: 5px;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="animate__animated animate__fadeIn">
+  <div>
 
     <!--权限列表条件卡片-->
     <el-card>

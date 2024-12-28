@@ -1,5 +1,5 @@
 <template>
-  <div class="animate__animated animate__fadeIn">
+  <div class="fade">
     <el-card>
       <el-form :inline="true" :model="userStore.searchform" class="searchForm" label-position="right" label-width="auto"
         ref="searchFormRef">
