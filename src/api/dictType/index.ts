@@ -19,11 +19,11 @@ export const API = {
 }
 
 //获取字典项列表
-export const reqDictTypeList = (data: any, pageNum: number, pageSize: number) =>
+export const reqDictTypeList = (query: any) =>
     request<any>({
-      method: 'post',
-      url: API.DICT_TYPE_LIST_URL+ `?pageNum=${pageNum}&pageSize=${pageSize}`,
-      data
+      method: 'get',
+      url: API.DICT_TYPE_LIST_URL,
+      params:query
 })
 
 /**

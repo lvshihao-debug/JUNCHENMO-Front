@@ -9,7 +9,8 @@ import { getRouters,reqAddMenu,reqMenuList,reqDelMenu,reqUpInfoMenu,reqLastSortM
 import Layout from '@/layout/index.vue'
 //引入路由（常量路由）
 import { constantRoutes } from '@/router/routes'
-const modules = import.meta.glob('../../views/**/**/*.vue')
+
+const modules = import.meta.glob('@/views/**/**/*.vue')
 //创建用户小仓库
 const useMenuStore = defineStore('Menu', {
   state: () => {
@@ -22,17 +23,17 @@ const useMenuStore = defineStore('Menu', {
       refreshTable: true, //重新渲染表格状态
       tableLoading: true, //表格数据加载loading
       dictData: [], //字典数据数组
-      searchform: {
+      searchForm: {
         name: '',
         status: '',
       },
-      commonform:{
+      commonForm:{
         menuId:'',
         parentId: '0',
-        name: '',
+        name: undefined,
         type: 0,
         icon: '',
-        component: '',
+        component: undefined,
         link: '',
         sort:'',
         permission:'',
@@ -53,8 +54,6 @@ const useMenuStore = defineStore('Menu', {
     generateRoutes() {
       return new Promise((resolve) => {
         getRouters().then((res) => {
-          console.log("什么情况")
-          console.log(res)
           const RoutesData = filterAsyncRouter(res.data)
           //添加404页面
           RoutesData.push(error404)
@@ -70,20 +69,23 @@ const useMenuStore = defineStore('Menu', {
       })
     },
     //获取菜单列表
-    menuList(data: any) {
-      return new Promise((resolve) => {
-        reqMenuList(data).then((res) => {
-          resolve(res.data)
-        })
-      })
+    async menuList(query: any) {
+      const result: any = await reqMenuList(query)
+      if (result.code == 200) {
+        this.dataList = result.data
+        return Promise.resolve(result.data)
+      } else {
+        ElMessage.error({ message: '失败信息: ' + result.msg })
+      }
     },
     //添加菜单
     async addMenu(data: any) {
       const result: any = await reqAddMenu(data)
       if (result.code == 200) {
-        return result
+        ElMessage.success({ message: '添加成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
     //将菜单列表转换成select选项数据
@@ -113,27 +115,30 @@ const useMenuStore = defineStore('Menu', {
     async delMenu(data: any) {
       const result: any = await reqDelMenu(data)
       if (result.code == 200) {
-        return result
+        ElMessage.success({ message: '删除成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
-    //修改用户信息
-    async upInfoMenu(data: any) {
-      const result: any = await reqUpInfoMenu(data)
-      if (result.code == 200) {
-        return result
-      } else {
-        return Promise.reject(result.msg)
-      }
-    },
+   //修改用户信息
+   async upInfoMenu(data: any) {
+    const result: any = await reqUpInfoMenu(data)
+    if (result.code == 200) {
+      ElMessage.success({ message: '修改成功' })
+      return Promise.resolve()
+    } else {
+      ElMessage.error({ message: '失败信息: ' + result.msg })
+    }
+  },
     //修改菜单的状态以及所有子菜单的状态
     async upStatusMenu(data: any) {
       const result: any = await reqUpStatusMenu(data)
       if (result.code == 200) {
-        return result
+        ElMessage.success({ message: '状态更新成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
      //获取子菜单的最后sort+100

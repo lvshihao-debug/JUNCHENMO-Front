@@ -174,12 +174,18 @@ const layoutSettingStore = useLayoutSettingStore()
 const instance = getCurrentInstance();
 
 onMounted(() => {
+  operationLogStore.tableLoading = true;
+
   //进入页面初始化的数据 手动触发更新页数的逻辑
   handleSizeChange(Number(layoutSettingStore.setting.size))
   //加载可选操作人员名称选项
   operationLogStore.getOperNameOptionSelect()
   //加载可选操作模块选项
   operationLogStore.getTitleOptionSelect()
+
+  setTimeout(() => {
+    operationLogStore.tableLoading = false
+  }, 500)
 })
 //表单对象
 const searchFormRef = ref<FormInstance>()
@@ -188,33 +194,40 @@ const more = ref(false)
 //请求时间范围
 const requestTimeRange=ref([])
 
-//页面数据加载的状态
-const loadingStatus = computed(() => {
-  return !operationLogStore.tableLoading || !layoutSettingStore.setting.dataLoading;
-});
-//根据搜索条件进行搜索
-const searchList = () => {
-  operationLogStore.tableLoading = true;
 
+
+//刷新数据方法
+const refresh = () => {
   const searchQuery = operationLogStore.searchForm;
   (instance?.proxy as any).$addPage(searchQuery,operationLogStore.dataList.page,operationLogStore.dataList.size);
   (instance?.proxy as any).$addDateRange(searchQuery, requestTimeRange.value, 'RequestTime');
   operationLogStore.operationLogList(searchQuery);
+}
+//根据搜索条件进行搜索
+const searchList = () => {
+  operationLogStore.tableLoading = true;
+
+  refresh();
 
   setTimeout(() => {
     operationLogStore.tableLoading = false
   }, 500)
 }
 
+//页面数据加载的状态
+const loadingStatus = computed(() => {
+  return !operationLogStore.tableLoading || !layoutSettingStore.setting.dataLoading;
+});
+
 //页码变更处理方法
 const handleCurrentChange = (currentPage: number) => {
   operationLogStore.dataList.page = currentPage
-  searchList()
+  refresh();
 }
 //页数切换触发的事件
 const handleSizeChange = (pageSize: number) => {
   operationLogStore.dataList.size = pageSize
-  searchList()
+  refresh();
 }
 
 //选中数据触发的事件
@@ -227,7 +240,7 @@ const deleteItem = (item: any) => {
   operationLogStore
     .deleteOperationLog([item.operId])
     .then(() => {
-      searchList()
+      refresh();
     })
 }
 
@@ -239,7 +252,7 @@ const deleteItems = () => {
       return;
   }
   operationLogStore.deleteOperationLog(operIds).then(() => {
-      searchList()
+    refresh();
   })
 }
 
@@ -255,7 +268,7 @@ const exportData = () => {
 //清空操作日志数据
 const clearItems = () => {
   operationLogStore.clearOperationLog().then(() => {
-      searchList()
+    refresh();
   })
 }
 

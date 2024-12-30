@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import useRoleStore from '@/store/modules/user/role'
-import useMenuStore from '@/store/modules/menu'
+import useMenuStore from '@/store/modules/acl/menu'
 //仓库
 const roleStore = useRoleStore()
 const menuStore = useMenuStore()

@@ -52,7 +52,7 @@
 
 
 <script lang="ts" setup>
-import useMenuStore from '@/store/modules/menu'
+import useMenuStore from '@/store/modules/acl/menu'
 const menuStore = useMenuStore()
 //选中的值数组
 const checkedKeys = ref<Array<number>>([]);

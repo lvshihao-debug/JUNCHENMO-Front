@@ -98,7 +98,7 @@ import { useRoute } from 'vue-router'
 //获取用户相关的小仓库
 import UserStore from '@/store/modules/user/user'
 //获取用户相关的小仓库
-import PermissionStore from '@/store/modules/menu'
+import PermissionStore from '@/store/modules/acl/menu'
 //获取设置相关的小仓库
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 //获取layout配置相关的仓库

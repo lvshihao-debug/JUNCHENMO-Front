@@ -6,19 +6,19 @@
           <h4 :id="titleId" :class="titleClass">新增字典配置项</h4>
         </div>
       </template>
-      <el-form :model="dictTypeStore.commonform" label-width="100" :rules="formRules" ref="formRef">
+      <el-form :model="dictTypeStore.commonForm" label-width="100" :rules="formRules" ref="formRef">
         <el-form-item label="配置项" prop="name">
-          <el-input v-model="dictTypeStore.commonform.name" autocomplete="off" placeholder="请输入配置项" />
+          <el-input v-model="dictTypeStore.commonForm.name" autocomplete="off" placeholder="请输入配置项" />
         </el-form-item>
         <el-form-item label="配置值类型" prop="type">
-          <el-select v-model="dictTypeStore.commonform.type">
+          <el-select v-model="dictTypeStore.commonForm.type">
             <template v-for="item in loadDictDataByName('extrasDefaultStatus')">
                 <el-option :label="item.description" :value="item.value" />
              </template>
           </el-select>
         </el-form-item>
         <el-form-item label="配置描述" prop="description">
-          <el-input v-model="dictTypeStore.commonform.description" autocomplete="off" placeholder="请输入配置描述" />
+          <el-input v-model="dictTypeStore.commonForm.description" autocomplete="off" placeholder="请输入配置描述" />
         </el-form-item>
         <el-divider>
           额外参数定义
@@ -82,7 +82,7 @@ const emit = defineEmits(['refreshData']);
 // 打开modal框
 const open = () => {
   dictTypeStore.extraSchemas.length = 0;
-  (instance?.proxy as any).$resetObj(dictTypeStore.commonform)
+  (instance?.proxy as any).$resetObj(dictTypeStore.commonForm)
   fromOpenStatus.value = true
 };
 
@@ -92,7 +92,7 @@ const addItem = (formEl: FormInstance | undefined) => {
   // 验证参数
   formEl.validate((valid) => {
     if (valid) {
-      dictTypeStore.commonform.extraSchema = JSON.stringify(dictTypeStore.extraSchemas) 
+      dictTypeStore.commonForm.extraSchema = JSON.stringify(dictTypeStore.extraSchemas) 
       // 验证额外参数
       if (dictTypeStore.extraSchemas) {
         for (let i = 0; i < dictTypeStore.extraSchemas.length; i++) {
@@ -110,14 +110,12 @@ const addItem = (formEl: FormInstance | undefined) => {
         }
       }
       dictTypeStore
-        .addDictType(dictTypeStore.commonform)
+        .addDictType(dictTypeStore.commonForm)
         .then(() => {
-          fromOpenStatus.value = false
-          emit('refreshData');
-          ElMessage.success({ message: '添加成功' })
-        })
-        .catch((error) => {
-          ElMessage.error({ message: error })
+          const searchQuery = dictTypeStore.searchForm;
+          (instance?.proxy as any).$addPage(searchQuery, dictTypeStore.dataList.page, dictTypeStore.dataList.size);
+          dictTypeStore.dictTypeList(searchQuery);
+          fromOpenStatus.value = false;
         })
     } else {
       //弹出数据校验失败的message

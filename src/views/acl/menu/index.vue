@@ -1,16 +1,15 @@
 <template>
   <div>
-
     <!--权限列表条件卡片-->
-    <el-card>
-      <el-form :inline="true" :model="menuStore.searchform" class="searchForm" label-position="right"
+    <el-card class="searchCard">
+      <el-form :inline="true" :model="menuStore.searchForm" class="searchForm" label-position="right"
         label-width="auto" ref="searchFormRef">
         <el-row>
           <el-form-item label="菜单名称" prop="name">
-            <el-input v-model="menuStore.searchform.name" />
+            <el-input v-model="menuStore.searchForm.name" />
           </el-form-item>
           <el-form-item label="菜单状态" prop="status">
-            <el-select v-model="menuStore.searchform.status">
+            <el-select v-model="menuStore.searchForm.status">
               <el-option label="启用" value="0" />
               <el-option label="禁用" value="1" />
             </el-select>
@@ -22,7 +21,7 @@
                 <svg-icon name="加号" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList(menuStore.searchform)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList(menuStore.searchForm)">
               <template #icon>
                 <svg-icon name="搜索" />
               </template>
@@ -54,7 +53,7 @@
       </el-form>
     </el-card>
     <!-- 权限列表卡片 -->
-    <el-card class="card-table-style" v-if="!menuStore.tableLoading||!LoadingStatus">
+    <el-card class="card-table-style" v-if="loadingStatus">
       <el-table :data="menuStore.dataList" table-layout="auto" row-key="menuId"  
         :default-expand-all="menuStore.expandStatus" :default-sort="{ prop: 'sort', order: 'ascending' }"  :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
         v-if="menuStore.refreshTable">
@@ -64,7 +63,7 @@
             <svg-icon :name="scope.row.icon" :color="iconColor" />
           </template>
         </el-table-column>
-        <el-table-column prop="type" label="类型" width="25px" align="center">
+        <el-table-column prop="type" label="类型" width="60px" align="center">
           <template #default="scope">
             <el-tag size="small">
               {{ getStatusByType(scope.row.type) }}
@@ -165,8 +164,8 @@
     </div>
 
     <!--弹出框组件列表-->
-    <MenuAddFromModal ref="menuAddFromModal" @refreshData="refreshData"></MenuAddFromModal>
-    <MenuUpdateFromModal ref="menuUpdateFromModal" @refreshData="refreshData"></MenuUpdateFromModal>
+    <MenuAddFromModal ref="menuAddFromModal" ></MenuAddFromModal>
+    <MenuUpdateFromModal ref="menuUpdateFromModal"></MenuUpdateFromModal>
   </div>
 </template>
 
@@ -183,7 +182,7 @@ import type { FromModal } from '@/utils/commonType'
 import MenuAddFromModal from './components/menu-add-from-modal.vue'
 import MenuUpdateFromModal from './components/menu-update-from-modal.vue'
 //仓库
-import useMenuStore from '@/store/modules/menu'
+import useMenuStore from '@/store/modules/acl/menu'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 import useDictDataStore from '@/store/modules/acl/dictData'
 
@@ -192,17 +191,17 @@ const instance = getCurrentInstance();
 const menuStore = useMenuStore()
 const layoutSettingStore = useLayoutSettingStore()
 const dictDataStore = useDictDataStore()
-const LoadingStatus = ref(false) 
 
 onMounted(() => {
-  LoadingStatus.value=layoutSettingStore.setting.dataLoading
   menuStore.tableLoading = true
+  
   //进入页面初始化的数据
-  searchList(menuStore.searchform)
+  searchList();
   //初始化字典数据
-  loadDictData()
+  loadDictData();
+
   setTimeout(() => {
-  menuStore.tableLoading = false
+      menuStore.tableLoading = false
   },500)
 })
 
@@ -212,19 +211,26 @@ const searchFormRef = ref<FormInstance>()
 const menuAddFromModal = ref<FromModal>()
 const menuUpdateFromModal = ref<FromModal>()
 
+//页面数据加载的状态
+const loadingStatus = computed(() => {
+  return !menuStore.tableLoading || !layoutSettingStore.setting.dataLoading;
+});
 
+
+//刷新数据方法
+const refresh = () => {
+  menuStore.menuList(menuStore.searchForm)
+}
 
 //根据搜索条件进行搜索
-const searchList = (searchData: any) => {
-  menuStore
-    .menuList(searchData)
-    .then((resp: any) => {
-      menuStore.dataList = resp
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+const searchList = () => {
+  menuStore.tableLoading = true
 
+  refresh();
+
+  setTimeout(() => {
+      menuStore.tableLoading = false
+  },500)
 }
 
 //删除菜单触发的事件
@@ -232,11 +238,7 @@ const deleteItemClick = (item: any) => {
   menuStore
     .delMenu(item.menuId)
     .then(() => {
-      searchList(menuStore.searchform)
-      ElMessage.success({ message: '删除成功' })
-    })
-    .catch((error: any) => {
-      ElMessage.error({ message: error })
+      refresh();
     })
 }
 
@@ -249,11 +251,7 @@ const tagUpdateStatusButtonClick = (item: any) => {
   menuStore
     .upStatusMenu(item)
     .then(() => {
-      searchList(menuStore.searchform)
-      ElMessage.success({ message: '状态更新成功' })
-    })
-    .catch((error: any) => {
-      ElMessage.error({ message: error })
+      refresh();
     })
 }
 
@@ -263,11 +261,7 @@ const tagUpdateVisibleButtonClick = (item: any) => {
   menuStore
     .upStatusMenu(item)
     .then(() => {
-      searchList(menuStore.searchform)
-      ElMessage.success({ message: '状态更新成功' })
-    })
-    .catch((error: any) => {
-      ElMessage.error({ message: error })
+      refresh();
     })
 }
 
@@ -284,10 +278,7 @@ const getStatusByType = (type: any) => {
   }
 }
 
-//提供给子组件刷新数据的方法
-const refreshData = () => {
-  searchList(menuStore.searchform)
-}
+
 
 //重置搜索表单
 const resetSearchForm = async (ruleFormRef: any) => {

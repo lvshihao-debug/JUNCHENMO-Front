@@ -6,42 +6,42 @@
                 <h4 :id="titleId" :class="titleClass">修改菜单</h4>
             </div>
         </template>
-        <el-form :model="menuStore.commonform" label-width="80" :rules="formRules" ref="formRef">
+        <el-form :model="menuStore.commonForm" label-width="80" :rules="formRules" ref="formRef">
             <el-form-item v-show="!catalogueStatus" label="上级菜单" prop="parentId" required>
-                <el-tree-select check-strictly v-model="menuStore.commonform.parentId" :data="treeData"
+                <el-tree-select check-strictly v-model="menuStore.commonForm.parentId" :data="treeData"
                     :render-after-expand="false" />
             </el-form-item>
             <el-form-item label="菜单名称" prop="name" required>
-                <el-input v-model="menuStore.commonform.name" autocomplete="off" placeholder="请输入菜单名称" />
+                <el-input v-model="menuStore.commonForm.name" autocomplete="off" placeholder="请输入菜单名称" />
             </el-form-item>
             <el-form-item label="菜单类型" prop="type" required>
-                <el-radio-group v-model="menuStore.commonform.type" size="small">
+                <el-radio-group v-model="menuStore.commonForm.type" size="small">
                     <template v-for="item in loadDictDataByName('menuType')">
                         <el-radio-button :label="item.label" :value="item.value" />
                     </template>
                 </el-radio-group>
             </el-form-item>
             <el-form-item v-show="!featureStatus" label="菜单图标" prop="icon">
-                <JcmIconSelect :icon="menuStore.commonform.icon" style="width: 100%" @selected="selected" />
+                <JcmIconSelect :icon="menuStore.commonForm.icon" style="width: 100%" @selected="selected" />
             </el-form-item>
             <el-form-item v-show="!featureStatus" label="组件" prop="component">
-                <el-input v-model="menuStore.commonform.component" autocomplete="off" placeholder="路由组件名称" />
+                <el-input v-model="menuStore.commonForm.component" autocomplete="off" placeholder="路由组件名称" />
             </el-form-item>
             <el-form-item v-show="!featureStatus" label="外联地址" prop="link">
-                <el-input v-model="menuStore.commonform.link" autocomplete="off" placeholder="组件名称与外联地址二选一" />
+                <el-input v-model="menuStore.commonForm.link" autocomplete="off" placeholder="组件名称与外联地址二选一" />
             </el-form-item>
             <el-form-item v-show="featureStatus" label="菜单权限" prop="permission">
-                <el-input v-model="menuStore.commonform.permission" autocomplete="off"
+                <el-input v-model="menuStore.commonForm.permission" autocomplete="off"
                     placeholder="菜单权限 system:user:list" />
             </el-form-item>
             <el-form-item label="菜单顺序" prop="sort" required>
-                <el-input-number v-model="menuStore.commonform.sort" :min="0" />
+                <el-input-number v-model="menuStore.commonForm.sort" :min="0" />
             </el-form-item>
             <el-form-item v-show="!featureStatus" label="是否可见" prop="visible" required>
-                <el-switch v-model="menuStore.commonform.visible" class="mb-2" />
+                <el-switch v-model="menuStore.commonForm.visible" class="mb-2" />
             </el-form-item>
             <el-form-item v-show="!featureStatus" label="是否缓存" prop="keepAlive" required>
-                <el-switch v-model="menuStore.commonform.keepAlive" class="mb-2" />
+                <el-switch v-model="menuStore.commonForm.keepAlive" class="mb-2" />
             </el-form-item>
         </el-form>
         <template #footer>
@@ -59,7 +59,7 @@
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
 
-import useMenuStore from '@/store/modules/menu'
+import useMenuStore from '@/store/modules/acl/menu'
 import { formRules } from '../types/form.rules'
 //仓库
 const menuStore = useMenuStore()
@@ -69,8 +69,6 @@ const instance = getCurrentInstance()
 const formRef = ref<FormInstance>()
 //表单打开的状态
 const fromOpenStatus = ref(false)
-//接收刷新父组件数据的方法
-const emit = defineEmits(['refreshData'])
 
 //上级菜单的树形列表
 let treeData = ref([]) as any;
@@ -82,11 +80,11 @@ const featureStatus = ref(false)
 const open = (item: any) => {
     treeData = menuStore.getTreeSelectData(menuStore.dataList)
     fromOpenStatus.value = true
-    Object.keys(menuStore.commonform).forEach((key) => {
+    Object.keys(menuStore.commonForm).forEach((key) => {
         if (key == "parentId") {
-            menuStore.commonform.parentId = "" + item[key];
+            menuStore.commonForm.parentId = "" + item[key];
         } else {
-            menuStore.commonform[key] = item[key];
+            menuStore.commonForm[key] = item[key];
         }
     });
 }
@@ -97,14 +95,11 @@ const updateInfoItem = (formEl: FormInstance | undefined) => {
     formEl.validate((valid) => {
         if (valid) {
             menuStore
-                .upInfoMenu(menuStore.commonform)
+                .upInfoMenu(menuStore.commonForm)
                 .then(() => {
+                    const searchQuery = menuStore.searchForm;
+                    menuStore.menuList(searchQuery);
                     fromOpenStatus.value = false
-                    emit('refreshData');
-                    ElMessage.success({ message: '信息修改成功' })
-                })
-                .catch((error) => {
-                    ElMessage.error({ message: error })
                 })
         } else {
             //弹出数据校验失败的message
@@ -114,17 +109,17 @@ const updateInfoItem = (formEl: FormInstance | undefined) => {
 }
 
 //监听新增弹窗中，菜单的类型，如果是目录，则不展示父菜单选项，默认父菜单id是0
-watch(() => menuStore.commonform.type, (newVal) => {
+watch(() => menuStore.commonForm.type, (newVal) => {
     catalogueStatus.value = (newVal == 0)
     featureStatus.value = (newVal == 2)
 });
 
 //选择图标子组件调用的方法
-const selected = (val: any) => { menuStore.commonform.icon = val }
+const selected = (val: any) => { menuStore.commonForm.icon = val }
 
 //根据名称加载字典数据
-const loadDictDataByName = (name:string) => {
- return menuStore.dictData.filter((item: any) => item.name === name)
+const loadDictDataByName = (name: string) => {
+    return menuStore.dictData.filter((item: any) => item.name === name)
 }
 
 

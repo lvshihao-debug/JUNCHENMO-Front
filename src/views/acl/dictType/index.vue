@@ -1,17 +1,17 @@
 <template>
   <div>
     <el-card class="searchCard">
-      <el-form :inline="true" :model="dictTypeStore.searchform" class="searchForm" label-position="right"
+      <el-form :inline="true" :model="dictTypeStore.searchForm" class="searchForm" label-position="right"
         label-width="auto" ref="searchFormRef">
         <el-row style="display: flex">
           <el-form-item label="配置项" prop="name">
-            <el-input v-model="dictTypeStore.searchform.name" />
+            <el-input v-model="dictTypeStore.searchForm.name" />
           </el-form-item>
           <el-form-item label="描述" prop="description">
-            <el-input v-model="dictTypeStore.searchform.description" />
+            <el-input v-model="dictTypeStore.searchForm.description" />
           </el-form-item>
           <el-form-item label="状态" prop="status">
-            <el-select v-model="dictTypeStore.searchform.status">
+            <el-select v-model="dictTypeStore.searchForm.status">
               <el-option label="正常" value="0" />
               <el-option label="禁用" value="1" />
             </el-select>
@@ -22,7 +22,7 @@
                 <svg-icon name="擦除" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList(dictTypeStore.searchform)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList()">
               <template #icon>
                 <svg-icon name="搜索" />
               </template>
@@ -57,7 +57,7 @@
         </div>
       </template>
 
-      <el-table :data="dataList.list" table-layout="auto" @selection-change="handleSelectionChange">
+      <el-table :data="dictTypeStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="dictTypeId" label="ID" align="center" />
         <el-table-column prop="name" label="配置项" align="center" />
@@ -114,7 +114,7 @@
           <!--分页-->
           <el-pagination :page-sizes="[10, 20, 30, 40]" small="small" background="true"
             :default-page-size="Number(layoutSettingStore.setting.size)"
-            layout="total, sizes, prev, pager, next, jumper" :total="dataList.total" @size-change="handleSizeChange"
+            layout="total, sizes, prev, pager, next, jumper" :total="dictTypeStore.dataList.total" @size-change="handleSizeChange"
             @current-change="handleCurrentChange"></el-pagination>
         </div>
       </template>
@@ -125,8 +125,8 @@
     </div>
 
     <!--弹出框组件列表-->
-    <DictTypeAddFromModal ref="dictTypeAddFromModal" @refreshData="refreshData"></DictTypeAddFromModal>
-    <DictTypeUpdateFromModal ref="dictTypeUpdateFromModal" @refreshData="refreshData"></DictTypeUpdateFromModal>
+    <DictTypeAddFromModal ref="dictTypeAddFromModal" ></DictTypeAddFromModal>
+    <DictTypeUpdateFromModal ref="dictTypeUpdateFromModal" ></DictTypeUpdateFromModal>
     <!-- json 查看器模态框 -->
     <JsonEditor ref="dictTypeViewFromModal" />
   </div>
@@ -141,20 +141,26 @@ import DictTypeAddFromModal from './components/dict-type-add-from-modal.vue'
 import DictTypeUpdateFromModal from './components/dict-type-update-from-modal.vue'
 //仓库
 import useDictTypeStore from '@/store/modules/acl/dictType'
-import useDictDataStore from '@/store/modules/dictData'
+import useDictDataStore from '@/store/modules/acl/dictData'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 
+//获取当前组件实例
+const instance = getCurrentInstance()
 const dictDataStore = useDictDataStore()
 const dictTypeStore = useDictTypeStore()
 const layoutSettingStore = useLayoutSettingStore()
 
 onMounted(() => {
+  dictTypeStore.tableLoading = true
+
   //手动触发更新页数的逻辑
   handleSizeChange(Number(layoutSettingStore.setting.size))
-  //进入页面初始化的数据
-  searchList(dictTypeStore.searchform)
   //初始化字典数据
   loadDictData()
+
+  setTimeout(() => {
+    dictTypeStore.tableLoading = false
+  }, 500)
 });
 
 //表单对象
@@ -164,31 +170,24 @@ const dictTypeAddFromModal = ref<FromModal>()
 const dictTypeUpdateFromModal = ref<FromModal>()
 const dictTypeViewFromModal = ref();
 
-
-
-//表格数据
-const dataList = reactive({
-  list: [],
-  total: 0,
-  page: 1,
-  size: 10,
-})
 //页面数据加载的状态
 const loadingStatus = computed(() => {
   return !dictTypeStore.tableLoading || !layoutSettingStore.setting.dataLoading;
 });
+
+//刷新数据方法
+const refresh = () => {
+  const searchQuery = dictTypeStore.searchForm;
+  (instance?.proxy as any).$addPage(searchQuery, dictTypeStore.dataList.page, dictTypeStore.dataList.size);
+  dictTypeStore.dictTypeList(searchQuery);
+}
+
 //根据搜索条件进行搜索
-const searchList = (searchData: any) => {
+const searchList = () => {
   dictTypeStore.tableLoading = true
-  dictTypeStore
-    .dictTypeList(searchData, dataList.page, dataList.size)
-    .then((resp) => {
-      dataList.list = resp.rows
-      dataList.total = resp.total
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+
+  refresh();
+
   setTimeout(() => {
     dictTypeStore.tableLoading = false
   }, 500)
@@ -196,13 +195,13 @@ const searchList = (searchData: any) => {
 
 //页码变更处理方法
 const handleCurrentChange = (currentPage: number) => {
-  dataList.page = currentPage
-  searchList(dictTypeStore.searchform)
+  dictTypeStore.dataList.page = currentPage
+  refresh();
 }
 //页数切换触发的事件
 const handleSizeChange = (pageSize: number) => {
-  dataList.size = pageSize
-  searchList(dictTypeStore.searchform)
+  dictTypeStore.dataList.size = pageSize
+  refresh();
 }
 
 //选中数据触发的事件
@@ -215,11 +214,7 @@ const deleteItem = (item: any) => {
   dictTypeStore
     .deleteDictType([item.dictTypeId])
     .then(() => {
-      searchList(dictTypeStore.searchform)
-      ElMessage.success({ message: '删除成功' })
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
+      refresh();
     })
 }
 
@@ -229,17 +224,12 @@ const deleteItems = () => {
   dictTypeStore
     .deleteDictType(dictTypeIds)
     .then(() => {
-      searchList(dictTypeStore.searchform)
-      ElMessage.success({ message: '删除成功' })
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
+      refresh();
     })
 }
 
 //点击查看按钮触发的事件
 const getInfoButtonClick = (item: any) => {
-  let extras = undefined
   dictDataStore.
     dictDataInfo(item.name)
     .then((resp) => {
@@ -252,14 +242,7 @@ const getInfoButtonClick = (item: any) => {
 
 //刷新字典数据列表缓存
 const refreshCache = () => {
-  dictDataStore
-    .dictDataRefreshCache()
-    .then((resp) => {
-      ElMessage.success({ message: '刷新成功' })
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+  dictDataStore.dictDataRefreshCache()
 }
 //加载所需要的字典数据
 const loadDictData = () => {
@@ -312,11 +295,6 @@ const getColorByType = (type: any) => {
     case 4:
       return '#e03e36';
   }
-}
-
-//提供给子组件刷新数据的方法
-const refreshData = () => {
-  searchList(dictTypeStore.searchform)
 }
 
 //重置搜索表单

@@ -139,8 +139,14 @@ const layoutSettingStore = useLayoutSettingStore()
 
 
 onMounted(() => {
+  roleStore.tableLoading = true;
+
   //进入页面初始化的数据 手动触发更新页数的逻辑
   handleSizeChange(Number(layoutSettingStore.setting.size))
+  
+  setTimeout(() => {
+    roleStore.tableLoading = false
+  }, 500)
 })
 
 //表单对象
@@ -151,14 +157,18 @@ const roleAuthMenusFromModal = ref<FromModal>()
 const roleUpdateFromModal = ref<FromModal>()
 
 
+//刷新数据方法
+const refresh = () => {
+  const searchQuery = roleStore.searchForm;
+  (instance?.proxy as any).$addPage(searchQuery, roleStore.dataList.page, roleStore.dataList.size);
+  roleStore.roleList(searchQuery);
+}
 
 //根据搜索条件进行搜索
 const searchList = () => {
   roleStore.tableLoading = true;
 
-  const searchQuery = roleStore.searchForm;
-  (instance?.proxy as any).$addPage(searchQuery, roleStore.dataList.page, roleStore.dataList.size);
-  roleStore.roleList(searchQuery);
+  refresh();
 
   setTimeout(() => {
     roleStore.tableLoading = false
@@ -172,12 +182,12 @@ const loadingStatus = computed(() => {
 //页码变更处理方法
 const handleCurrentChange = (currentPage: number) => {
   roleStore.dataList.page = currentPage
-  searchList()
+  refresh();
 }
 //页数切换触发的事件
 const handleSizeChange = (pageSize: number) => {
   roleStore.dataList.size = pageSize
-  searchList()
+  refresh();
 }
 
 //选中数据触发的事件
@@ -188,7 +198,7 @@ const handleSelectionChange = (val: []) => {
 //删除角色触发的事件
 const deleteItem = (item: any) => {
   roleStore.deleteRole([item.roleId]).then(() => {
-      searchList()
+    refresh();
   })
 }
 
@@ -196,7 +206,7 @@ const deleteItem = (item: any) => {
 const deleteItems = () => {
   const roleIds = roleStore.multipleSelection.map((item: any) => item.roleId);
   roleStore.deleteRole(roleIds).then(() => {
-      searchList()
+    refresh();
   })
 }
 

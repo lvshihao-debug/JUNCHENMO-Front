@@ -1,270 +1,201 @@
 <template>
-    <div>
-        <div>
-            <div class="login-container">
-            <div class="login-card">
-                <div class="column">
-                    <h1>登陆</h1>
-                    <p>欢迎来到三体世界，请输入账号密码！</p>
-                    <form>
-                        <div class="form-item">
-                            <input type="text" class="form-element" placeholder="用户名" />
-                        </div>
-                        <div class="form-item">
-                            <input type="password" class="form-element" placeholder="密码" />
-                        </div>
-                        <div class="form-checkbox-item">
-                            <input type="checkbox" id="rememberMe" checked />
-                            <label for="rememberMe">记住我</label>
-                        </div>
-                        <div class="flex">
-                            <button type="button">登陆</button>
-                            <a href="#">忘记密码，点我重置！</a>
-                        </div>
-                        <p style="margin-top: 3rem; margin-bottom: 1.5rem">第三方账号登入</p>
-                        <div class="social-buttons">
-                            <a href="#" class="wechat">
-                                <i class="bi bi-wechat"></i>
-                            </a>
-                            <a href="#" class="twitter">
-                                <i class="bi bi-twitter"></i>
-                            </a>
-                            <a href="#" class="github">
-                                <i class="bi bi-github"></i>
-                            </a>
-                        </div>
-                    </form>
-                </div>
-                <div class="column">
-                    <h2>自然选择号欢迎您登舰！</h2>
-                    <p>如果你没有账号，你想要现在注册一个吗？</p>
-                    <a href="#">注册</a>
-                </div>
+    <el-row>
+        <el-col :span="24">
+            <div class="form-control">
+                <input class="input input-alt" placeholder="请输入提示词" required="" type="text">
+                <span class="input-border input-border-alt"></span>
+
             </div>
-        </div>
-        </div>
-       
-    </div>
+        </el-col>
 
+    </el-row>
+    <el-row>
+        <el-card>
+            <template #header>
+                <div class="card-header-style">
+                    <div class="card-header">
+                        <span>表结构展示</span>
+                    </div>
+                    <div class="card-end">
+                        <JcmButton :buttonBgColor="layoutSettingStore.getThemeStatus ? '#fff' : '#29909'"
+                            style="margin-top: 15px;" @click="search()">
+                            <template #icon>
+                                <svg-icon name="搜索" width="20" height="20" />
+                            </template>
+                        </JcmButton>
+                    </div>
+                </div>
+            </template>
+
+
+            <vxe-table :edit-config="{ mode: 'row', trigger: 'click' }" :data="tableData"
+                height="500px">
+                <vxe-column type="seq" width="60"></vxe-column>
+                <vxe-column field="name" title="名" min-width="180" :edit-render="{ autoFocus: 'input' }">
+                    <template #edit="{ row }">
+                        <el-input v-model="row.name" />
+                    </template>
+                    <template #default="{ row }">
+                        <span>{{ row.name }}</span>
+                    </template>
+                </vxe-column>
+                <vxe-column field="role" title="类型" width="180" :edit-render="{ autoFocus: 'input' }">
+                    <template #edit="{ row }">
+                        <el-select v-model="row.role">
+                            <el-option label="启用" value="biy" />
+                            <el-option label="禁用" value="string" />
+                        </el-select>
+                    </template>
+                    <template #default="{ row }">
+                        <span>{{ row.role }}</span>
+                    </template>
+                </vxe-column>
+                <vxe-column field="integer" title="长度" width="180" :edit-render="{}">
+                    <template #edit="{ row }">
+                        <vxe-input v-model="row.integer" type="integer"></vxe-input>
+                    </template>
+                    <template #default="{ row }">
+                        <span>{{ row.integer }}</span>
+                    </template>
+                </vxe-column>
+                <vxe-column field="float" title="小数点" width="180" :edit-render="{}">
+                    <template #edit="{ row }">
+                        <vxe-input v-model="row.float" type="float"></vxe-input>
+                    </template>
+                    <template #default="{ row }">
+                        <span>{{ row.float }}</span>
+                    </template>
+                </vxe-column>
+                <vxe-column field="date" title="不是null" width="180" :edit-render="{}">
+                    <template #edit="{ row }">
+                        <vxe-input v-model="row.date" type="date"></vxe-input>
+                    </template>
+                    <template #default="{ row }">
+                        <span>{{ row.date }}</span>
+                    </template>
+                </vxe-column>
+                <vxe-column field="year" title="主键" width="180" :edit-render="{}">
+                    <template #edit="{ row }">
+                        <vxe-input v-model="row.year" type="year"></vxe-input>
+                    </template>
+                    <template #default="{ row }">
+                        <span>{{ row.year }}</span>
+                    </template>
+                </vxe-column>
+                <vxe-column field="quarter" title="注释" width="180" :edit-render="{}">
+                    <template #edit="{ row }">
+                        <vxe-input v-model="row.quarter" type="quarter"></vxe-input>
+                    </template>
+                    <template #default="{ row }">
+                        <span>{{ row.quarter }}</span>
+                    </template>
+                </vxe-column>
+
+            </vxe-table>
+        </el-card>
+    </el-row>
 </template>
-<script setup lang="ts">
-/** 
- *  作者: JUN CHEN MO
- *  time: 2024/12/26 16:33:18  
- */
 
+<script lang="ts" setup>
+import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
+const layoutSettingStore = useLayoutSettingStore()
 
+// 如果要定义一些内部使用的响应式数据，可以使用 ref、reactive 等
+// 比如记录输入框的值
+const inputValue = ref('');
+
+interface RowVO {
+    id: number
+    name: string
+    role: string
+    sex: string
+    num: string
+    float: string
+    integer: string
+    date: string
+    time: string
+    year: string
+    quarter: string
+    month: string
+    week: string
+    datetime: string
+    address: string
+}
+
+const tableData = ref<RowVO[]>([
+    { id: 10001, name: 'Test1', role: 'Develop', sex: 'Man', num: '', integer: '', float: '', date: '', time: '', year: '', quarter: '', month: '', week: '', datetime: '', address: 'test abc' },
+    { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', num: '22', integer: '23', float: '22.35', date: '', time: '', year: '', quarter: '', month: '', week: '', datetime: '', address: 'Guangzhou' },
+    { id: 10003, name: 'Test3', role: 'PM', sex: 'Man', num: '32', integer: '', float: '', date: '2024-06-06', time: '10:30:45', year: '2024', quarter: '2024-01-01', month: '2024-06', week: '2024-06-03', datetime: '2024-06-06 10:30:45', address: 'Shanghai' }
+])
+
+const search = () => {
+console.log(tableData)
+}
+// 可以定义一些方法，比如处理输入框输入变化的方法
+const handleInput = (e) => {
+inputValue.value = e.target.value;
+// 这里也可以触发一个自定义事件，向外传递输入的值等，示例如下：
+// emit('input-change', inputValue.value);
+};
 </script>
 
 <style lang="scss" scoped>
-$theme-color: #010101;
-
-* {
-    margin: 0;
-    padding: 0;
+.el-card .el-card__body .el-input {
+    width: 100%;
+}
+.input {
+    color: #fff;
+    font-size: 0.9rem;
+    background-color: transparent;
+    width: 100%;
     box-sizing: border-box;
-    color: black;
+    padding-inline: 0.5em;
+    padding-block: 0.7em;
+    border: none;
+    border-bottom: var(--border-height) solid var(--border-before-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.login-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 1.5rem;
-
-    &:after {
-        content: "";
-        position: fixed;
-        inset: 0;
-        background-color: $theme-color;
-        width: 60%;
-        height: 100vh;
-        clip-path: polygon(0 100%, 0 0, 100% 0, 70% 100%);
-        z-index: -1;
-    }
+.input-border {
+    position: absolute;
+    background: var(--border-after-color);
+    width: 0%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    transition: width 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
 }
 
-.login-card {
-    background-color: white;
-    border: 1px solid #ddd;
-    box-shadow: 0 10px 50px -30px black;
-    width: 1200px;
-    border-radius: 30px;
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: auto auto;
-
-    a {
-        text-decoration: none;
-        color: $theme-color;
-    }
-
-    .column {
-        padding: 4rem;
-
-        &:last-child {
-            background: url(@/assets/bg2.jpg) center;
-            background-size: cover;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 40px;
-
-            &:after {
-                content: "";
-                position: absolute;
-                background: linear-gradient(90deg, white, #ffffff22);
-                inset: 0;
-            }
-
-            * {
-                z-index: 1;
-            }
-
-            a {
-                display: inline-block;
-                padding: 12px 30px;
-                font-size: 16px;
-                border: 2px solid $theme-color;
-                color: black;
-                border-radius: 50px;
-                cursor: pointer;
-                transition: all 0.3;
-                font-weight: 600;
-
-                &:hover {
-                    background-color: $theme-color;
-                    color: white;
-                }
-            }
-        }
-
-        &:last-child {
-            text-align: center;
-        }
-    }
-
-    h1 {
-        margin-bottom: 15px;
-    }
-
-    .form-element {
-        width: 100%;
-        border: none;
-        background-color: white;
-        padding: 20px 30px;
-        font-size: 18px;
-        border-radius: 50px;
-        transition: box-shadow 0.2s;
-
-        &:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px $theme-color;
-        }
-    }
-
-    input[type=checkbox] {
-        accent-color: $theme-color;
-        width: 16px;
-        height: 16px;
-    }
-
-    form {
-        margin-top: 3rem;
-
-        &>* {
-            margin-top: 1rem;
-        }
-
-        button {
-            background-color: $theme-color;
-            color: white;
-            border: none;
-            padding: 20px 40px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 18px;
-            transition: all 0.2s;
-
-            &:active {
-                scale: 0.95;
-                background-color: darken($theme-color, 10%);
-            }
-        }
-
-        .form-check-item {
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-            margin-left: 5px;
-        }
-    }
+.input:focus {
+    outline: none;
 }
 
-.flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.input:focus+.input-border {
+    width: 100%;
 }
 
-.social-buttons {
-    display: flex;
-    gap: 1rem;
-
-    a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 50px;
-        height: 50px;
-        border-radius: 50px;
-        font-size: 22px;
-        color: white;
-        background-color: green;
-
-        &.wechat {
-            background-color: #06ca5c;
-        }
-
-        &.twitter {
-            background-color: #55acee;
-        }
-
-        &.github {
-            background-color: #111;
-        }
-
-        &:hover {
-            scale: 0.95;
-        }
-    }
+.form-control {
+    position: relative;
+    --width-of-input: 300px;
 }
 
-//响应式布局
-@media(max-width:992px) {
-    .login-card {
-        display: block;
-        width: 500px;
-        text-align: center;
+.input-alt {
+    font-size: 1.2rem;
+    padding-inline: 1em;
+    padding-block: 0.8em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-        .column {
-            &:last-child {
-                display: none;
-            }
-        }
-    }
+.input-border-alt {
+    height: 3px;
+    background: linear-gradient(90deg, #FF6464 0%, #FFBF59 50%, #47C9FF 100%);
+    transition: width 0.4s cubic-bezier(0.42, 0, 0.58, 1.00);
+}
 
-    .flex {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .social-buttons {
-        justify-content: center;
-    }
+.el-card .el-card__body .el-select {
+    width: 100px;
+}
+.input-alt:focus+.input-border-alt {
+    width: 100%;
 }
 </style>

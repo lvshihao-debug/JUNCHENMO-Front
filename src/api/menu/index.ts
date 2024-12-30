@@ -28,11 +28,11 @@ export const API = {
 
 
 //获取菜单列表
-export const reqMenuList = (data: any) =>
+export const reqMenuList = (query: any) =>
   request<any>({
-    method: 'post',
+    method: 'get',
     url: API.MENU_LIST_URL,
-    data
+    params:query
 })
 
 

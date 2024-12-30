@@ -164,8 +164,12 @@ const layoutSettingStore = useLayoutSettingStore()
 onMounted(() => {
   //清空搜索条件
   userStore.searchForm = <User>{}
+  userStore.tableLoading = true;
   //进入页面初始化的数据 手动触发更新页数的逻辑
   handleSizeChange(Number(layoutSettingStore.setting.size));
+  setTimeout(() => {
+    userStore.tableLoading = false
+  }, 500)
 })
 
 //表单对象
@@ -178,13 +182,17 @@ const userAuthRolesFromModal = ref<FromModal>()
 //更多按钮状态
 const more = ref(false)
 
+//刷新数据方法
+const refresh = () => {
+  const searchQuery = userStore.searchForm;
+  (instance?.proxy as any).$addPage(searchQuery, userStore.dataList.page, userStore.dataList.size);
+  userStore.userList(searchQuery);
+}
 //根据搜索条件进行搜索
 const searchList = () => {
   userStore.tableLoading = true;
 
-  const searchQuery = userStore.searchForm;
-  (instance?.proxy as any).$addPage(searchQuery, userStore.dataList.page, userStore.dataList.size);
-  userStore.userList(searchQuery);
+  refresh();
 
   setTimeout(() => {
     userStore.tableLoading = false
@@ -198,19 +206,19 @@ const loadingStatus = computed(() => {
 //页码变更触发的方法
 const handleCurrentChange = (currentPage: number) => {
   userStore.dataList.page = currentPage
-  searchList();
+   refresh();
 }
 
 //页数切换触发的事件
 const handleSizeChange = (pageSize: number) => {
   userStore.dataList.size = pageSize
-  searchList();
+  refresh();
 }
 
 //删除用户触发的事件
 const deleteItem = (item: any) => {
   userStore.delUser(item.userId).then(() => {
-    searchList()
+    refresh();
   })
 
 }
@@ -221,7 +229,7 @@ const disableItem = (item: any) => {
     ElMessage.warning({ message: '用户已经是停用状态' })
   } else {
     userStore.upStatusUser(item).then(() => {
-      searchList()
+      refresh();
     })
   }
 }

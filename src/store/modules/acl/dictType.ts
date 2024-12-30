@@ -17,12 +17,18 @@ const useDictTypeStore = defineStore('dictType', {
       extraSchemas: [], //额外参数[{"parament":"name","type":"string"}]
       multipleSelection: [], //选的数据列表
       tableLoading: true, //表格数据加载loading
-      searchform: {
+      dataList: { //表格数据
+        list: [],
+        total: 0,
+        page: 1,
+        size: 10,
+      },
+      searchForm: {
         name: undefined,
         description: undefined,
         status: undefined,
       },
-      commonform: {
+      commonForm: {
         dictTypeId: undefined,
         name: undefined,
         type: undefined,
@@ -33,12 +39,13 @@ const useDictTypeStore = defineStore('dictType', {
   },
   actions: {
     //获取字典项列表
-    async dictTypeList(data: any, pageNum: number, pageSize: number) {
-      const result: any = await reqDictTypeList(data, pageNum, pageSize)
+    async dictTypeList(query: any) {
+      const result: any = await reqDictTypeList(query)
       if (result.code == 200) {
-        return result
+        this.dataList.list = result.rows
+        this.dataList.total = result.total
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
     //获取所有启用的字典项列表以及额外参数
@@ -54,27 +61,30 @@ const useDictTypeStore = defineStore('dictType', {
     async addDictType(data: any) {
       const result: any = await reqAddDictType(data)
       if (result.code == 200) {
-        return result
+        ElMessage.success({ message: '添加成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
     //删除字典项
     async deleteDictType(data: any) {
       const result: any = await reqDelDictType(data)
       if (result.code == 200) {
-        return result
+        ElMessage.success({ message: '删除成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
     //修改字典项
     async upInfoDictType(data: any) {
       const result: any = await reqUpInfoDictType(data)
       if (result.code == 200) {
-        return result
+        ElMessage.success({ message: '信息修改成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
   },

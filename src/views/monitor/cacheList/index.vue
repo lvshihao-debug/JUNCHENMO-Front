@@ -93,7 +93,7 @@
 <script setup lang="ts">
 import { VxeTableEvents } from 'vxe-table'
 //仓库
-import useDictDataStore from '@/store/modules/dictData'
+import useDictDataStore from '@/store/modules/acl/dictData'
 import useCacheListStore from '@/store/modules/montior/cacheList'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 
