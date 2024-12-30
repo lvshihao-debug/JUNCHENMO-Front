@@ -10,6 +10,8 @@ export const API = {
   LIST_URL: `${API_ENUM.SERVER_MODE_NAME.OPERACTION_LOG_DATA}/list`,
   //删除操作日志
   DELETE_URL: `${API_ENUM.SERVER_MODE_NAME.OPERACTION_LOG_DATA}/`,
+  //导出操作日志
+  EXPORT_URL: `${API_ENUM.SERVER_MODE_NAME.OPERACTION_LOG_DATA}/export`,
   //清空操作日志
   CLEAR_URL: `${API_ENUM.SERVER_MODE_NAME.OPERACTION_LOG_DATA}/clear`,
   //获取操作日志可选操作人员名称
@@ -22,20 +24,17 @@ export const API = {
 
 /**
  * 获取操作日志列表
- * @param {Object} data - 查询条件
+ * @param {Object} query - 查询条件
  * @param {number} pageNum - 当前页码
  * @param {number} pageSize - 每页数量
  */
 export const reqOperationLogList = (
-  data: any,
-  pageNum: number,
-  pageSize: number,
+  query: any
 ) =>
   request({
-    method: 'post',
+    method: 'get',
     url: API.LIST_URL,
-    params: { pageNum, pageSize },
-    data,
+    params: query
   })
 
 /**
@@ -47,6 +46,17 @@ export const reqDelOperationLog = (operationLogIds: any) =>
     method: 'delete',
     url: API.DELETE_URL,
     data: operationLogIds,
+  })
+
+/**
+ * 导出操作日志的接口
+ * @param {string} operationLog - 查询条件
+ */
+export const reqExportOperationLog = (operationLog: any) =>
+  request<any>({
+    method: 'post',
+    url: API.EXPORT_URL,
+    data: operationLog,
   })
 
 /**

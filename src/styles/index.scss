@@ -40,11 +40,15 @@ body {
   --el-color-primary: var(--lvshihao-theme-color);
 }
 
-.searchForm {
-  .el-row {
-    align-items: flex-start;
+.searchCard{
+  .searchForm{
+    padding-top: 18px;
   }
+.el-card__body{
+  padding: 0px 20px 0px 20px;
+}  
 }
+
 .el-avatar {
   --el-avatar-bg-color: var(--lvshihao-theme-color);
 }
@@ -153,11 +157,6 @@ body {
   justify-content: flex-start;
   align-items: center;
 }
-.card-search-end {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
 
 //隐藏tabs的横向滚动条
 .el-scrollbar__thumb {
@@ -193,6 +192,9 @@ element表单区域
 
 //搜索的工具栏样式
 .card-search-end {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
   .custom-button {
     svg {
       use {
@@ -727,7 +729,7 @@ html {
   //图标按钮样式
   .el-button.iconBtn:hover {
     background-color: var($lvshihao-menu-suuny-item-active-hover-bg);
-    transform: scale(0.85);
+    transform: scale(0.9);
     transition: all 0.6s ease;
     svg {
       use {

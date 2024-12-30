@@ -52,6 +52,7 @@ declare module 'vue' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     ElWatermark: typeof import('element-plus/es')['ElWatermark']
     GrantTable: typeof import('./src/components/grant-table/index.vue')['default']
+    JcmBarChat: typeof import('./src/components/JcmBarChat/index.vue')['default']
     JcmButton: typeof import('./src/components/JcmButton/index.vue')['default']
     JcmIconSelect: typeof import('./src/components/JcmIconSelect/index.vue')['default']
     JcmiFrame: typeof import('./src/components/JcmiFrame/index.vue')['default']

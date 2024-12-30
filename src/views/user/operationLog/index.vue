@@ -1,40 +1,40 @@
 <template>
   <div>
-    <el-card>
-      <el-form :inline="true" :model="operationLogStore.searchform" class="searchForm" label-position="right"
+    <el-card class="searchCard">
+      <el-form :inline="true" :model="operationLogStore.searchForm" class="searchForm" label-position="right"
         label-width="auto" ref="searchFormRef">
         <el-row style="display: flex">
           <el-form-item label="操作用户" prop="operName">
-            <el-select v-model="operationLogStore.searchform.operName">
+            <el-select v-model="operationLogStore.searchForm.operName">
               <template v-for="name in operationLogStore.nameOptionSelect">
                 <el-option :label="name" :value="name" />
               </template>
             </el-select>
           </el-form-item>
           <el-form-item label="操作模块" prop="title">
-            <el-select v-model="operationLogStore.searchform.title" @change="changeTitle">
+            <el-select v-model="operationLogStore.searchForm.title" @change="changeTitle">
               <template v-for="title in operationLogStore.titleOptionSelect">
                 <el-option :label="title" :value="title" />
               </template>
             </el-select>
           </el-form-item>
           <el-form-item label="业务名称" prop="businessName">
-            <el-select v-model="operationLogStore.searchform.businessName">
+            <el-select v-model="operationLogStore.searchForm.businessName">
               <template v-for="businessName in operationLogStore.businessNameOptionSelect">
                 <el-option :label="businessName" :value="businessName" />
               </template>
             </el-select>
           </el-form-item>
           <el-form-item v-show="more" label="执行结果" prop="status">
-            <el-select v-model="operationLogStore.searchform.status">
+            <el-select v-model="operationLogStore.searchForm.status">
               <el-option label="成功" value="0" />
               <el-option label="失败" value="1" />
             </el-select>
           </el-form-item>
           <el-form-item v-show="more" prop="requestTimeRange" label="执行时间">
-            <el-date-picker v-model="operationLogStore.searchform.requestTimeRange" type="datetimerange"
+            <el-date-picker v-model="requestTimeRange" type="datetimerange" range-separator="-"
               value-format="YYYY-MM-DD HH:mm:ss" start-placeholder="开始日期" end-placeholder="结束日期"
-              format="YYYY-MM-DD HH:mm:ss" date-format="YYYY/MM/DD ddd" time-format="A hh:mm:ss" />
+              format="YYYY-MM-DD HH:mm:ss"  />
           </el-form-item>
           <div style="margin-left: auto" class="card-search-end">
             <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="resetSearchForm(searchFormRef)">
@@ -42,7 +42,7 @@
                 <svg-icon name="擦除" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList(operationLogStore.searchform)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList()">
               <template #icon>
                 <svg-icon name="搜索" />
               </template>
@@ -68,6 +68,11 @@
             <span>操作日志列表</span>
           </div>
           <div class="card-end">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="exportData()">
+              <template #icon>
+                <svg-icon name="导出excel"  />
+              </template>
+            </JcmButton>
             <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="clearItems()">
               <template #icon>
                 <svg-icon name="清空" />
@@ -82,7 +87,7 @@
         </div>
       </template>
 
-      <el-table :data="dataList.list" table-layout="auto" @selection-change="handleSelectionChange">
+      <el-table :data="operationLogStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="operName" label="操作人员" align="center" />
         <el-table-column label="模块/业务" align="center">
@@ -143,7 +148,7 @@
           <!--分页-->
           <el-pagination :page-sizes="[10, 20, 30, 40]" small="small" background="true"
             :default-page-size="Number(layoutSettingStore.setting.size)"
-            layout="total, sizes, prev, pager, next, jumper" :total="dataList.total" @size-change="handleSizeChange"
+            layout="total, sizes, prev, pager, next, jumper" :total="operationLogStore.dataList.total" @size-change="handleSizeChange"
             @current-change="handleCurrentChange" />
         </div>
       </template>
@@ -157,9 +162,9 @@
 
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
-
+import API_ENUM from '@/enum/api-enum'
 //仓库
-import useOperationLogStore from '@/store/modules/operationLog'
+import useOperationLogStore from '@/store/modules/user/operationLog'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 
 const operationLogStore = useOperationLogStore()
@@ -169,45 +174,33 @@ const layoutSettingStore = useLayoutSettingStore()
 const instance = getCurrentInstance();
 
 onMounted(() => {
-  //手动触发更新页数的逻辑
+  //进入页面初始化的数据 手动触发更新页数的逻辑
   handleSizeChange(Number(layoutSettingStore.setting.size))
-  //进入页面初始化的数据
-  searchList(operationLogStore.searchform)
   //加载可选操作人员名称选项
-  loadOperNameSelect()
+  operationLogStore.getOperNameOptionSelect()
   //加载可选操作模块选项
-  loadTitleSelect()
+  operationLogStore.getTitleOptionSelect()
 })
 //表单对象
 const searchFormRef = ref<FormInstance>()
 //更多按钮状态
 const more = ref(false)
-//表格数据
-const dataList = reactive({
-  list: [],
-  total: 0,
-  page: 1,
-  size: 10,
-})
+//请求时间范围
+const requestTimeRange=ref([])
 
 //页面数据加载的状态
 const loadingStatus = computed(() => {
   return !operationLogStore.tableLoading || !layoutSettingStore.setting.dataLoading;
 });
 //根据搜索条件进行搜索
-const searchList = (searchData: any) => {
-  operationLogStore.tableLoading = true
-  searchData.params.requestTimeBeginTime = searchData.requestTimeRange[0]
-  searchData.params.requestTimeEndTime = searchData.requestTimeRange[1]
-  operationLogStore
-    .operationLogList(searchData, dataList.page, dataList.size)
-    .then((resp) => {
-      dataList.list = resp.rows
-      dataList.total = resp.total
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+const searchList = () => {
+  operationLogStore.tableLoading = true;
+
+  const searchQuery = operationLogStore.searchForm;
+  (instance?.proxy as any).$addPage(searchQuery,operationLogStore.dataList.page,operationLogStore.dataList.size);
+  (instance?.proxy as any).$addDateRange(searchQuery, requestTimeRange.value, 'RequestTime');
+  operationLogStore.operationLogList(searchQuery);
+
   setTimeout(() => {
     operationLogStore.tableLoading = false
   }, 500)
@@ -215,13 +208,13 @@ const searchList = (searchData: any) => {
 
 //页码变更处理方法
 const handleCurrentChange = (currentPage: number) => {
-  dataList.page = currentPage
-  searchList(operationLogStore.searchform)
+  operationLogStore.dataList.page = currentPage
+  searchList()
 }
 //页数切换触发的事件
 const handleSizeChange = (pageSize: number) => {
-  dataList.size = pageSize
-  searchList(operationLogStore.searchform)
+  operationLogStore.dataList.size = pageSize
+  searchList()
 }
 
 //选中数据触发的事件
@@ -234,74 +227,41 @@ const deleteItem = (item: any) => {
   operationLogStore
     .deleteOperationLog([item.operId])
     .then(() => {
-      searchList(operationLogStore.searchform)
-      ElMessage.success({ message: '删除成功' })
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
+      searchList()
     })
 }
 
 //删除多个操作日志触发的事件
 const deleteItems = () => {
   const operIds = operationLogStore.multipleSelection.map((item: any) => item.operId);
-  operationLogStore
-    .deleteOperationLog(operIds)
-    .then(() => {
-      searchList(operationLogStore.searchform)
-      ElMessage.success({ message: '删除成功' })
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+  if(operIds.length == 0){
+      ElMessage.warning({ message: '请选择要删除的数据' })
+      return;
+  }
+  operationLogStore.deleteOperationLog(operIds).then(() => {
+      searchList()
+  })
+}
+
+//导出操作日志数据
+const exportData = () => {
+  const searchQuery=operationLogStore.searchForm;
+  (instance?.proxy as any).$addDateRange(searchQuery, requestTimeRange.value, 'RequestTime');
+  (instance?.proxy as any).$download(`${API_ENUM.SERVER_MODE_NAME.OPERACTION_LOG_DATA}/export`, {
+    ...searchQuery,
+  },`user_${new Date().getTime()}.xlsx`);
 }
 
 //清空操作日志数据
 const clearItems = () => {
-  operationLogStore
-    .clearOperationLog()
-    .then(() => {
-      searchList(operationLogStore.searchform)
-      ElMessage.success({ message: '清空成功' })
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
-}
-
-
-const loadOperNameSelect = () => {
-  operationLogStore
-    .getOperNameOptionSelect()
-    .then((resp) => {
-      operationLogStore.nameOptionSelect = resp.data
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
-}
-
-const loadTitleSelect = () => {
-  operationLogStore
-    .getTitleOptionSelect()
-    .then((resp) => {
-      operationLogStore.titleOptionSelect = resp.data
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+  operationLogStore.clearOperationLog().then(() => {
+      searchList()
+  })
 }
 
 const changeTitle = () => {
-  const title = operationLogStore.searchform.title
-  operationLogStore
-    .getBusinessNameOptionSelect(title)
-    .then((resp) => {
-      operationLogStore.businessNameOptionSelect = resp.data
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+  const title = operationLogStore.searchForm.title
+  operationLogStore.getBusinessNameOptionSelect(title)
 }
 
 //重置搜索表单

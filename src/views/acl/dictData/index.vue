@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card>
+    <el-card class="searchCard">
       <el-form :inline="true" :model="dictDataStore.searchform" class="searchForm" label-position="right"
         label-width="auto" ref="searchFormRef">
         <el-row>
@@ -129,7 +129,7 @@ import DictDataAddFromModal from './components/dict-data-add-from-modal.vue'
 import DictDataUpdateFromModal from './components/dict-data-update-from-modal.vue'
 //仓库
 import useDictDataStore from '@/store/modules/dictData'
-import useDictTypeStore from '@/store/modules/dictType'
+import useDictTypeStore from '@/store/modules/acl/dictType'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 
 const dictDataStore = useDictDataStore()

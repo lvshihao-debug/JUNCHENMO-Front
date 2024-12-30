@@ -61,7 +61,7 @@ const useSettinggStore = defineStore('SettinggStore', {
           this.setHueRotate();
           this.setSaturate();
         })
-        return Promise.resolve('ok')
+        return Promise.resolve()
       } else {
         return Promise.reject(result.msg)
       }
@@ -80,6 +80,11 @@ const useSettinggStore = defineStore('SettinggStore', {
       this.setting.themeColor = color;
       body?.style.setProperty('--lvshihao-theme-color', color)
     },
+    async getThemeColor(){
+      const body = document.querySelector('body')
+      return body?.style.getPropertyValue('--lvshihao-theme-color')
+    },
+    
     async setWeakColor(){
       const body = document.querySelector('body')
       if (this.setting.weakColor) {
@@ -140,13 +145,25 @@ const useSettinggStore = defineStore('SettinggStore', {
         return false
       }else{
         const themeMedia = window.matchMedia('(prefers-color-scheme: light)')
-        console.log("当前主题")
-        console.log(themeMedia)
         if (themeMedia.matches) {
             html.className = '';
           return true
         } else {
             html.className = 'dark';
+          return false
+        }
+      }
+    },
+    getThemeValue: (state) => {
+      if(state.setting.theme == 0 ){
+        return true
+      }else if (state.setting.theme == 1){
+        return false
+      }else{
+        const themeMedia = window.matchMedia('(prefers-color-scheme: light)')
+        if (themeMedia.matches) {
+          return true
+        } else {
           return false
         }
       }

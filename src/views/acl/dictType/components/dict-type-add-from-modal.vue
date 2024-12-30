@@ -65,7 +65,7 @@
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
-import useDictTypeStore from '@/store/modules/dictType'
+import useDictTypeStore from '@/store/modules/acl/dictType'
 import { formRules } from '../types/form.rules'
 //仓库
 const layoutSettingStore = useLayoutSettingStore()

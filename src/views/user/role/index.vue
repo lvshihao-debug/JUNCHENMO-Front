@@ -1,17 +1,17 @@
 <template>
   <div class="fade">
-    <el-card>
-      <el-form :inline="true" :model="roleStore.searchform" class="searchForm" label-position="right" label-width="auto"
+    <el-card class="searchCard">
+      <el-form :inline="true" :model="roleStore.searchForm" class="searchForm" label-position="right" label-width="auto"
         ref="searchFormRef">
         <el-row style="display: flex">
           <el-form-item label="角色名称" prop="name">
-            <el-input v-model="roleStore.searchform.name" />
+            <el-input v-model="roleStore.searchForm.name" />
           </el-form-item>
           <el-form-item label="角色编码" prop="code">
-            <el-input v-model="roleStore.searchform.code" />
+            <el-input v-model="roleStore.searchForm.code" />
           </el-form-item>
           <el-form-item label="状态" prop="status">
-            <el-select v-model="roleStore.searchform.status">
+            <el-select v-model="roleStore.searchForm.status">
               <el-option label="启用" value="0" />
               <el-option label="禁用" value="1" />
             </el-select>
@@ -22,7 +22,7 @@
                 <svg-icon name="擦除" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList(roleStore.searchform)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList()">
               <template #icon>
                 <svg-icon name="搜索" />
               </template>
@@ -52,7 +52,7 @@
         </div>
       </template>
 
-      <el-table :data="dataList.list" table-layout="auto" @selection-change="handleSelectionChange">
+      <el-table :data="roleStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="roleId" label="ID" align="center" />
         <el-table-column prop="name" label="角色名称" align="center" />
@@ -102,7 +102,7 @@
         <div class="pagination-style">
           <!--分页-->
           <el-pagination :page-sizes="[10, 20, 30, 40]" :default-page-size="Number(layoutSettingStore.setting.size)"
-            small="small" background="true" layout="total, sizes, prev, pager, next, jumper" :total="dataList.total"
+            small="small" background="true" layout="total, sizes, prev, pager, next, jumper" :total="roleStore.dataList.total"
             @size-change="handleSizeChange" @current-change="handleCurrentChange" />
         </div>
       </template>
@@ -112,9 +112,9 @@
       <Loading />
     </div>
     <!--弹出框组件列表-->
-    <RoleAddFromModal ref="roleAddFromModal" @refreshData="refreshData"></RoleAddFromModal>
-    <RoleAuthMenusFromModal ref="roleAuthMenusFromModal" @refreshData="refreshData"></RoleAuthMenusFromModal>
-    <RoleUpdateFromModal ref="roleUpdateFromModal" @refreshData="refreshData"></RoleUpdateFromModal>
+    <RoleAddFromModal ref="roleAddFromModal"></RoleAddFromModal>
+    <RoleAuthMenusFromModal ref="roleAuthMenusFromModal"></RoleAuthMenusFromModal>
+    <RoleUpdateFromModal ref="roleUpdateFromModal"></RoleUpdateFromModal>
   </div>
 </template>
 
@@ -127,20 +127,20 @@ import RoleAddFromModal from './components/role-add-from-modal.vue'
 import RoleAuthMenusFromModal from './components/role-auth-menus-from-modal.vue'
 import RoleUpdateFromModal from './components/role-update-from-modal.vue'
 //仓库
-import useRoleStore from '@/store/modules/role'
+import useRoleStore from '@/store/modules/user/role'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 //权限工具类
 import { isAdminById } from '@/utils/permission'
 
+//获取当前组件实例
+const instance = getCurrentInstance()
 const roleStore = useRoleStore()
 const layoutSettingStore = useLayoutSettingStore()
 
 
 onMounted(() => {
-  //手动触发更新页数的逻辑
+  //进入页面初始化的数据 手动触发更新页数的逻辑
   handleSizeChange(Number(layoutSettingStore.setting.size))
-  //进入页面初始化的数据
-  searchList(roleStore.searchform)
 })
 
 //表单对象
@@ -151,26 +151,15 @@ const roleAuthMenusFromModal = ref<FromModal>()
 const roleUpdateFromModal = ref<FromModal>()
 
 
-//表格数据
-const dataList = reactive({
-  list: [],
-  total: 0,
-  page: 1,
-  size: 10
-})
 
 //根据搜索条件进行搜索
-const searchList = (searchData: any) => {
-  roleStore.tableLoading = true
-  roleStore
-    .roleList(searchData, dataList.page, dataList.size)
-    .then((resp) => {
-      dataList.list = resp.rows
-      dataList.total = resp.total
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+const searchList = () => {
+  roleStore.tableLoading = true;
+
+  const searchQuery = roleStore.searchForm;
+  (instance?.proxy as any).$addPage(searchQuery, roleStore.dataList.page, roleStore.dataList.size);
+  roleStore.roleList(searchQuery);
+
   setTimeout(() => {
     roleStore.tableLoading = false
   }, 500)
@@ -182,13 +171,13 @@ const loadingStatus = computed(() => {
 
 //页码变更处理方法
 const handleCurrentChange = (currentPage: number) => {
-  dataList.page = currentPage
-  searchList(roleStore.searchform)
+  roleStore.dataList.page = currentPage
+  searchList()
 }
 //页数切换触发的事件
 const handleSizeChange = (pageSize: number) => {
-  dataList.size = pageSize
-  searchList(roleStore.searchform)
+  roleStore.dataList.size = pageSize
+  searchList()
 }
 
 //选中数据触发的事件
@@ -198,29 +187,17 @@ const handleSelectionChange = (val: []) => {
 
 //删除角色触发的事件
 const deleteItem = (item: any) => {
-  roleStore
-    .deleteRole([item.roleId])
-    .then(() => {
-      searchList(roleStore.searchform)
-      ElMessage.success({ message: '删除成功' })
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+  roleStore.deleteRole([item.roleId]).then(() => {
+      searchList()
+  })
 }
 
 //删除多个字典类型触发的事件
 const deleteItems = () => {
   const roleIds = roleStore.multipleSelection.map((item: any) => item.roleId);
-  roleStore
-    .deleteRole(roleIds)
-    .then(() => {
-      searchList(roleStore.searchform)
-      ElMessage.success({ message: '删除成功' })
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+  roleStore.deleteRole(roleIds).then(() => {
+      searchList()
+  })
 }
 
 //停用用户触发的事件
@@ -228,21 +205,15 @@ const disableItem = (item: any) => {
   if (item.status == 1) {
     ElMessage.warning({ message: '角色已经是停用状态' })
   } else {
-    roleStore
-      .upStatusRole(item)
-      .then((resp) => {
-        searchList(roleStore.searchform)
-        ElMessage.success({ message: '停用成功' })
-      })
-      .catch((error) => {
-        ElMessage.error({ message: error })
-      })
+    roleStore.upStatusRole(item).then(() => {
+        searchList()
+    })
   }
 }
 
 //提供给子组件刷新数据的方法
 const refreshData = () => {
-  searchList(roleStore.searchform)
+  searchList()
 }
 
 //重置搜索表单

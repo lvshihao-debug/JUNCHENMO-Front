@@ -43,7 +43,7 @@ import type {FormInstance} from 'element-plus'
 //TODO 导入你的store
 import useCustomStore from '@/store/modules/custom'
 //导入表单规则
-TODO import { formRules } from './types/form.rules'
+import { formRules } from './types/form.rules'
 //获取当前组件实例
 const instance = getCurrentInstance();
 //TODO 使用你的store 仓库

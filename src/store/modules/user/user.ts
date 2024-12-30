@@ -16,13 +16,13 @@ import {
   reqLogin,
   reqLogout,
   reqUserInfo,
-  reqUserList,
-  reqAddUser,
-  reqDelUser,
   reqUpStatusUser,
   reqUpPasswordUser,
-  reqUpInfoUser,
-  reqAuthRole
+  reqAuthRole,
+  addUser,
+  delUser,
+  updateUser,
+  userList
 } from '@/api/user'
 
 //创建用户小仓库
@@ -30,23 +30,29 @@ const useUserStore = defineStore('User', {
   state: () => {
     return {
       token: GET_TOKEN(), //用户唯一标识token
-      user: <User>{},
-      permissions: [],
-      roles: [],
+      user: <User>{}, //用户信息
+      permissions: [], //用户拥有的权限信息
+      roles: [], //用户拥有的角色
       tableLoading: true, //表格数据加载loading
-      commonform: <User>{
-        userId: 0,
-        username: '',
-        nickname: '',
-        password: '',
-        mobile: '',
-        email: '',
+      dataList: { //表格数据
+        list: [],
+        total: 0,
+        page: 1,
+        size: 10,
       },
-      searchform: <User>{},
+      commonForm: { //表单数据
+        userId: undefined,
+        username: undefined,
+        nickname: undefined,
+        password: undefined,
+        mobile: undefined,
+        email: undefined,
+      },
+      searchForm: <User>{}, //搜索表单数据
     }
   },
   actions: {
-    //异步|逻辑的地方
+    //获取验证码
     async code() {
       //登录请求
       const result: any = await reqCode()
@@ -56,7 +62,7 @@ const useUserStore = defineStore('User', {
         return Promise.reject(result.msg)
       }
     },
-    //异步|逻辑的地方
+    //用户登录
     async userLogin(data: loginFormData) {
       //登录请求
       const result: loginResponseData = await reqLogin(data)
@@ -64,7 +70,7 @@ const useUserStore = defineStore('User', {
         const resToken: string = result.data?.access_token as string
         SET_TOKEN(resToken)
         this.token = resToken
-        return 'ok'
+        return Promise.resolve()
       } else {
         return Promise.reject(result.msg)
       }
@@ -75,75 +81,80 @@ const useUserStore = defineStore('User', {
       if (result.code == 200) {
         this.token = ''
         RENOVE_TOKEN()
-        return 'ok'
       } else {
         return Promise.reject(result.msg)
       }
     },
-    //获取用户信息方法
+    //获取登录用户信息方法
     async userInfo() {
       const result: userInfoReponseData = await reqUserInfo()
       if (result.code == 200) {
         this.user = result.user
         this.roles = result.roles
         this.permissions = result.permissions
-        return Promise.resolve('ok')
+        return Promise.resolve()
       } else {
         return Promise.reject(result.msg)
       }
     },
     //获取用户列表
-    async userList(data: any, pageNum: number, pageSize: number) {
-      const result: any = await reqUserList(data, pageNum, pageSize)
+    async userList(query: any) {
+      const result: any = await userList(query)
       if (result.code == 200) {
-        return result
+        this.dataList.list = result.rows
+        this.dataList.total = result.total
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
     //添加用户
     async addUser(data: any) {
-      const result: any = await reqAddUser(data)
+      const result: any = await addUser(data)
       if (result.code == 200) {
-        return result
+        ElMessage.success({ message: '添加成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
     //删除用户
-    async delUser(data: any) {
-      const result: any = await reqDelUser(data)
+    async delUser(userId: any) {
+      const result: any = await delUser(userId)
       if (result.code == 200) {
-        return result
+        ElMessage.success({ message: '删除成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
     //修改用户状态
     async upStatusUser(data: any) {
       const result: any = await reqUpStatusUser(data)
       if (result.code == 200) {
-        return result
+        ElMessage.success({ message: '停用成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
     //修改用户密码
     async upPasswordUser(data: any) {
       const result: any = await reqUpPasswordUser(data)
       if (result.code == 200) {
-        return result
+        ElMessage.success({ message: '密码重置成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
     //修改用户信息
-    async upInfoUser(data: any) {
-      const result: any = await reqUpInfoUser(data)
+    async upUser(data: any) {
+      const result: any = await updateUser(data)
       if (result.code == 200) {
-        return result
+        ElMessage.success({ message: '信息修改成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
     //分配选择的角色
@@ -151,9 +162,10 @@ const useUserStore = defineStore('User', {
       const rIds = rolesId.join(",");
       const result: any = await reqAuthRole({ userId: userId, roleIds: rIds })
       if (result.code == 200) {
-        return 'ok'
+        ElMessage.success({ message: '分配成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
   },
@@ -161,11 +173,7 @@ const useUserStore = defineStore('User', {
     //获取名称的第一个字符
     getUserNameTextFirst(): string {
       return this.user.username?.charAt(0) as string
-    },
-    //获取主题颜色
-    getThemeColor: (state) => {
-      return (themeStatus: boolean) => (themeStatus ? '#5072e6' : 'red')
-    },
+    }
   },
 })
 

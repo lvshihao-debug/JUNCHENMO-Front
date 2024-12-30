@@ -96,7 +96,7 @@ import Breadcrumb from './tabbar/breadcrumb/index.vue'
 //引入当前路由
 import { useRoute } from 'vue-router'
 //获取用户相关的小仓库
-import UserStore from '@/store/modules/user'
+import UserStore from '@/store/modules/user/user'
 //获取用户相关的小仓库
 import PermissionStore from '@/store/modules/menu'
 //获取设置相关的小仓库

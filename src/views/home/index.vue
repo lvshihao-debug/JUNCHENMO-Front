@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import useUserStore from '@/store/modules/user'
+import useUserStore from '@/store/modules/user/user'
 // 实例化容器
 const userStore = useUserStore()
 </script>

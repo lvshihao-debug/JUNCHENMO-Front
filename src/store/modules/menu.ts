@@ -53,6 +53,8 @@ const useMenuStore = defineStore('Menu', {
     generateRoutes() {
       return new Promise((resolve) => {
         getRouters().then((res) => {
+          console.log("什么情况")
+          console.log(res)
           const RoutesData = filterAsyncRouter(res.data)
           //添加404页面
           RoutesData.push(error404)

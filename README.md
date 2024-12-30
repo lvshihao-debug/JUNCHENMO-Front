@@ -34,6 +34,13 @@ The is my base front project
 
 # Project View
 
-![1714570765516](image/README/1714570765516.png)
-
-![1714549560549](image/README/1714549560549.png)![1714549564673](image/README/1714549564673.png)
+![1714570765516](image/README/用户管理.png)
+![1714549564673](image/README/角色管理.png)
+![1714549564673](image/README/菜单管理.png)
+![1714549564673](image/README/数据字典项.png)
+![1714549564673](image/README/数据字典值.png)
+![1714549564673](image/README/操作日志.png)
+![1714549564673](image/README/缓存列表.png)
+![1714549564673](image/README/缓存监控.png)
+![1714549564673](image/README/服务监控.png)
+![1714549564673](image/README/系统设置.png)

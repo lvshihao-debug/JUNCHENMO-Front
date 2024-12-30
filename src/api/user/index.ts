@@ -18,21 +18,21 @@ export const API = {
   //登出
   LOGOUT_URL: `${API_ENUM.SERVER_NAME.AUTH}/logout`,
   //添加用户
-  USER_ADD_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/`,
+  ADD_USER_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/`,
   //删除用户
-  USER_DEL_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/`,
+  DEL_USER_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/`,
   //修改用户
-  USER_UP_INFO_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/`,
+  UPDATE_USER_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/`,
   //获取用户列表
-  USER_LIST_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/list`,
+  LIST_USER_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/list`,
   //获取用户信息
-  USER_INFO_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/getInfo`,
+  INFO_USER_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/getInfo`,
   //修改用户状态
-  USER_UP_STATUS_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/changeStatus`,
+  UPDATE_USER_STATUS_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/changeStatus`,
   //修改用户密码
-  USER_UP_PASSWORD_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/changePassword`,
+  UPDATE_USER_PASSWORD_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/changePassword`,
   //用户授权角色
-  USER_AUTH_ROLE_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/authRole`,
+  UPDATE_AUTH_ROLE_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/authRole`,
 }
 
 /**
@@ -68,10 +68,10 @@ export const reqLogout = () =>
  * 添加用户
  * @param data 用户数据
  */
-export const reqAddUser = (data: any) =>
+export const addUser = (data: any) =>
   request<any>({
     method: 'post',
-    url: API.USER_ADD_URL,
+    url: API.ADD_USER_URL,
     data,
   })
 
@@ -79,34 +79,34 @@ export const reqAddUser = (data: any) =>
  * 删除用户
  * @param userId 用户Id
  */
-export const reqDelUser = (userId: any) =>
+export const delUser = (userId: any) =>
   request<any>({
     method: 'delete',
-    url: API.USER_DEL_URL + '/' + userId,
+    url: API.DEL_USER_URL + '/' + userId,
   })
 
 /**
  * 修改用户
  * @param data 用户数据
  */
-export const reqUpInfoUser = (data: any) =>
+export const updateUser = (data: any) =>
   request<any>({
     method: 'put',
-    url: API.USER_UP_INFO_URL,
+    url: API.UPDATE_USER_URL,
     data,
-  })
+})
 
 /**
  * 获取用户列表
- * @param {Object} data - 查询条件
+ * @param {Object} query - 查询条件
  * @param {number} pageNum - 当前页码
  * @param {number} pageSize - 每页数量
  */
-export const reqUserList = (data: any, pageNum: number, pageSize: number) =>
+export const userList = (query: any) =>
   request<userListRep>({
-    method: 'post',
-    url: API.USER_LIST_URL + `?pageNum=${pageNum}&pageSize=${pageSize}`,
-    data,
+    method: 'get',
+    url: API.LIST_USER_URL,
+    params: query,
   })
 
 /**
@@ -115,7 +115,7 @@ export const reqUserList = (data: any, pageNum: number, pageSize: number) =>
 export const reqUserInfo = () =>
   request<userInfoReponseData>({
     method: 'get',
-    url: API.USER_INFO_URL,
+    url: API.INFO_USER_URL,
   })
 
 /**
@@ -125,7 +125,7 @@ export const reqUserInfo = () =>
 export const reqUpStatusUser = (data: any) =>
   request<any>({
     method: 'put',
-    url: API.USER_UP_STATUS_URL,
+    url: API.UPDATE_USER_STATUS_URL,
     data,
   })
 
@@ -136,7 +136,7 @@ export const reqUpStatusUser = (data: any) =>
 export const reqUpPasswordUser = (data: any) =>
   request<any>({
     method: 'put',
-    url: API.USER_UP_PASSWORD_URL,
+    url: API.UPDATE_USER_PASSWORD_URL,
     data,
   })
 
@@ -148,6 +148,6 @@ export const reqUpPasswordUser = (data: any) =>
 export const reqAuthRole = (data:any) =>
   request<any>({
     method: 'put',
-    url: API.USER_AUTH_ROLE_URL,
+    url: API.UPDATE_AUTH_ROLE_URL,
     params: data,
   })

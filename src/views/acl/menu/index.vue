@@ -185,7 +185,7 @@ import MenuUpdateFromModal from './components/menu-update-from-modal.vue'
 //仓库
 import useMenuStore from '@/store/modules/menu'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
-import useDictDataStore from '@/store/modules/dictData'
+import useDictDataStore from '@/store/modules/acl/dictData'
 
 //获取当前组件实例
 const instance = getCurrentInstance();

@@ -1,6 +1,6 @@
 <template>
   <el-button title="刷新"  class="iconBtn"  @click="updateRefsh">
-    <svg-icon  name="顶部刷新"  />
+    <svg-icon  name="刷新"  />
   </el-button>
   <el-button title="全屏" class="iconBtn"   @click="fullScreen">
     <svg-icon  name="全屏"  />
@@ -38,7 +38,7 @@ import setting from '@/setting'
 //获取设置相关的小仓库
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 //获取用户相关的小仓库
-import useUserStore from '@/store/modules/user'
+import useUserStore from '@/store/modules/user/user'
 
 let layoutSettingStore = useLayoutSettingStore()
 const $router = useRouter()

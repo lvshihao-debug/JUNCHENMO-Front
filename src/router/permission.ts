@@ -9,7 +9,7 @@ import '@/styles/nprogress/nprogress.scss'
 
 import setting from '@/setting.ts'
 import pinia from '@/store'
-import useUserStore from '@/store/modules/user'
+import useUserStore from '@/store/modules/user/user'
 import usePermissionStore from '@/store/modules/menu'
 import useUserSettingStore from '@/store/modules/layout/layoutSetting'
 const userStore = useUserStore(pinia)

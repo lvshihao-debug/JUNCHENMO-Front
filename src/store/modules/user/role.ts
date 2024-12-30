@@ -18,14 +18,20 @@ const useRoleStore = defineStore('role', {
     return {
       multipleSelection:[], //选的数据列表
       tableLoading: true, //表格数据加载loading
+      dataList: { //表格数据
+        list: [],
+        total: 0,
+        page: 1,
+        size: 10,
+      },
       //搜索表单
-      searchform :{
+      searchForm :{
         name: '',
         code: '',
         status: '',
       },
       //通用增、改表单
-      commonform:{
+      commonForm:{
         roleId: '',
         name: '',
         code: '',
@@ -39,7 +45,7 @@ const useRoleStore = defineStore('role', {
       if (result.code == 200) {
         return result
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
     //获取所有启用的角色
@@ -48,52 +54,57 @@ const useRoleStore = defineStore('role', {
       if (result.code == 200) {
         return result
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
     //获取角色列表
-    async roleList(data: any, pageNum: number, pageSize: number) {
-      const result: any = await reqRoleList(data, pageNum, pageSize)
+    async roleList(query: any) {
+      const result: any = await reqRoleList(query)
       if (result.code == 200) {
-        return result
+        this.dataList.list = result.rows
+        this.dataList.total = result.total
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
     //添加角色
     async addRole(data: any) {
       const result: any = await reqAddRole(data)
       if (result.code == 200) {
-        return result
+        ElMessage.success({ message: '添加成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
      //删除角色
     async deleteRole(data: any) {
       const result: any = await reqDelRole(data)
       if (result.code == 200) {
-        return result
+        ElMessage.success({ message: '删除成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
     //修改角色信息
     async upInfoRole(data: any) {
       const result: any = await reqUpInfoRole(data)
       if (result.code == 200) {
-        return result
+        ElMessage.success({ message: '信息修改成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
     //修改角色状态
     async upStatusRole(data: any) {
       const result: any = await reqUpStatusRole(data)
       if (result.code == 200) {
-        return 'ok'
+        ElMessage.success({ message: '停用成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
      //分配选择的菜单
@@ -101,9 +112,10 @@ const useRoleStore = defineStore('role', {
       const mIds = menusId.join(",");
       const result: any = await reqAuthMenu({ roleId: roleId, menusId: mIds })
       if (result.code == 200) {
-        return 'ok'
+        ElMessage.success({ message: '分配成功' })
+        return Promise.resolve()
       } else {
-        return Promise.reject(result.msg)
+        ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
   },

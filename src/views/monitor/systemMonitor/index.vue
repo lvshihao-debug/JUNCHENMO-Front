@@ -82,7 +82,7 @@ onMounted(() => {
     systemMonitorStore.getSystemBaseInfo()
     setTimeout(() => {
         systemMonitorStore.loading = false
-  }, 1000)
+  }, 1300)
 })
 
 //页面数据加载的状态

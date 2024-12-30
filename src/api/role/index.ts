@@ -60,15 +60,15 @@ export const reqUpInfoRole = (data: any) =>
 
 /**
  * 获取角色列表
- * @param {Object} data - 查询条件
+ * @param {Object} query - 查询条件
  * @param {number} pageNum - 当前页码
  * @param {number} pageSize - 每页数量
  */
-export const reqRoleList = (data: any, pageNum: number, pageSize: number) =>
+export const reqRoleList = (query: any) =>
   request<roleListRep>({
-    method: 'post',
-    url: API.ROLE_LIST_URL + `?pageNum=${pageNum}&pageSize=${pageSize}`,
-    data,
+    method: 'get',
+    url: API.ROLE_LIST_URL,
+    params:query,
   })
 
 /**

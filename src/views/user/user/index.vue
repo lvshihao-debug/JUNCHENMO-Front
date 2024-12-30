@@ -1,26 +1,26 @@
 <template>
   <div class="fade">
-    <el-card>
-      <el-form :inline="true" :model="userStore.searchform" class="searchForm" label-position="right" label-width="auto"
+    <el-card class="searchCard">
+      <el-form :inline="true" :model="userStore.searchForm" class="searchForm" label-position="right" label-width="auto"
         ref="searchFormRef">
         <el-row>
           <el-form-item label="用户名" prop="username">
-            <el-input v-model="userStore.searchform.username" />
+            <el-input v-model="userStore.searchForm.username" />
           </el-form-item>
           <el-form-item label="昵称" prop="nickname">
-            <el-input v-model="userStore.searchform.nickname" />
+            <el-input v-model="userStore.searchForm.nickname" />
           </el-form-item>
           <el-form-item label="状态" prop="status">
-            <el-select v-model="userStore.searchform.status">
+            <el-select v-model="userStore.searchForm.status">
               <el-option label="启用" value="0" />
               <el-option label="禁用" value="1" />
             </el-select>
           </el-form-item>
           <el-form-item v-show="more" label="手机号" prop="mobile">
-            <el-input v-model="userStore.searchform.mobile" />
+            <el-input v-model="userStore.searchForm.mobile" />
           </el-form-item>
           <el-form-item v-show="more" label="邮箱" prop="email">
-            <el-input v-model="userStore.searchform.email" />
+            <el-input v-model="userStore.searchForm.email" />
           </el-form-item>
           <div style="margin-left: auto" class="card-search-end">
             <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="resetSearchForm(searchFormRef)">
@@ -28,7 +28,7 @@
                 <svg-icon name="擦除" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList(userStore.searchform)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList()">
               <template #icon>
                 <svg-icon name="搜索" />
               </template>
@@ -63,7 +63,7 @@
           </div>
         </div>
       </template>
-      <el-table :data="dataList.list" table-layout="auto">
+      <el-table :data="userStore.dataList.list" table-layout="auto">
         <el-table-column prop="userId" label="ID" align="center" />
         <el-table-column prop="username" label="用户名" align="center">
           <template #default="scope">
@@ -122,7 +122,7 @@
           <!--分页-->
           <el-pagination :page-sizes="[10, 20, 30, 40]" small="small" background="true"
             :default-page-size="Number(layoutSettingStore.setting.size)"
-            layout="total, sizes, prev, pager, next, jumper" :total="dataList.total" @size-change="handleSizeChange"
+            layout="total, sizes, prev, pager, next, jumper" :total="userStore.dataList.total" @size-change="handleSizeChange"
             @current-change="handleCurrentChange" />
         </div>
       </template>
@@ -132,10 +132,10 @@
       <Loading />
     </div>
     <!--弹出框组件列表-->
-    <UserAddFromModal ref="userAddFromModal" @refreshData="refreshData"></UserAddFromModal>
-    <UserUpdateFromModal ref="userUpdateFromModal" @refreshData="refreshData"></UserUpdateFromModal>
-    <UserRestPasswordFromModal ref="userRestPasswordFromModal" @refreshData="refreshData"></UserRestPasswordFromModal>
-    <UserAuthRolesFromModal ref="userAuthRolesFromModal" @refreshData="refreshData"></UserAuthRolesFromModal>
+    <UserAddFromModal ref="userAddFromModal" ></UserAddFromModal>
+    <UserUpdateFromModal ref="userUpdateFromModal" ></UserUpdateFromModal>
+    <UserRestPasswordFromModal ref="userRestPasswordFromModal" ></UserRestPasswordFromModal>
+    <UserAuthRolesFromModal ref="userAuthRolesFromModal"></UserAuthRolesFromModal>
   </div>
 </template>
 
@@ -151,7 +151,7 @@ import UserUpdateFromModal from './components/user-update-from-modal.vue'
 import UserRestPasswordFromModal from './components/user-rest-password-from-modal.vue'
 import UserAuthRolesFromModal from './components/user-auth-roles-from-modal.vue'
 //仓库
-import useUserStore from '@/store/modules/user'
+import useUserStore from '@/store/modules/user/user'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 //权限工具类
 import { isAdminById } from '@/utils/permission'
@@ -163,11 +163,9 @@ const layoutSettingStore = useLayoutSettingStore()
 
 onMounted(() => {
   //清空搜索条件
-  userStore.searchform = <User>{}
-  //手动触发更新页数的逻辑
-  handleSizeChange(Number(layoutSettingStore.setting.size))
-  //进入页面初始化的数据
-  searchList(userStore.searchform)
+  userStore.searchForm = <User>{}
+  //进入页面初始化的数据 手动触发更新页数的逻辑
+  handleSizeChange(Number(layoutSettingStore.setting.size));
 })
 
 //表单对象
@@ -180,26 +178,14 @@ const userAuthRolesFromModal = ref<FromModal>()
 //更多按钮状态
 const more = ref(false)
 
-//表格数据,定义响应式的数据列表，初始为空
-const dataList = reactive({
-  list: [],
-  total: 0,
-  page: 1,
-  size: 10,
-})
-
 //根据搜索条件进行搜索
-const searchList = (searchData: any) => {
-  userStore.tableLoading = true
-  userStore
-    .userList(searchData, dataList.page, dataList.size)
-    .then((resp) => {
-      dataList.list = resp.rows
-      dataList.total = resp.total
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+const searchList = () => {
+  userStore.tableLoading = true;
+
+  const searchQuery = userStore.searchForm;
+  (instance?.proxy as any).$addPage(searchQuery, userStore.dataList.page, userStore.dataList.size);
+  userStore.userList(searchQuery);
+
   setTimeout(() => {
     userStore.tableLoading = false
   }, 500)
@@ -208,49 +194,36 @@ const searchList = (searchData: any) => {
 const loadingStatus = computed(() => {
   return !userStore.tableLoading || !layoutSettingStore.setting.dataLoading;
 });
+
 //页码变更触发的方法
 const handleCurrentChange = (currentPage: number) => {
-  dataList.page = currentPage
-  searchList(userStore.searchform)
+  userStore.dataList.page = currentPage
+  searchList();
 }
+
 //页数切换触发的事件
 const handleSizeChange = (pageSize: number) => {
-  dataList.size = pageSize
-  searchList(userStore.searchform)
+  userStore.dataList.size = pageSize
+  searchList();
 }
 
 //删除用户触发的事件
 const deleteItem = (item: any) => {
-  userStore
-    .delUser(item.userId)
-    .then((resp) => {
-      searchList(userStore.searchform)
-      ElMessage.success({ message: '删除成功' })
-    })
-    .catch((error) => {
-      ElMessage.error({ message: '失败信息: ' + error })
-    })
+  userStore.delUser(item.userId).then(() => {
+    searchList()
+  })
+
 }
+
 //停用用户触发的事件
 const disableItem = (item: any) => {
   if (item.status == 1) {
     ElMessage.warning({ message: '用户已经是停用状态' })
   } else {
-    userStore
-      .upStatusUser(item)
-      .then((resp) => {
-        searchList(userStore.searchform)
-        ElMessage.success({ message: '停用成功' })
-      })
-      .catch((error) => {
-        ElMessage.error({ message: '失败信息: ' + error })
-      })
+    userStore.upStatusUser(item).then(() => {
+      searchList()
+    })
   }
-}
-
-//提供给子组件刷新数据的方法
-const refreshData = () => {
-  searchList(userStore.searchform)
 }
 
 //重置搜索表单

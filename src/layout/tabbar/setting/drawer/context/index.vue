@@ -196,7 +196,7 @@ const saveSetting = () => {
       ElMessage.success({ message: '保存成功' })
     })
     .catch((error) => {
-      ElMessage.error({ message: "保存成功: " + error })
+      ElMessage.error({ message: "保存失败: " + error })
     })
 }
 
