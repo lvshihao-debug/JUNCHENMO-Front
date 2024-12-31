@@ -11,6 +11,10 @@ enum SERVER_NAME {
    * 系统相关接口
    */
   SYSTEM = '/system',
+  /**
+   * 生成相关接口
+   */
+  GEN = '/gen',
 }
 
 /**
@@ -61,6 +65,11 @@ enum SERVER_MODE_NAME {
    * 系统监控相关接口
    */
   SYSTEM_MONITOR = '/system/systemMonitor',
+
+  /**
+   * 生成table相关接口
+   */
+  GEN_TABLE = '/gen/tableGen',
 }
 
 export default {

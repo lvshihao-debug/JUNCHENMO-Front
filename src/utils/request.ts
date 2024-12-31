@@ -7,7 +7,7 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 //创建axios实例
 const service = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
-  timeout: 5000,
+  timeout: 40000,
 })
 //请求拦截器
 service.interceptors.request.use((config) => {
@@ -42,13 +42,6 @@ service.interceptors.response.use(
         type: 'error',
         duration: 3 * 1000,
       })
-      setTimeout(() => {
-        useUserStore()
-          .userLogout()
-          .then(() => {
-            location.href = '/home'
-          })
-      }, 3000)
       return Promise.reject('请您重新登录')
     } else {
       return Promise.resolve(res.data)

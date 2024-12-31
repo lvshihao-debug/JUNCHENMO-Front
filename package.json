@@ -28,7 +28,8 @@
     "pinia-plugin-persistedstate": "^4.2.0",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
-    "vxe-table": "4.9.35"
+    "vxe-table": "4.9.26",
+    "vxe-table-plugin-element": "^4.0.3"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.24.1",

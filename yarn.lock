@@ -887,13 +887,13 @@
   dependencies:
     vue-demi "*"
 
-"@vxe-ui/core@^4.0.23":
-  version "4.0.23"
-  resolved "https://registry.npmmirror.com/@vxe-ui/core/-/core-4.0.23.tgz#4ba5ec104196d3ec19a25d7a7f3f08982fb1c97b"
-  integrity sha512-1UfRNEnawaCT+OR6RkBv6YPNqKrVd7dfMJbvhzkKvvKYrS3/0/Xmppxt5zjMEzCnfPq0WtUjXJvutu1eWBI8rQ==
+"@vxe-ui/core@^4.0.26":
+  version "4.0.27"
+  resolved "https://registry.npmmirror.com/@vxe-ui/core/-/core-4.0.27.tgz#c6e1b67dd37f554a179f9dfa27a7c6076a22814a"
+  integrity sha512-27QXLhud8r7k2pQiffZtDboodk5AEntVC4VLB84LR5TpGrZEKoPpOz/zCrjcrKWvE2GpszNA0ITEK1ZYcp0KUw==
   dependencies:
     dom-zindex "^1.0.6"
-    xe-utils "^3.5.32"
+    xe-utils "^3.6.0"
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
@@ -5278,19 +5278,24 @@ vue@^3.4.21:
     "@vue/server-renderer" "3.5.13"
     "@vue/shared" "3.5.13"
 
-vxe-pc-ui@^4.3.43:
-  version "4.3.44"
-  resolved "https://registry.npmmirror.com/vxe-pc-ui/-/vxe-pc-ui-4.3.44.tgz#50c2f60d60218515ef1dfb52bb7a5d535d7f56a6"
-  integrity sha512-mTd5/RIAFoBZIjsabLDjA7qvKHYkYoA+0zrjpwi8g4g0CfK+Xm/nUc/Ulb1VHbLWgxcuFJoTKcBEtCVHtKPTuw==
+vxe-pc-ui@^4.3.31:
+  version "4.3.52"
+  resolved "https://registry.npmmirror.com/vxe-pc-ui/-/vxe-pc-ui-4.3.52.tgz#61fc54a6f762672589cad47d2e49665afeaab20d"
+  integrity sha512-smI1fnxDjmRRgsaSK5hMPerfPcxMbo/ckGx1hmTIpY/lDSFgXJRqKG+XK+CWp4rbjwVlKPC/bcWOTf4B9ldNGQ==
   dependencies:
-    "@vxe-ui/core" "^4.0.23"
+    "@vxe-ui/core" "^4.0.26"
 
-vxe-table@4.9.35:
-  version "4.9.35"
-  resolved "https://registry.npmmirror.com/vxe-table/-/vxe-table-4.9.35.tgz#e3650b3839f9473f4eb38b45c4df5a30589d5bd6"
-  integrity sha512-UYeDISsvx680HJ9PAas9UH2+lra0MtyvqvyEkh/5dLxUQTz8FF2xoSF3+dug0mCyYEoqdFYGarfk1rM8b10Qcw==
+vxe-table-plugin-element@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.npmmirror.com/vxe-table-plugin-element/-/vxe-table-plugin-element-4.0.3.tgz#39318d10a2284c745a93e8174f9b001f16734ce5"
+  integrity sha512-iHxPjvw8s83Q6fiOZm2aiGzpRQRcdAGOJw8uZZQMZ5Pw7uJgHev8jTF8QOi/MmlK4c8xbrGxlLyDHi2FPeZkrA==
+
+vxe-table@4.9.26:
+  version "4.9.26"
+  resolved "https://registry.npmmirror.com/vxe-table/-/vxe-table-4.9.26.tgz#9cb877d29bcc95674db1085ae011a8f0b4f700c3"
+  integrity sha512-v1PDrOmd8BFrbta9IOpYEMzkeykLsBHBF/z6xEmAOXxjV3zW/eHrEsRbHDQcKlCWpnlRky+CmXgbf/9J6GJvYQ==
   dependencies:
-    vxe-pc-ui "^4.3.43"
+    vxe-pc-ui "^4.3.31"
 
 webpack-virtual-modules@^0.6.2:
   version "0.6.2"
@@ -5346,10 +5351,10 @@ write-file-atomic@^4.0.2:
     imurmurhash "^0.1.4"
     signal-exit "^3.0.7"
 
-xe-utils@^3.5.32:
-  version "3.5.32"
-  resolved "https://registry.npmmirror.com/xe-utils/-/xe-utils-3.5.32.tgz#a5f5194c024b64e249b8cd2c6b43a452722457b0"
-  integrity sha512-R8ZT2lRnRBQO3pchM1za/Aru+/29DVDWD/OmOFODWWGkiQYz0iVIr8Bq8uKXS6zMhEsSqVCrn46bXzfe/Agjcw==
+xe-utils@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.npmmirror.com/xe-utils/-/xe-utils-3.6.0.tgz#50c1fcb344d837a001adf685707a3c5392f4adcd"
+  integrity sha512-u+px9NlkW/tYId3R2GwzU5Q2mVEFkdmV/q5IF38MKsOsPLWtPTgO5TxukMmtqKJ21GKypAFNavwu5f7+OLpJww==
 
 xml-name-validator@^4.0.0:
   version "4.0.0"
