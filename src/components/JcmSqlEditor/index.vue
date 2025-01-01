@@ -6,7 +6,7 @@
           <h4 :id="titleId" :class="titleClass">{{ title }}</h4>
         </div>
       </template>
-      <editor v-model="value" :readonly="readonly" :theme="layoutSettingStore.getThemeStatus"/>
+      <editor v-model="value" :readonly="readonly" language="sql" :theme="layoutSettingStore.getThemeStatus"/>
     </el-dialog>
   
   </template>
@@ -30,7 +30,7 @@
   // 打开
   const open = (editorValue: string | any, editorTitle = 'sql') => {
     title.value = editorTitle;
-    value.value = JSON.stringify(editorValue, undefined, 4);;
+    value.value = editorValue;
     visible.value = true;
   };
   

@@ -22,7 +22,7 @@ onMounted(async () => {
     let option = {
         color: ['#80FFA5', '#00DDFF', '#37A2FF', '#FF0087', '#FFBF00'],
         title: {
-            text: 'Gradient Stacked Area Chart'
+            text: '访问量统计'
         },
         tooltip: {
             trigger: 'axis',
@@ -35,11 +35,6 @@ onMounted(async () => {
         },
         legend: {
             data: ['Line 1', 'Line 2', 'Line 3', 'Line 4', 'Line 5']
-        },
-        toolbox: {
-            feature: {
-                saveAsImage: {}
-            }
         },
         grid: {
             left: '3%',

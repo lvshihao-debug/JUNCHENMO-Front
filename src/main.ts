@@ -24,8 +24,8 @@ import '@/styles/index.scss'
 import 'animate.css';
 // main.ts
 const app = createApp(App)
-app.use(router)
 app.use(pinia)
+app.use(router)
 app.use(VxeUITable)
 // 全局注册自定义组件的插件
 app.use(gloablComponent)

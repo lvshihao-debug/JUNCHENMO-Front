@@ -26,6 +26,7 @@
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^4.2.0",
+    "sql-formatter": "^15.4.8",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
     "vxe-table": "4.9.26",
