@@ -3,141 +3,156 @@
         <el-row>
             <el-col :span="24">
                 <div class="form-control">
-                    <input class="input input-alt" v-model="prompts" placeholder="请输入提示词" type="text">
+                    <input class="table-prompts-input input-alt" v-model="prompts" placeholder="请输入提示词" type="text"  @keyup.enter="genTable()">
                     <span class="input-border input-border-alt"></span>
-
                 </div>
             </el-col>
-
         </el-row>
-        <el-row style="margin-top: 10px;" v-if="loadingStatus">
+
+        <el-row>
             <el-col :span="24">
-                <el-card>
-                    <template #header>
-                        <div class="card-header-style">
-                            <div class="card-header">
-                                <span>表结构展示</span>
-                            </div>
-                            <div class="card-end">
-                                <el-check-tag disable-transitions="false" checked="true">
-                                    {{ lastClickRow.name }}
-                                </el-check-tag>
-                                <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="insertTopEvent()">
-                                    <template #icon>
-                                        <svg-icon name="上方插入" />
-                                    </template>
-                                </JcmButton>
-                                <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="remove()">
-                                    <template #icon>
-                                        <svg-icon name="减号" />
-                                    </template>
-                                </JcmButton>
-                                <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="add()">
-                                    <template #icon>
-                                        <svg-icon name="加号" />
-                                    </template>
-                                </JcmButton>
-                                <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="genTable()">
-                                    <template #icon>
-                                        <svg-icon name="生成" />
-                                    </template>
-                                </JcmButton>
-                            </div>
-                        </div>
-                    </template>
-                    <!-- // "vxe-table": "4.9.35" -->
-
-
-                    <vxe-table :edit-config="editConfig" @cell-click="cellClickEvent" :row-config="rowConfig"
-                        ref="tableRef" :column-config="columnConfig" :data="tableData" @row-dragend="rowDragendEvent"
-                        @sort-change="sortChangeEvent">
-                        <vxe-column type="seq" width="60" drag-sort></vxe-column>
-                        <vxe-column field="name" title="名" width="180" :edit-render="{}">
-                            <template #edit="{ row }">
-                                <el-input v-model="row.name" />
+                <div class="card-header-style">
+                    <div class="card-header">
+                        <span>表结构展示</span>
+                    </div>
+                    <div class="card-end">
+                        <el-check-tag disable-transitions="false" checked="true">
+                            {{ lastClickRow.name }}
+                        </el-check-tag>
+                        <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="insertTopEvent()">
+                            <template #icon>
+                                <svg-icon name="上方插入" />
                             </template>
-                            <template #default="{ row }">
-                                <span>{{ row.name }}</span>
+                        </JcmButton>
+                        <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="remove()">
+                            <template #icon>
+                                <svg-icon name="减号" />
                             </template>
-                        </vxe-column>
-                        <vxe-column field="type" title="类型" width="180" :edit-render="{}">
-                            <template #edit="{ row }">
-                                <el-select v-model="row.type">
-                                    <el-option label="启用" value="int" />
-                                </el-select>
+                        </JcmButton>
+                        <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="add()">
+                            <template #icon>
+                                <svg-icon name="加号" />
                             </template>
-                            <template #default="{ row }">
-                                <span>{{ row.type }}</span>
+                        </JcmButton>
+                        <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="sqlView()">
+                            <template #icon>
+                                <svg-icon name="sql" />
                             </template>
-                        </vxe-column>
-                        <vxe-column field="length" title="长度" width="180" :edit-render="{}">
-                            <template #edit="{ row }">
-                                <el-input-number v-model="row.length"></el-input-number>
+                        </JcmButton>
+                        <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="afterwardGen()">
+                            <template #icon>
+                                <svg-icon name="生成" />
                             </template>
-                            <template #default="{ row }">
-                                <span>{{ row.length }}</span>
-                            </template>
-                        </vxe-column>
-                        <vxe-column field="point" title="小数点" width="180" :edit-render="{}">
-                            <template #edit="{ row }">
-                                <el-input-number v-model="row.point"></el-input-number>
-                            </template>
-                            <template #default="{ row }">
-                                <span>{{ row.point }}</span>
-                            </template>
-                        </vxe-column>
-                        <vxe-column field="notNull" title="不是null" width="100" :edit-render="{}">
-                            <template #edit="{ row }">
-                                <el-checkbox v-model="row.notNull"></el-checkbox>
-                            </template>
-                            <template #default="{ row }">
-                                <el-checkbox v-model="row.notNull"></el-checkbox>
-                            </template>
-                        </vxe-column>
-                        <vxe-column field="primaryKey" title="主键字段" width="100" :edit-render="{}">
-                            <template #edit="{ row }">
-                                <el-checkbox v-model="row.primaryKey"></el-checkbox>
-                            </template>
-                            <template #default="{ row }">
-                                <el-checkbox v-model="row.primaryKey"></el-checkbox>
-                            </template>
-                        </vxe-column>
-                        <vxe-column field="comment" title="注释" min-width="180" :edit-render="{}">
-                            <template #edit="{ row }">
-                                <el-input v-model="row.comment" />
-                            </template>
-                            <template #default="{ row }">
-                                <span>{{ row.comment }}</span>
-                            </template>
-                        </vxe-column>
-                    </vxe-table>
-                </el-card>
-
+                        </JcmButton>
+                    </div>
+                </div>
             </el-col>
         </el-row>
+        <el-card class="card-table-style" v-if="loadingStatus">
+            <vxe-table :edit-config="editConfig" @cell-click="cellClickEvent" :row-config="rowConfig" ref="tableRef"
+                :column-config="columnConfig" :data="tableData" @row-dragend="rowDragendEvent">
+                <vxe-column type="seq" width="60" drag-sort></vxe-column>
+                <vxe-column field="name" title="名" width="180" :edit-render="{}">
+                    <template #edit="{ row }">
+                        <el-input v-model="row.name" />
+                    </template>
+                    <template #default="{ row }">
+                        <span>{{ row.name }}</span>
+                    </template>
+                </vxe-column>
+                <vxe-column field="type" title="类型" width="180" :edit-render="{}">
+                    <template #edit="{ row }">
+                        <el-select v-model="row.type">
+                            <template  v-for="item in loadDictDataByName('mysqlType')">
+                                <el-option :label="item.value" :value="item.value" />
+                            </template>
+                        </el-select>
+                    </template>
+                    <template #default="{ row }">
+                        <span>{{ row.type }}</span>
+                    </template>
+                </vxe-column>
+                <vxe-column field="length" title="长度" width="180" :edit-render="{}">
+                    <template #edit="{ row }">
+                        <el-input-number v-model="row.length"></el-input-number>
+                    </template>
+                    <template #default="{ row }">
+                        <span>{{ row.length }}</span>
+                    </template>
+                </vxe-column>
+                <vxe-column field="point" title="小数点" width="180" :edit-render="{}">
+                    <template #edit="{ row }">
+                        <el-input-number v-model="row.point"></el-input-number>
+                    </template>
+                    <template #default="{ row }">
+                        <span>{{ row.point }}</span>
+                    </template>
+                </vxe-column>
+                <vxe-column field="notNull" title="不是null" width="100" :edit-render="{}">
+                    <template #edit="{ row }">
+                        <el-checkbox v-model="row.notNull"></el-checkbox>
+                    </template>
+                    <template #default="{ row }">
+                        <el-checkbox v-model="row.notNull"></el-checkbox>
+                    </template>
+                </vxe-column>
+                <vxe-column field="primaryKey" title="主键字段" width="100" :edit-render="{}">
+                    <template #edit="{ row }">
+                        <el-checkbox v-model="row.primaryKey"></el-checkbox>
+                    </template>
+                    <template #default="{ row }">
+                        <el-checkbox v-model="row.primaryKey"></el-checkbox>
+                    </template>
+                </vxe-column>
+                <vxe-column field="comment" title="注释" min-width="180" :edit-render="{}">
+                    <template #edit="{ row }">
+                        <el-input v-model="row.comment" />
+                    </template>
+                    <template #default="{ row }">
+                        <span>{{ row.comment }}</span>
+                    </template>
+                </vxe-column>
+            </vxe-table>
+        </el-card>
+
         <!--加载动画-->
         <div class="table-data-loading" v-else>
             <Loading />
         </div>
+        <JcmSqlEditor ref="sqlEditor"></JcmSqlEditor>
     </div>
 </template>
 
 <script lang="ts" setup>
-import useAiTableGenStore from '@/store/modules/tool/aiTableGen'
-import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 import { VxeTableEvents } from 'vxe-table'
 import type { VxeTablePropTypes, VxeTableInstance } from 'vxe-table'
 
+import useAiTableGenStore from '@/store/modules/tool/aiTableGen'
+import useDictDataStore from '@/store/modules/acl/dictData'
+import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
+
+const dictDataStore = useDictDataStore()
 const layoutSettingStore = useLayoutSettingStore()
 const aiTableGenStore = useAiTableGenStore()
 
-onMounted(() => {
+//表格引用
+const tableRef = ref<VxeTableInstance<RowVO>>();
+//sql编辑引用
+const sqlEditor = ref();
 
+onMounted(() => {
+  //初始化字典数据
+  loadDictData()
 })
 //当前输入的提示词
 const prompts = ref('');
 
-const tableRef = ref<VxeTableInstance<RowVO>>()
+//保存第一次生成的ID
+const requestId = ref();
+
+//表格数据
+const tableData = ref<RowVO[]>([])
+
 const insertRecords: RowVO[] = []
 interface RowVO {
     id: number
@@ -177,8 +192,28 @@ const rowConfig = reactive<VxeTablePropTypes.RowConfig<RowVO>>({
 const columnConfig = reactive<VxeTablePropTypes.ColumnConfig<RowVO>>({
 })
 
-const tableData = ref<RowVO[]>([])
 
+//显示Sql编辑器Modal
+const sqlView = () =>{
+    aiTableGenStore.loading = true;
+    aiTableGenStore.genTableSql(JSON.stringify(tableData.value)).then(res => {
+        console.log("返回的数据")
+        console.log(res)
+        // const jsonStringWithExtra = res.output.choices[0].message.content
+        // 先去除字符串前后多余的部分（去掉开头的json以及最后的）
+        const trimmedString = res.replace("```sql", "").replace("```", "");
+        console.log(trimmedString)
+        // 再去除可能存在的多余空白字符（比如换行、空格等，使其格式更规范便于解析）
+        const cleanedString = trimmedString.trim();
+        sqlEditor?.value?.open(cleanedString,"测试表")
+        // 此时 jsonArray 就是你想要的 JSON 数组了，可以进行后续的操作，比如遍历等
+        aiTableGenStore.loading = false;
+    }).catch(err => {
+        console.log("生成失败")
+    })
+}
+
+//拖拽触发的事件
 const rowDragendEvent: VxeTableEvents.RowDragend = ({ newRow, oldRow, dragPos }) => {
     console.log(`拖拽完成，被拖拽行：${oldRow.name} 目标行：${newRow.name} 目标位置：${dragPos}`);
     // 获取被拖拽行在tableData中的索引
@@ -200,15 +235,16 @@ const rowDragendEvent: VxeTableEvents.RowDragend = ({ newRow, oldRow, dragPos })
     // 将被拖拽行的数据放置到目标位置
     tableData.value[newIndex] = oldRow;
 };
+
 //在上方插入
 const insertTopEvent = () => {
     addData(getLastClickRowIndex())
 }
-
+//在最后插入
 const add = () => {
     addData(tableData.value.length)
 }
-
+//插入数据的方法
 const addData = (index: number) => {
     const newRow: RowVO = {
         "id": new Date().getTime(),
@@ -230,7 +266,7 @@ const addData = (index: number) => {
         }
     })
 }
-
+//删除当前点击的行
 const remove = () => {
     console.log(getLastClickRowIndex())
     if (getLastClickRowIndex() != -1) {
@@ -243,10 +279,24 @@ const remove = () => {
 */
 const genTable = () => {
     aiTableGenStore.loading = true;
-    aiTableGenStore.genTable(prompts.value).then(res => {
-        const jsonStringWithExtra = res.output.choices[0].message.content
+    Gen(prompts.value);
+}
+
+const afterwardGen = () =>{
+ aiTableGenStore.loading = true;
+ Gen(requestId.value+"|jcm|"+prompts.value);
+}
+
+
+const Gen=(prompts:string)=>{
+    lastClickRow.value=<RowVO>{}
+    aiTableGenStore.genTable(prompts).then(res => {
+        requestId.value=res.requestId;
+        console.log("返回的数据")
+        console.log(res)
+        // const jsonStringWithExtra = res.output.choices[0].message.content
         // 先去除字符串前后多余的部分（去掉开头的json以及最后的）
-        const trimmedString = jsonStringWithExtra.replace("```json", "").replace("```", "");
+        const trimmedString = res.context.replace("```json", "").replace("```", "");
         console.log(trimmedString)
         // 再去除可能存在的多余空白字符（比如换行、空格等，使其格式更规范便于解析）
         const cleanedString = trimmedString.trim();
@@ -255,29 +305,43 @@ const genTable = () => {
         const jsonArray: any[] = JSON.parse(cleanedString);
         // 此时 jsonArray 就是你想要的 JSON 数组了，可以进行后续的操作，比如遍历等
         tableData.value = jsonArray
+        lastClickRow.value=jsonArray[jsonArray.length-1]
         aiTableGenStore.loading = false;
     }).catch(err => {
         console.log("生成失败")
     })
 }
-
 /**
 * 点击table某一行的某一列时触发的函数
 * @param {Object} row - 当前行对象
 * @param {Object} column - 当前列对象
 */
 const cellClickEvent: VxeTableEvents.CellClick<RowVO> = ({ row, column }) => {
-    tableData.value.forEach(item => {
-        if (item.id == row.id) {
-        }
-    })
-    console.log(row, column)
     lastClickRow.value = row
 }
-
+//获取最后一次点击行数的下标
 const getLastClickRowIndex = () => {
     return tableData.value.findIndex(item => item.id === lastClickRow.value.id);
 }
+
+//加载所需要的字典数据
+const loadDictData = () => {
+  const dictNames = ['mysqlType']
+  dictDataStore
+    .dictDataInfoList(dictNames)
+    .then((resp) => {
+        aiTableGenStore.dictData = resp.data
+    })
+    .catch((error) => {
+      ElMessage.error({ message: error })
+    })
+}
+//根据名称加载字典数据
+const loadDictDataByName = (name:string) => {
+ return aiTableGenStore.dictData.filter((item: any) => item.name === name)
+}
+
+
 </script>
 <script lang="ts">
 export default {
@@ -300,8 +364,7 @@ export default {
     }
 }
 
-.input {
-    color: #fff;
+.table-prompts-input {
     font-size: 0.9rem;
     background-color: transparent;
     width: 100%;
@@ -340,7 +403,6 @@ export default {
     font-size: 1.2rem;
     padding-inline: 1em;
     padding-block: 0.8em;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .input-border-alt {

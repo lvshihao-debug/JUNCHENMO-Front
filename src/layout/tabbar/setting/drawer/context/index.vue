@@ -159,7 +159,7 @@ onMounted(() => {
 
 //获取layout配置相关的仓库
 const layoutSettingStore = uselayoutSettingStore()
-const colors = ref(['#FF80C8', '#6F68F6', '#dc440d', '#4a18ee', '#ee1871', '#2174FF']);
+const colors = ref(['#FF80C8', '#6F68F6', '#dc440d', '#0052D9', '#ee1871', '#2174FF']);
 const selectedColor = ref('');
 
 

@@ -48,8 +48,8 @@
       </el-form>
     </el-card>
 
-    <el-card class="card-table-style" v-if="loadingStatus">
-      <template #header>
+    <el-row>
+      <el-col :span="24">
         <div class="card-header-style">
           <div class="card-header">
             <span>用户列表</span>
@@ -62,9 +62,26 @@
             </JcmButton>
           </div>
         </div>
-      </template>
+      </el-col>
+    </el-row>
+
+    <el-card class="card-table-style" v-if="loadingStatus">
       <el-table :data="userStore.dataList.list" table-layout="auto">
         <el-table-column prop="userId" label="ID" align="center" />
+        <el-table-column prop="avatar" label="头像">
+          <template #default="scope">
+            <template v-if="scope.row.avatar == null">
+              <el-avatar :size="27" shape="square">
+                {{ scope.row.username.charAt(0) }}
+              </el-avatar>
+            </template>
+            <template v-else>
+              <div style="display: flex;align-items: center;">
+                <el-avatar :size="27" shape="square" :src="scope.row.avatar" align="center" />
+              </div>
+            </template>
+          </template>
+        </el-table-column>
         <el-table-column prop="username" label="用户名" align="center">
           <template #default="scope">
             <span @click="(instance?.proxy as any).$copyText(scope.row.username)" class="copy-span">
@@ -122,8 +139,8 @@
           <!--分页-->
           <el-pagination :page-sizes="[10, 20, 30, 40]" small="small" background="true"
             :default-page-size="Number(layoutSettingStore.setting.size)"
-            layout="total, sizes, prev, pager, next, jumper" :total="userStore.dataList.total" @size-change="handleSizeChange"
-            @current-change="handleCurrentChange" />
+            layout="total, sizes, prev, pager, next, jumper" :total="userStore.dataList.total"
+            @size-change="handleSizeChange" @current-change="handleCurrentChange" />
         </div>
       </template>
     </el-card>
@@ -132,9 +149,9 @@
       <Loading />
     </div>
     <!--弹出框组件列表-->
-    <UserAddFromModal ref="userAddFromModal" ></UserAddFromModal>
-    <UserUpdateFromModal ref="userUpdateFromModal" ></UserUpdateFromModal>
-    <UserRestPasswordFromModal ref="userRestPasswordFromModal" ></UserRestPasswordFromModal>
+    <UserAddFromModal ref="userAddFromModal"></UserAddFromModal>
+    <UserUpdateFromModal ref="userUpdateFromModal"></UserUpdateFromModal>
+    <UserRestPasswordFromModal ref="userRestPasswordFromModal"></UserRestPasswordFromModal>
     <UserAuthRolesFromModal ref="userAuthRolesFromModal"></UserAuthRolesFromModal>
   </div>
 </template>
@@ -206,7 +223,7 @@ const loadingStatus = computed(() => {
 //页码变更触发的方法
 const handleCurrentChange = (currentPage: number) => {
   userStore.dataList.page = currentPage
-   refresh();
+  refresh();
 }
 
 //页数切换触发的事件
@@ -246,6 +263,4 @@ export default {
   name: 'user',
 }
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

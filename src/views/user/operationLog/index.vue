@@ -61,8 +61,9 @@
         </el-row>
       </el-form>
     </el-card>
-    <el-card class="card-table-style" v-if="loadingStatus">
-      <template #header>
+
+    <el-row>
+      <el-col :span="24">
         <div class="card-header-style">
           <div class="card-header">
             <span>操作日志列表</span>
@@ -85,8 +86,10 @@
             </JcmButton>
           </div>
         </div>
-      </template>
+      </el-col>
+    </el-row>
 
+    <el-card class="card-table-style" v-if="loadingStatus">
       <el-table :data="operationLogStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="operName" label="操作人员" align="center" />

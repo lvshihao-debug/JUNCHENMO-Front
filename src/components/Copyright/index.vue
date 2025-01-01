@@ -69,7 +69,6 @@ onMounted(() => {
 .ivu-global-footer-links a {
   text-decoration: none;
   font-size: 14px;
-  color: #728ce3;
   transition: all 0.2s ease-in-out;
 }
 

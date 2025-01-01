@@ -31,11 +31,12 @@
         </el-row>
       </el-form>
     </el-card>
-    <el-card class="card-table-style" v-if="loadingStatus">
-      <template #header>
+
+    <el-row>
+      <el-col :span="24">
         <div class="card-header-style">
           <div class="card-header">
-            <span>用户列表</span>
+            <span>角色列表</span>
           </div>
           <div class="card-end">
             <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="roleAddFromModal?.open()">
@@ -50,8 +51,10 @@
             </JcmButton>
           </div>
         </div>
-      </template>
+      </el-col>
+    </el-row>
 
+    <el-card class="card-table-style" v-if="loadingStatus">
       <el-table :data="roleStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="roleId" label="ID" align="center" />

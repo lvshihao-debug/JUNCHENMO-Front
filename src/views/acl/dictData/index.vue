@@ -41,8 +41,9 @@
         </el-row>
       </el-form>
     </el-card>
-    <el-card class="card-table-style" v-if="loadingStatus">
-      <template #header>
+
+    <el-row>
+      <el-col :span="24">
         <div class="card-header-style">
           <div class="card-header">
             <span>字典配置值列表</span>
@@ -60,8 +61,10 @@
             </JcmButton>
           </div>
         </div>
-      </template>
+      </el-col>
+    </el-row>
 
+    <el-card class="card-table-style" v-if="loadingStatus">
       <el-table :data="dictDataStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="dictTypeId" label="ID" align="center" />
@@ -211,7 +214,6 @@ const deleteItem = (item: any) => {
 
 //删除多个字典值触发的事件
 const deleteItems = () => {
-
   const dictDataIds = dictDataStore.multipleSelection.map((item: any) => item.dictDataId);
   dictDataStore
     .deleteDictData(dictDataIds)

@@ -57,6 +57,8 @@ declare module 'vue' {
     JcmIconSelect: typeof import('./src/components/JcmIconSelect/index.vue')['default']
     JcmiFrame: typeof import('./src/components/JcmiFrame/index.vue')['default']
     JcmInfoCard: typeof import('./src/components/JcmInfoCard/index.vue')['default']
+    JcmSqlEditor: typeof import('./src/components/JcmSqlEditor/index.vue')['default']
+    JsonEditor: typeof import('./src/components/json-editor/index.vue')['default']
     LayoutIcon: typeof import('./src/components/layoutIcon/index.vue')['default']
     Loading: typeof import('./src/components/loading/index.vue')['default']
     Modal: typeof import('./src/components/json-editor/modal/index.vue')['default']
