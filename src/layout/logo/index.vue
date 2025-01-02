@@ -34,7 +34,7 @@ import setting from '@/setting'
   gap: 5px;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
 }
 .logo-unfold{
   width: 65px;

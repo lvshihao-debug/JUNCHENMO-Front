@@ -154,7 +154,7 @@ const getCacheName = (cacheName: string) => {
         })
 }
 
-//删除缓存键名
+
 const cacheNameKeyClick: VxeTableEvents.CellClick<any> = ({ row, column }) => {
     cacheListStore.viewData.cachekeyName = row.keyName
     getCacheNameKey(row.keyName)
@@ -178,7 +178,7 @@ const deleteCacheNameClick = (keyName: string) => {
     cacheListStore
         .deleteRedisKeys(keyName)
         .then((resp) => {
-            cacheListStore.viewData.cacheName = ""
+            refreshKeyNameKey();
             cacheListStore.viewData.cachekeyName = ""
             cacheListStore.viewData.context = ""
             ElMessage.success({ message: keyName + ":前缀名称的缓存删除成功" })

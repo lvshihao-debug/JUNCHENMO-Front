@@ -2,7 +2,7 @@
   <el-watermark :content="useUserStore.user.username" :font="font">
     <div class="layout_container" :class="{
       suuny: LayoutSettingStore.getThemeStatus,
-      moon:  !LayoutSettingStore.getThemeStatus,
+      moon: !LayoutSettingStore.getThemeStatus,
     }">
 
       <!-- 偏好设置 -->
@@ -10,7 +10,7 @@
       <!-- 左侧菜单 -->
       <div class="layout_slider animate__animated animate__bounceInLeft" :class="{
         suuny: LayoutSettingStore.getThemeStatus,
-        moon:  !LayoutSettingStore.getThemeStatus,
+        moon: !LayoutSettingStore.getThemeStatus,
         fold: LayoutSettingStore.fold
       }" v-show="LayoutSettingStore.setting.menu">
         <!-- logo -->
@@ -18,14 +18,14 @@
         <!-- 展示菜单 -->
         <el-scrollbar class="scrollbar">
           <!-- 菜单组件 -->
-          <el-menu :collapse="LayoutSettingStore.fold" :default-active="$route.path" :collapse-transition="false" 
+          <el-menu :collapse="LayoutSettingStore.fold" :default-active="$route.path" :collapse-transition="false"
             router>
             <Menu :menuList="usePermissionStore.sidebarRouters"></Menu>
           </el-menu>
         </el-scrollbar>
         <el-button class="foldwithExpand iconBtn" @click="changeIcon">
           <svg-icon :name="LayoutSettingStore.fold ? '折叠-展开' : '折叠-收起'"
-            :color="LayoutSettingStore.setting.theme==0 ? 'black' : 'white'" />
+            :color="LayoutSettingStore.setting.theme == 0 ? 'black' : 'white'" />
         </el-button>
       </div>
       <!-- 顶部导航 -->
@@ -33,7 +33,7 @@
         showNavigationBar: LayoutSettingStore.setting.navigationBar,
         hidenNavigationBar: !LayoutSettingStore.setting.navigationBar,
         suuny: LayoutSettingStore.getThemeStatus,
-        moon:  !LayoutSettingStore.getThemeStatus,
+        moon: !LayoutSettingStore.getThemeStatus,
         unfold: !LayoutSettingStore.fold,
         fold: LayoutSettingStore.fold,
         showMenu: LayoutSettingStore.setting.menu,
@@ -46,7 +46,7 @@
         showNavigationBar: LayoutSettingStore.setting.navigationBar,
         hidenNavigationBar: !LayoutSettingStore.setting.navigationBar,
         suuny: LayoutSettingStore.getThemeStatus,
-        moon:  !LayoutSettingStore.getThemeStatus,
+        moon: !LayoutSettingStore.getThemeStatus,
         fold: LayoutSettingStore.fold,
         showMenu: LayoutSettingStore.setting.menu,
         hidenMenu: !LayoutSettingStore.setting.menu,
@@ -59,7 +59,7 @@
         showNavigationBar: LayoutSettingStore.setting.navigationBar,
         hidenNavigationBar: !LayoutSettingStore.setting.navigationBar,
         suuny: LayoutSettingStore.getThemeStatus,
-        moon:  !LayoutSettingStore.getThemeStatus,
+        moon: !LayoutSettingStore.getThemeStatus,
         fold: LayoutSettingStore.fold,
         unfold: !LayoutSettingStore.fold,
         showTabs: LayoutSettingStore.setting.tabs,
@@ -68,8 +68,13 @@
         hidenMenu: !LayoutSettingStore.setting.menu,
       }">
 
+        <el-backtop :bottom="50" target=".layout_main">
+          <div class="backtop">
+            <svg-icon name="火箭" width="20px" height="20px" />
+          </div>
+        </el-backtop>
         <Breadcrumb class="breadcurmb" v-show="LayoutSettingStore.setting.breadcrumb"></Breadcrumb>
-        <Main class="context" >
+        <Main class="context">
         </Main>
         <copyright v-show="LayoutSettingStore.setting.copyright"></copyright>
       </div>
@@ -115,9 +120,9 @@ const font = reactive({
 // 监听水印开启的数据变更
 watch(() => LayoutSettingStore.setting.watermark, (v) => {
   font.color = v
-      ? 'rgba(100, 100, 100, .45)'
-      : 'rgba(0, 0, 0, 0)'
-},{
+    ? 'rgba(100, 100, 100, .45)'
+    : 'rgba(0, 0, 0, 0)'
+}, {
   immediate: true,
 });
 
@@ -134,7 +139,6 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-
 .layout_container {
   position: relative;
   width: 100%;
@@ -152,6 +156,7 @@ export default {
 
   .layout_slider {
     box-shadow: var(--el-box-shadow-light);
+
     //白天
     &.suuny {
       background-color: #ffffff;
@@ -241,7 +246,13 @@ export default {
     overflow-y: auto;
     position: absolute;
     right: 0px;
-
+    .backtop{
+        height: 100%;
+        width: 100%;
+        background-color: transparent;
+        text-align: center;
+        line-height: 40px;
+    }
     //白天
     &.suuny {
       background-color: #fafafb;

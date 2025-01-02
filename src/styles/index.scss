@@ -191,13 +191,28 @@ body {
   background-color: transparent !important;
 }
 /**我的scss**/
+//监控面板card样式
 .card-info-item-value {
   color: var(--lvshihao-theme-color);
 }
+//footer的超链接颜色样式1111
 .ivu-global-footer-links a {
   color: var(--lvshihao-theme-color);
 }
-
+//数据表生成器Icon样式
+.table-info-svg-icon{
+  use{
+      fill: var(--lvshihao-theme-color);
+  }
+}
+.layout_main{
+  //火箭样式
+  .backtop{
+    use{
+      fill: var(--lvshihao-theme-color);
+    }
+  }
+}
 /*
 element表单区域
 
@@ -299,7 +314,7 @@ element表单区域
 //侧边抽屉
 .el-drawer {
   filter: drop-shadow(5px 0px 30px var(--lvshihao-theme-color));
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 //白天主题

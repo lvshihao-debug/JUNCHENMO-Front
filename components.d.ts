@@ -9,7 +9,9 @@ declare module 'vue' {
   export interface GlobalComponents {
     Copyright: typeof import('./src/components/copyright/index.vue')['default']
     Editor: typeof import('./src/components/editor/index.vue')['default']
+    ElAlert: typeof import('element-plus/es')['ElAlert']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
+    ElBacktop: typeof import('element-plus/es')['ElBacktop']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
     ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
     ElButton: typeof import('element-plus/es')['ElButton']

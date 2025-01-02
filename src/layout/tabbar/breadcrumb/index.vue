@@ -1,5 +1,4 @@
 <template>
-  <!-- 顶部左侧静态 -->
   <!-- 左侧面包屑 -->
   <el-breadcrumb separator-icon="ArrowRight" class="animate__animated animate__fadeIn">
     <!-- 面包屑动态的展示路由名字与标题 -->

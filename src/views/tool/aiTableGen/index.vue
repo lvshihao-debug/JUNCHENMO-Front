@@ -1,14 +1,36 @@
 <template>
     <div>
+   
         <el-row>
             <el-col :span="24">
                 <div class="form-control">
-                    <input class="table-prompts-input input-alt" v-model="prompts" placeholder="请输入提示词" type="text"  @keyup.enter="genTable()">
+                    <input class="table-prompts-input input-alt" v-model="prompts" placeholder="请输入提示词" type="text"
+                        @keyup.enter="genTable()">
                     <span class="input-border input-border-alt"></span>
                 </div>
             </el-col>
         </el-row>
-
+        <el-row style="margin-top: 10px;">
+            <el-col :span="24">
+                <el-alert  :closable="false" >
+                    <template #title>
+                       <div style="display: flex; align-items: center"> 
+                        <span>输入提示词回车键即可生成，</span>
+                        <svg-icon name="生成" class="table-info-svg-icon" />
+                        <span style="margin-left: 5px;">继续修改表结构需求，</span>
+                        <svg-icon name="sql" class="table-info-svg-icon"/>
+                        <span style="margin-left: 5px;">查看生成的创建表SQL语句，</span>
+                        <svg-icon name="上方插入" class="table-info-svg-icon" />
+                        <span style="margin-left: 5px;">在当前位置上方插入一行，</span>
+                        <svg-icon name="减号" class="table-info-svg-icon"/>
+                        <span style="margin-left: 5px;">删除当前位置行，</span>
+                        <svg-icon name="加号" class="table-info-svg-icon"/>
+                        <span style="margin-left: 5px;">在最后位置新增一行</span>
+                    </div>
+                    </template>
+                </el-alert>
+            </el-col>
+        </el-row>
         <el-row>
             <el-col :span="24">
                 <div class="card-header-style">
@@ -63,7 +85,7 @@
                 <vxe-column field="type" title="类型" width="180" :edit-render="{}">
                     <template #edit="{ row }">
                         <el-select v-model="row.type">
-                            <template  v-for="item in loadDictDataByName('mysqlType')">
+                            <template v-for="item in loadDictDataByName('mysqlType')">
                                 <el-option :label="item.value" :value="item.value" />
                             </template>
                         </el-select>
@@ -141,8 +163,8 @@ const tableRef = ref<VxeTableInstance<RowVO>>();
 const sqlEditor = ref();
 
 onMounted(() => {
-  //初始化字典数据
-  loadDictData()
+    //初始化字典数据
+    loadDictData()
 })
 //当前输入的提示词
 const prompts = ref('');
@@ -194,19 +216,19 @@ const columnConfig = reactive<VxeTablePropTypes.ColumnConfig<RowVO>>({
 
 
 //显示Sql编辑器Modal
-const sqlView = () =>{
+const sqlView = () => {
     aiTableGenStore.loading = true;
     aiTableGenStore.genTableSql(JSON.stringify(tableData.value)).then(res => {
         console.log("返回的数据")
         console.log(res)
         // const jsonStringWithExtra = res.output.choices[0].message.content
         // 先去除字符串前后多余的部分（去掉开头的json以及最后的）
-        const trimmedString = res.replace("```sql", "").replace("```", "").replace("\n","");
+        const trimmedString = res.replace("```sql", "").replace("```", "").replace("\n", "");
         console.log(trimmedString)
         // 再去除可能存在的多余空白字符（比如换行、空格等，使其格式更规范便于解析）
         const cleanedString = trimmedString.trim();
         console.log(format(cleanedString, { language: 'mysql' }))
-        sqlEditor?.value?.open(format(cleanedString, { language: 'mysql' }),"测试表")
+        sqlEditor?.value?.open(format(cleanedString, { language: 'mysql' }), "测试表")
         // 此时 jsonArray 就是你想要的 JSON 数组了，可以进行后续的操作，比如遍历等
         aiTableGenStore.loading = false;
     }).catch(err => {
@@ -283,30 +305,28 @@ const genTable = () => {
     Gen(prompts.value);
 }
 
-const afterwardGen = () =>{
- aiTableGenStore.loading = true;
- Gen(requestId.value+"|jcm|"+prompts.value);
+/**
+ * 生成之后修改当前table的json数据
+ */
+const afterwardGen = () => {
+    aiTableGenStore.loading = true;
+    Gen(requestId.value + "|jcm|" + prompts.value);
 }
 
 
-const Gen=(prompts:string)=>{
-    lastClickRow.value=<RowVO>{}
+const Gen = (prompts: string) => {
+    lastClickRow.value = <RowVO>{}
     aiTableGenStore.genTable(prompts).then(res => {
-        requestId.value=res.requestId;
-        console.log("返回的数据")
-        console.log(res)
-        // const jsonStringWithExtra = res.output.choices[0].message.content
+        requestId.value = res.requestId;
         // 先去除字符串前后多余的部分（去掉开头的json以及最后的）
         const trimmedString = res.context.replace("```json", "").replace("```", "");
-        console.log(trimmedString)
         // 再去除可能存在的多余空白字符（比如换行、空格等，使其格式更规范便于解析）
         const cleanedString = trimmedString.trim();
-        console.log(cleanedString)
         // 使用 JSON.parse 方法将处理后的字符串解析为 JSON 数组
         const jsonArray: any[] = JSON.parse(cleanedString);
         // 此时 jsonArray 就是你想要的 JSON 数组了，可以进行后续的操作，比如遍历等
         tableData.value = jsonArray
-        lastClickRow.value=jsonArray[jsonArray.length-1]
+        lastClickRow.value = jsonArray[jsonArray.length - 1]
         aiTableGenStore.loading = false;
     }).catch(err => {
         console.log("生成失败")
@@ -327,19 +347,19 @@ const getLastClickRowIndex = () => {
 
 //加载所需要的字典数据
 const loadDictData = () => {
-  const dictNames = ['mysqlType']
-  dictDataStore
-    .dictDataInfoList(dictNames)
-    .then((resp) => {
-        aiTableGenStore.dictData = resp.data
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+    const dictNames = ['mysqlType']
+    dictDataStore
+        .dictDataInfoList(dictNames)
+        .then((resp) => {
+            aiTableGenStore.dictData = resp.data
+        })
+        .catch((error) => {
+            ElMessage.error({ message: error })
+        })
 }
 //根据名称加载字典数据
-const loadDictDataByName = (name:string) => {
- return aiTableGenStore.dictData.filter((item: any) => item.name === name)
+const loadDictDataByName = (name: string) => {
+    return aiTableGenStore.dictData.filter((item: any) => item.name === name)
 }
 
 
@@ -350,6 +370,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
+
+
 .el-checkbox {
     display: flex;
     justify-content: center;

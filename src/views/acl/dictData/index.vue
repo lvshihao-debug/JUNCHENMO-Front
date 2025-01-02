@@ -120,6 +120,7 @@
     <!--弹出框组件列表-->
     <DictDataAddFromModal ref="dictDataAddFromModal"></DictDataAddFromModal>
     <DictDataUpdateFromModal ref="dictDataUpdateFromModal" ></DictDataUpdateFromModal>
+
   </div>
 </template>
 
