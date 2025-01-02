@@ -60,7 +60,13 @@
     <div class="filed-style">
       <div>菜单栏</div>
       <div>
-        <el-switch v-model="layoutSettingStore.setting.menu" class="mt-2 setting-context" inline-prompt />
+        <el-switch v-model="layoutSettingStore.setting.menu" @change="changeMenu" class="mt-2 setting-context" inline-prompt />
+      </div>
+    </div>
+    <div class="filed-style">
+      <div>顶部菜单栏</div>
+      <div>
+        <el-switch v-model="layoutSettingStore.setting.topMenu" @change="changeTopMenu" class="mt-2 setting-context" inline-prompt />
       </div>
     </div>
   </div>
@@ -208,6 +214,19 @@ const layoutIconRefs = reactive([]);
 watch(() => layoutSettingStore.setting.theme, (v) => {
   showDot(v)
 });
+
+//当menu菜单栏被点击的时候
+const changeMenu = () => {
+  layoutSettingStore.setting.topMenu=false;
+}
+
+//当topMenu菜单栏被点击的时候
+const changeTopMenu = () => {
+  layoutSettingStore.setting.menu=false;
+}
+
+
+
 
 // 点击LayoutIcon时触发的函数，用于切换对应小圆点的显示状态以及执行其他相关逻辑
 const showDot = (index: number) => {

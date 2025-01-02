@@ -151,6 +151,7 @@ const loadDictDataByName = (name: string) => {
  */
 const clearCommonFrom = () => {
   Object.keys(menuStore.commonForm).forEach((key) => {
+    menuStore.commonForm.menuId = undefined;
     menuStore.commonForm.name = undefined;
     menuStore.commonForm.parentId = "0";
     menuStore.commonForm.type = 0;

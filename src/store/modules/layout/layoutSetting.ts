@@ -18,6 +18,7 @@ const useSettinggStore = defineStore('SettinggStore', {
         tabsIcon: true, //tabs图标是否展示
         breadcrumb: true, //面包屑是否展示
         menu: true, //菜单是否展示
+        topMenu: false,//顶部菜单栏是否展示
         copyright: true, //版权内容是否展示
         watermark: true, //用户水印是否展示
         weakColor: false, //弱色模式

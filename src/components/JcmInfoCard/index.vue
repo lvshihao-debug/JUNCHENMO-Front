@@ -1,13 +1,16 @@
 <template>
-    <el-card class="card-table-style">
-        <template #header>
+    <el-row>
+        <el-col :span="24">
             <div class="card-header-style">
                 <div class="card-header">
-                    <svg-icon :name="iconName" :width="12" :height="12"  :color="layoutSettingStore.getThemeInvert" />
+                    <svg-icon :name="iconName" :width="12" :height="12" :color="layoutSettingStore.getThemeInvert" />
                     <span style="margin-left: 5px;">{{ title }}</span>
                 </div>
             </div>
-        </template>
+        </el-col>
+    </el-row>
+
+    <el-card class="card-table-style">
         <template v-for="(value, key) in infoData" :key="key">
             <div class="card-info-item">{{ key }}:
                 <span class="card-info-item-value">{{ value }}</span>

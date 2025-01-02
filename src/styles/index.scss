@@ -24,6 +24,7 @@ body {
   //主色彩
   --lvshihao-theme-color: #6f68f6;
   --lvshihao-moon-bg: #161618;
+  --lvshihao-suuny-bg: #fff;
   //色彩滤镜
   --lvshihao-theme-filter-grayscale: 0%;
   --lvshihao-theme-filter-invert: 0%;
@@ -42,6 +43,7 @@ body {
   font-weight: 600 !important;
   --el-datepicker-active-color: var(--lvshihao-theme-color);
   --el-color-primary: var(--lvshihao-theme-color);
+  --el-menu-active-color: var(--lvshihao-theme-color)
 }
 
 .searchCard {
@@ -260,6 +262,10 @@ element表单区域
   .el-select__wrapper.is-focused {
     box-shadow: 0 0 0 2px var(--lvshihao-theme-color) inset;
   }
+}
+//菜单弹出宽度自适应
+.el-menu--popup{
+  min-width: none;
 }
 //下拉选择
 .el-select-dropdown__item.is-selected {
@@ -699,6 +705,107 @@ html {
     color: $lvshihao-menu-suuny-item-div-svg-color;
   }
 
+//修改顶部菜单栏
+.el-popper{
+  border: 0px !important;
+}
+.el-menu--horizontal{
+  align-items: flex-end;
+  &.el-menu{
+    border: none;
+  }
+  height: 40px;
+  //一级子菜单
+  .el-menu-item *{
+     display: flex;
+  }
+  .el-menu-item{
+    color: var(--lvshihao-moon-bg) !important;
+    background-color: transparent !important;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    span{
+      margin-left: 5px;
+    }
+  }
+  .el-menu-item:hover{
+    border-radius: 8px;
+    background-color: #fafafa !important;
+  }
+  .el-menu-item.is-active{
+    border-bottom: 0px !important;
+    div {
+      margin-right: 4px;
+      width: 25px;
+      height: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      background-color: var(--lvshihao-theme-color);
+      svg {
+        use {
+          fill: $lvshihao-menu-suuny-item-active-div-svg-color;
+        }
+      }
+    }
+  }
+  .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+    background-color: transparent !important;
+  }
+  //二级子菜单
+  .el-sub-menu{
+    margin-left: 10px;
+    margin-right: 10px;
+    .el-sub-menu__icon-arrow {
+      width: 25px !important;
+      left: 82% !important;
+    }
+    .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger{
+      padding-left: 5px;
+      padding-right: 15px;
+      span{
+        margin-left: 5px;
+      }
+    }
+    .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger:hover{
+      background-color:  #fafafa !important;
+    }
+    .el-menu{
+      .el-menu-item:hover{
+        background-color:   #fafafa  !important;
+      }
+    }
+  }
+  .el-sub-menu:hover{
+    .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger{
+      color: var(--lvshihao-moon-bg) !important;
+    }
+  }
+  .el-sub-menu.is-active{
+    .el-sub-menu__title {
+      border-bottom: 0px;
+      div {
+        margin-right: 4px;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        background-color: var(--lvshihao-theme-color);
+        svg {
+          use {
+            fill: $lvshihao-menu-suuny-item-active-div-svg-color;
+          }
+        }
+      }
+    }
+  }
+}
+  
   //tab标签页
   .el-check-tag--primary,
   .el-check-tag.is-checked.el-check-tag--primary,
@@ -1225,6 +1332,117 @@ html.dark {
 
   .el-radio-button__inner:hover {
     color: $lvshihao-menu-moon-item-div-svg-color;
+  }
+
+  //修改顶部菜单栏
+  .el-menu--horizontal{
+    align-items: flex-end;
+    &.el-menu{
+      border: none;
+    }
+    //一级子菜单
+    .el-menu-item *{
+       display: flex;
+    }
+    .el-menu-item{
+      color: var(--lvshihao-suuny-bg) !important;
+      background-color: transparent !important;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding-left: 10px;
+      padding-right: 10px;
+      span{
+        margin-left: 5px;
+      }
+      div {
+        svg {
+          use {
+            fill: var(--lvshihao-suuny-bg);
+          }
+        }
+      }
+    }
+    .el-menu-item:hover{
+      border-radius: 8px;
+      background-color: #000 !important;
+    }
+    .el-menu-item.is-active{
+      border-bottom: 0px !important;
+      div {
+        margin-right: 4px;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        background-color: var(--lvshihao-theme-color);
+        svg {
+          use {
+            fill: var(--lvshihao-moon-bg) !important;
+          }
+        }
+      }
+    }
+    .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+      background-color: transparent !important;
+    }
+    //二级子菜单
+    .el-sub-menu{
+      margin-left: 10px;
+      margin-right: 10px;
+      .el-sub-menu__icon-arrow {
+        width: 25px !important;
+        left: 82% !important;
+      }
+      .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger{
+        padding-left: 5px;
+        padding-right: 15px;
+        div {
+          svg {
+            use {
+              fill: var(--lvshihao-suuny-bg) ;
+            }
+          }
+        }
+        span{
+          margin-left: 5px;
+        }
+      }
+      .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger:hover{
+        background-color:  #000 !important;
+      }
+      .el-menu{
+        .el-menu-item:hover{
+          background-color:  #000 !important;
+        }
+      }
+    }
+    .el-sub-menu:hover{
+      .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger{
+        color: var(--lvshihao-suuny-bg) !important;
+      }
+    }
+    .el-sub-menu.is-active{
+      .el-sub-menu__title {
+        border-bottom: 0px;
+        div {
+          margin-right: 4px;
+          width: 25px;
+          height: 25px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 4px;
+          background-color: var(--lvshihao-theme-color);
+          svg {
+            use {
+              fill: var(--lvshihao-moon-bg) !important;
+            }
+          }
+        }
+      }
+    }
   }
 
   /**

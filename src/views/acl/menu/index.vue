@@ -60,7 +60,7 @@
         <el-table-column prop="name" label="菜单名称"   />
         <el-table-column prop="icon" label="图标" width="60px" align="center">
           <template #default="scope">
-            <svg-icon :name="scope.row.icon" :color="iconColor" />
+            <svg-icon :name="scope.row.icon" :color="layoutSettingStore.getThemeInvert" />
           </template>
         </el-table-column>
         <el-table-column prop="type" label="类型" width="60px" align="center">
@@ -241,9 +241,6 @@ const deleteItemClick = (item: any) => {
       refresh();
     })
 }
-
-//图标根据主题模式动态切换颜色
-const iconColor = computed(() => layoutSettingStore.setting.theme==0 ? 'black' : 'white');
 
 //点击标签更改状态中的启用/禁用
 const tagUpdateStatusButtonClick = (item: any) => {

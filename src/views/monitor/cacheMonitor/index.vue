@@ -23,14 +23,16 @@
                 <JcmInfoCard :iconName="'持久化'" :title="'持久化信息'" :infoData="cacheMonitorStore?.baseInfo?.persistenceInfo" />
             </el-col>
             <el-col :span="12">
-                <el-card class="card-table-style">
-                    <template #header>
+                <el-row>
+                    <el-col :span="24">
                         <div class="card-header-style">
                             <div class="card-header">
                                 <span>Redis全部信息</span>
                             </div>
-                        </div>  
-                    </template>
+                        </div>
+                    </el-col>
+                </el-row>
+                <el-card class="card-table-style">
                     <vxe-table border="inner" height="345" :data="cacheMonitorStore.info" empty-text="没有更多数据了！"
                         :scroll-y="{ enabled: true, gt: 0 }">
                         <vxe-column field="configName" title="key" width="300"></vxe-column>
