@@ -43,6 +43,7 @@ const useSettinggStore = defineStore('SettinggStore', {
         this.setting.tabsIcon = result.data.tabsIcon
         this.setting.breadcrumb = result.data.breadcrumb
         this.setting.menu = result.data.menu
+        this.setting.topMenu = result.data.topMenu
         this.setting.copyright = result.data.copyright
         this.setting.watermark = result.data.watermark
         this.setting.weakColor = result.data.weakColor

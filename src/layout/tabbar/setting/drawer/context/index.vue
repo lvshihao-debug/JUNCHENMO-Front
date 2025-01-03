@@ -165,7 +165,9 @@ onMounted(() => {
 
 //获取layout配置相关的仓库
 const layoutSettingStore = uselayoutSettingStore()
+//可选主题色
 const colors = ref(['#FF80C8', '#6F68F6', '#dc440d', '#0052D9', '#ee1871', '#2174FF']);
+//选择的主题色
 const selectedColor = ref('');
 
 
@@ -224,8 +226,6 @@ const changeMenu = () => {
 const changeTopMenu = () => {
   layoutSettingStore.setting.menu=false;
 }
-
-
 
 
 // 点击LayoutIcon时触发的函数，用于切换对应小圆点的显示状态以及执行其他相关逻辑

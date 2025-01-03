@@ -22,10 +22,14 @@
         </div>
       </div>
     </el-card>
+    <el-row style="margin-top: 10px;">
+      <el-col :span="24">
+        <el-card>
+          <JcmBarChat />
+        </el-card>
+      </el-col>
+    </el-row>
 
-    <el-card style="margin-top: 10px;">
-      <JcmBarChat />
-    </el-card>
   </div>
 </template>
 

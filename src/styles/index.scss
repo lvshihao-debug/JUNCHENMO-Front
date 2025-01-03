@@ -265,7 +265,7 @@ element表单区域
 }
 //菜单弹出宽度自适应
 .el-menu--popup{
-  min-width: none;
+  min-width: 140px !important;
 }
 //下拉选择
 .el-select-dropdown__item.is-selected {

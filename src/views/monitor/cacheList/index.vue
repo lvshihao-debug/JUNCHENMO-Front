@@ -2,8 +2,8 @@
     <div>
         <el-row :gutter="10">
             <el-col :span="8">
-                <el-card class="card-table-style">
-                    <template #header>
+                <el-row>
+                    <el-col :span="24">
                         <div class="card-header-style">
                             <div class="card-header">
                                 <svg-icon name="缓存列表" :color="layoutSettingStore.getThemeInvert" :width="12"
@@ -11,11 +11,14 @@
                                 <span style="margin-left: 5px;">缓存列表</span>
                             </div>
                             <div class="card-end">
-                                <svg-icon name="刷新" :color="layoutSettingStore.getThemeInvert" :width="13" style="cursor: pointer;"
-                                    :height="13"  @click="refreshKeyName()" />
+                                <svg-icon name="刷新" :color="layoutSettingStore.getThemeInvert" :width="13"
+                                    style="cursor: pointer;" :height="13" @click="refreshKeyName()" />
                             </div>
                         </div>
-                    </template>
+                    </el-col>
+                </el-row>
+
+                <el-card class="card-table-style">
                     <vxe-table border="inner" height="550" width="100%" :data="cacheListStore.dictData" align="center"
                         empty-text="没有更多数据了！" @cell-click="cacheNameClick" :scroll-y="{ enabled: true, gt: 0 }">
                         <vxe-column type="seq" width="70"></vxe-column>
@@ -33,8 +36,9 @@
                 </el-card>
             </el-col>
             <el-col :span="8">
-                <el-card class="card-table-style">
-                    <template #header>
+
+                <el-row>
+                    <el-col :span="24">
                         <div class="card-header-style">
                             <div class="card-header">
                                 <svg-icon name="缓存KEY" :color="layoutSettingStore.getThemeInvert" :width="12"
@@ -42,11 +46,15 @@
                                 <span style="margin-left: 5px;">键名列表</span>
                             </div>
                             <div class="card-end">
-                                <svg-icon name="刷新" :color="layoutSettingStore.getThemeInvert" :width="13" style="cursor: pointer;"
-                                    :height="13" @click="refreshKeyNameKey()" />
+                                <svg-icon name="刷新" :color="layoutSettingStore.getThemeInvert" :width="13"
+                                    style="cursor: pointer;" :height="13" @click="refreshKeyNameKey()" />
                             </div>
                         </div>
-                    </template>
+                    </el-col>
+                </el-row>
+
+
+                <el-card class="card-table-style">
                     <vxe-table border="inner" height="550" :data="cacheListStore.cacheNameData" empty-text="没有更多数据了！"
                         :scroll-y="{ enabled: true, gt: 0 }" @cell-click="cacheNameKeyClick">
                         <vxe-column type="seq" width="70"></vxe-column>
@@ -63,14 +71,17 @@
                 </el-card>
             </el-col>
             <el-col :span="8">
-                <el-card class="card-table-style">
-                    <template #header>
+
+                <el-row>
+                    <el-col :span="24">
                         <div class="card-header-style">
                             <div class="card-header">
                                 <span>缓存内容</span>
                             </div>
                         </div>
-                    </template>
+                    </el-col>
+                </el-row>
+                <el-card class="card-table-style">
                     <el-form :inline="true" label-position="right" label-width="auto" ref="searchFormRef"
                         style="height: 550px;">
                         <el-form-item label="缓存名称" prop="username">
@@ -123,13 +134,13 @@ const loadDictData = () => {
 
 
 
-const refreshKeyName = () =>{
+const refreshKeyName = () => {
     loadDictData();
     ElMessage.success({ message: "缓存列表刷新成功" })
 }
 
-const refreshKeyNameKey = () =>{
-    if(cacheListStore.viewData.cacheName != "") {
+const refreshKeyNameKey = () => {
+    if (cacheListStore.viewData.cacheName != "") {
         getCacheName(cacheListStore.viewData.cacheName);
     }
     ElMessage.success({ message: "缓存键名刷新成功" })

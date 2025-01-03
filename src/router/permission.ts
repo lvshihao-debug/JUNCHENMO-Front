@@ -23,7 +23,7 @@ import { GET_TOKEN } from '@/utils/token'
 const whiteList = ['/login', '/register']
 // 全局守卫；项目当中任意路由切换都会触发的钩子
 // 全局前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   nprogress.start()
   const token = GET_TOKEN()
   //存在token
@@ -35,22 +35,17 @@ router.beforeEach((to, from, next) => {
     } else {
       //判断是否已经获取权限信息
       if (userStore.roles.length === 0) {
-        userStore
-          .userInfo()
-          .then(() => {
-            permissionStore.generateRoutes().then(() => {
-              userSettingStore.userSettingInfo().then(()=>{
-                  next({ ...to, replace: true })
-              })
-            })
-          })
-          .catch(() => {
-            userStore.userLogout().then(() => {
-              next('/')
-            })
-          })
+        try{
+          await userStore.userInfo();
+          await permissionStore.generateRoutes();
+          await userSettingStore.userSettingInfo();
+          next({ ...to, replace: true });
+        }catch(e){
+          await userStore.userLogout();
+          next('/');
+        }
       } else {
-        next()
+        next();
       }
     }
   } else {

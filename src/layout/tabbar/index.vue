@@ -1,20 +1,20 @@
 <template>
   <div class="tabbar">
-    <!-- <div class="tabbar_left">
-        <div style="margin-left: 18px"  class="animate__animated animate__backInRight">
-          逆向决定高度，开发决定深度
-        </div>
-      </div> -->
-
+    <!--左侧菜单显示时显示名言-->
+    <div class="menu-title animate__animated animate__backInRight" v-if="layoutSettingStore.setting.menu">
+      逆向决定高度，开发决定深度
+    </div>
     <div class="tabbar_left">
-        <div style="margin-left: 35px;display: flex;align-items: center;height: 40px;width: 165px;">
-          <svg-icon name="logo"  width="20px" height="20px" :color="layoutSettingStore.getThemeInvert"/>
-          <span style="font-size: 20px;">{{ setting.title }}</span>
-        </div>
-     
-      <div class="topMenu animate__animated animate__backInRight" v-if="layoutSettingStore.setting.topMenu">
+      <!--顶部菜单显示时显示Logo-->
+      <div class="topMenu-logo" v-if="layoutSettingStore.setting.topMenu||(!layoutSettingStore.setting.menu&&!layoutSettingStore.setting.topMenu)">
+        <svg-icon name="logo" width="20px" height="20px" :color="layoutSettingStore.getThemeInvert" />
+        <span style="font-size: 20px;">{{ setting.title }}</span>
+      </div>
+      <!--顶部菜单-->
+      <div class="topMenu animate__animated animate__bounceInRight" v-if="layoutSettingStore.setting.topMenu">
         <!-- 菜单组件 -->
-        <el-menu mode="horizontal"  :default-active="$route.path"  ellipsis="true" :class="{'suuny': layoutSettingStore.getThemeValue, 'moon': !layoutSettingStore.getThemeValue}"  router >
+        <el-menu mode="horizontal" :default-active="$route.path" ellipsis="true"
+          :class="{ 'suuny': layoutSettingStore.getThemeValue, 'moon': !layoutSettingStore.getThemeValue }" router>
           <Menu :menuList="usePermissionStore.sidebarRouters"></Menu>
         </el-menu>
       </div>
@@ -47,16 +47,32 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.topMenu{
-  .el-menu{
-    &.suuny{
-    background-color: #fafafa !important;
-  }
-    &.moon{
+.menu-title {
+  display: flex;
+  margin-left: 18px;
+  align-items: center;
+}
+
+.topMenu-logo {
+  margin-left: 35px;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  width: 165px;
+}
+
+.topMenu {
+  .el-menu {
+    &.suuny {
+      background-color: #fafafa !important;
+    }
+
+    &.moon {
       background-color: #000000 !important;
     }
   }
 }
+
 .tabbar {
   width: 100%;
   height: 100%;

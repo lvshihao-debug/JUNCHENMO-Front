@@ -7,6 +7,7 @@ import { reqRedisBaseInfo,reqRedisInfo } from '@/api/montior/cacheMonitor'
 const useCacheMonitorStore = defineStore('cacheMonitor', {
   state: () => {
     return {
+        loading: true, //数据加载loading
         baseInfo:undefined,
         info:undefined
     }

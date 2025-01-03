@@ -51,7 +51,7 @@ const useMenuStore = defineStore('Menu', {
     setSidebarRouters(routes: any) {
       this.sidebarRouters = constantRoutes.concat(routes)
     },
-    generateRoutes() {
+    async generateRoutes() {
       return new Promise((resolve) => {
         getRouters().then((res) => {
           const RoutesData = filterAsyncRouter(res.data)
