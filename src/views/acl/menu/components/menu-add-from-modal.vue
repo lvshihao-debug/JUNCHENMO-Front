@@ -150,16 +150,11 @@ const loadDictDataByName = (name: string) => {
  *  @return {void}
  */
 const clearCommonFrom = () => {
-  Object.keys(menuStore.commonForm).forEach((key) => {
-    menuStore.commonForm.menuId = undefined;
-    menuStore.commonForm.name = undefined;
-    menuStore.commonForm.parentId = "0";
-    menuStore.commonForm.type = 0;
-    menuStore.commonForm.keepAlive = false;
-    menuStore.commonForm.visible = false;
-    menuStore.commonForm.component = undefined;
-    menuStore.commonForm.link = undefined;
-  });
+  instance?.proxy?.$resetObj(menuStore.commonForm);
+  menuStore.commonForm.parentId = "0";
+  menuStore.commonForm.type = 0;
+  menuStore.commonForm.keepAlive = false;
+  menuStore.commonForm.visible = false;
 }
 
 defineExpose({ open });

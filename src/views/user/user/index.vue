@@ -159,9 +159,7 @@
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
 import type { FromModal } from '@/utils/commonType'
-
 //导入类型
-import type { User } from '@/api/user/type'
 //弹出窗
 import UserAddFromModal from './components/user-add-from-modal.vue'
 import UserUpdateFromModal from './components/user-update-from-modal.vue'
@@ -179,8 +177,7 @@ const userStore = useUserStore()
 const layoutSettingStore = useLayoutSettingStore()
 
 onMounted(() => {
-  //清空搜索条件
-  userStore.searchForm = <User>{}
+  instance?.proxy?.$resetObj(userStore.searchForm);
   userStore.tableLoading = true;
   //进入页面初始化的数据 手动触发更新页数的逻辑
   handleSizeChange(Number(layoutSettingStore.setting.size));
@@ -253,6 +250,7 @@ const disableItem = (item: any) => {
 
 //重置搜索表单
 const resetSearchForm = (ruleFormRef: any) => {
+  console.log(ruleFormRef);
   if (!ruleFormRef) return
   ruleFormRef.resetFields()
 }

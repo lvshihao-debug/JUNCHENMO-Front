@@ -21,7 +21,7 @@ export const genTable = (prompts:string) =>
   })
 
 /**
- * 生成表
+ * 生成表Sql
  */
 export const genTableSql = (prompts:string) =>
   request<any>({

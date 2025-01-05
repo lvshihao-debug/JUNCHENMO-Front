@@ -167,16 +167,7 @@ const useMenuStore = defineStore('Menu', {
       } else {
         return Promise.reject(result.msg)
       }
-    },
-    //分配选择的菜单
-    async selectRoleMenus(userId: any, rolesId: any) {
-      const result: any = await reqSelectRoleMenus(userId, rolesId)
-      if (result.code == 200) {
-        return 'ok'
-      } else {
-        return Promise.reject(result.msg)
-      }
-    },
+    }
   },
   getters: {},
 })

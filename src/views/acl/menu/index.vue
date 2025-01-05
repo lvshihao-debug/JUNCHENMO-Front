@@ -193,6 +193,7 @@ const layoutSettingStore = useLayoutSettingStore()
 const dictDataStore = useDictDataStore()
 
 onMounted(() => {
+  instance?.proxy?.$resetObj(menuStore.searchForm);
   menuStore.tableLoading = true
   
   //进入页面初始化的数据

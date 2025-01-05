@@ -142,8 +142,8 @@ const layoutSettingStore = useLayoutSettingStore()
 
 
 onMounted(() => {
+  instance?.proxy?.$resetObj(roleStore.searchForm);
   roleStore.tableLoading = true;
-
   //进入页面初始化的数据 手动触发更新页数的逻辑
   handleSizeChange(Number(layoutSettingStore.setting.size))
   

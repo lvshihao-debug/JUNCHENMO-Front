@@ -86,12 +86,12 @@ onMounted(() => {
     systemMonitorStore.getSystemBaseInfo().then(() => {
         systemMonitorStore.loading = false
     })
-    setInterval(intervalSystemBaseInfo, 10000);
 })
 
 const intervalSystemBaseInfo = () => {
     systemMonitorStore.getSystemBaseInfo()
 }
+setInterval(intervalSystemBaseInfo, 5000);
 //页面数据加载的状态
 const loadingStatus = computed(() => {
     return !systemMonitorStore.loading || !layoutSettingStore.setting.dataLoading;

@@ -70,6 +70,11 @@ enum SERVER_MODE_NAME {
    * 生成table相关接口
    */
   GEN_TABLE = '/gen/tableGen',
+
+  /**
+   * 生成代码相关接口
+   */
+  GEN_CODE = '/gen/genCode',
 }
 
 export default {

@@ -143,6 +143,8 @@ const dictTypeStore = useDictTypeStore()
 const layoutSettingStore = useLayoutSettingStore()
 
 onMounted(() => {
+  instance?.proxy?.$resetObj(dictDataStore.searchForm);
+  
   dictDataStore.tableLoading = true
 
   //手动触发更新页数的逻辑
