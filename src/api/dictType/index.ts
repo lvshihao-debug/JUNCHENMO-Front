@@ -55,8 +55,7 @@ export const reqAddDictType = (data: any) =>
 export const reqDelDictType = (dictTypeIds: any) =>
   request<any>({
     method: 'delete',
-    url: API.DICT_TYPE_DELETE_URL,
-    data: dictTypeIds
+    url: API.DICT_TYPE_DELETE_URL+"/"+dictTypeIds,
 })
 
 

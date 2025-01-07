@@ -10,7 +10,13 @@ const useGenCodeStore = defineStore('genCode', {
       loading: false, //生成数据加载loading
       multipleSelection: [], //选的数据列表
       tableMultipleSelection: [], //选的数据列表
-      code: '', //生成的代码
+      codeArrays: [], //生成的代码
+      commonForm: {
+        tableName: undefined,
+        tableComment: undefined,
+        className: undefined,
+        functionAuthor: undefined,
+      },//表单数据
       searchForm: {
         tableName:undefined,
         tableComment:undefined,
@@ -67,8 +73,7 @@ const useGenCodeStore = defineStore('genCode', {
     async previewTableCode(tableId: any) {
       const result: any = await previewCode(tableId)
       if (result.code == 200) {
-        console.log(result.data["vm/java/controller.java.vm"]);
-        this.code = result.data["vm/java/controller.java.vm"]
+        this.codeArrays = result.data;
         ElMessage.success("预览成功");
       } else {
         ElMessage.error({ message: '失败信息: ' + result.msg })

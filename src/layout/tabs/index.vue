@@ -107,7 +107,7 @@ const themeClass = computed(() => {
   return layoutSettingStore.getThemeStatus? 'sunny' :'moon';
 });
 //图标根据主题模式动态切换颜色
-const iconColor = computed(() => layoutSettingStore.setting.theme == 0 ? 'black' : 'white');
+const iconColor = computed(() => layoutSettingStore.getThemeStatus ? 'black' : 'white');
 
 const handleScroll = (e: WheelEvent) => {
   const delta = Math.sign(e.deltaY) // get the direction of the scroll (1 for down, -1 for up)

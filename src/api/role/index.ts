@@ -42,8 +42,7 @@ export const reqAddRole = (data: any) =>
 export const reqDelRole = (roleIds: any) =>
   request<any>({
     method: 'delete',
-    url: API.ROLE_DEL_URL,
-    data: roleIds
+    url: API.ROLE_DEL_URL+"/"+roleIds,
 })
 
 

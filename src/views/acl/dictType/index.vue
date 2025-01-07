@@ -216,7 +216,7 @@ const handleSelectionChange = (val: []) => {
 //删除字典类型触发的事件
 const deleteItem = (item: any) => {
   dictTypeStore
-    .deleteDictType([item.dictTypeId])
+    .deleteDictType(item.dictTypeId)
     .then(() => {
       refresh();
     })
@@ -224,7 +224,11 @@ const deleteItem = (item: any) => {
 
 //删除多个字典类型触发的事件
 const deleteItems = () => {
-  const dictTypeIds = dictTypeStore.multipleSelection.map((item: any) => item.dictTypeId);
+  const dictTypeIds = dictTypeStore.multipleSelection.map((item: any) => item.dictTypeId).join(',');
+  if(dictTypeStore.multipleSelection.length == 0){
+      ElMessage.warning({ message: '请选择要删除的数据' })
+      return;
+  }
   dictTypeStore
     .deleteDictType(dictTypeIds)
     .then(() => {

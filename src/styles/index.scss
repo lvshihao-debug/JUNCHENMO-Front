@@ -248,7 +248,7 @@ element表单区域
   border: 0px !important;
 }
 //多行文本
-.el-textarea__inner {
+.el-textarea__inner:focus {
   box-shadow: 0 0 0 2px var(--lvshihao-theme-color) inset;
 }
 //输入框的样式

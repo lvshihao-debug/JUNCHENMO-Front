@@ -44,8 +44,7 @@ export const reqOperationLogList = (
 export const reqDelOperationLog = (operationLogIds: any) =>
   request<any>({
     method: 'delete',
-    url: API.DELETE_URL,
-    data: operationLogIds,
+    url: API.DELETE_URL+"/"+operationLogIds,
   })
 
 /**

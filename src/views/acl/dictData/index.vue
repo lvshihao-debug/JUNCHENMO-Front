@@ -209,7 +209,7 @@ const handleSelectionChange = (val: []) => {
 // 删除字典值触发的事件
 const deleteItem = (item: any) => {
   dictDataStore
-    .deleteDictData([item.dictDataId])
+    .deleteDictData(item.dictDataId)
     .then(() => {
       refresh();
     })
@@ -217,7 +217,11 @@ const deleteItem = (item: any) => {
 
 //删除多个字典值触发的事件
 const deleteItems = () => {
-  const dictDataIds = dictDataStore.multipleSelection.map((item: any) => item.dictDataId);
+  const dictDataIds = dictDataStore.multipleSelection.map((item: any) => item.dictDataId).join(',');
+  if(dictDataStore.multipleSelection.length == 0){
+      ElMessage.warning({ message: '请选择要删除的数据' })
+      return;
+  }
   dictDataStore
     .deleteDictData(dictDataIds)
     .then(() => {

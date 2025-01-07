@@ -78,7 +78,7 @@
                         <el-button size="small" type="primary" @click="previewTableCode(scope.row.tableId)" text>
                             预览
                         </el-button>
-                        <el-button size="small" type="primary" @click="PreviewCodeModal?.open()" text>
+                        <el-button size="small" type="primary" @click="editItem(scope.row)" text>
                             编辑
                         </el-button>
                         <el-button size="small" type="primary" @click="deleteItem(scope.row)" text>
@@ -111,15 +111,22 @@
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
 import type { FromModal } from '@/utils/commonType'
+//路由
+import { useRouter } from 'vue-router'
+
 //弹出窗
 import GenCodeAddFromModal from './components/gen-code-add-from-modal.vue'
 import PreviewCodeModal from './components/gen-code-preview-code-modal.vue'
 //仓库
 import useGenCodeStore from '@/store/modules/tool/genCode'
+import useTabsStore from '@/store/modules/layout/tabs'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 
 const genCodeStore = useGenCodeStore();
+const tabStore = useTabsStore();
 const layoutSettingStore = useLayoutSettingStore();
+
+const $router = useRouter()
 //获取当前组件实例
 const instance = getCurrentInstance();
 //表单对象
@@ -176,7 +183,15 @@ const deleteItem = (item: any) => {
     refresh();
   })
 }
-
+const editItem = (item: any)=>{
+    const updateRouter = {
+        title:"修改["+item.tableName+"]生成配置",
+        path:"/tool/genCode/edit/"+item.tableId,
+        icon:"home",
+        closable: true,
+        checked: true}
+    tabStore.addTab(updateRouter,$router);
+}
 //删除多个字典类型触发的事件
 const deleteItems = () => {
   if(genCodeStore.multipleSelection.length == 0) return

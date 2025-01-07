@@ -12,6 +12,8 @@
     hidden: true                     // 当设置 true 的时候该路由不会再侧边栏出现 如401，login等页面，或者如一些编辑页面/edit/1
   }
  */
+//导入layout组件
+import Layout from '@/layout/index.vue'
 
 //对外暴露配置路由
 export const constantRoutes = [
@@ -31,6 +33,21 @@ export const constantRoutes = [
       hidden: false, //代表路由标题在菜单中是否隐藏 true:隐藏 false:不隐藏
     },
   },
+]
+
+// 动态路由，基于用户权限动态去加载
+export const dynamicRoutes = [
+  {
+    path: '/',
+    component: Layout,
+    children: [
+      {
+        path: '/tool/genCode/edit/:tableId(\\d+)',
+        component: () => import('@/views/tool/genCode/components/gen-code-update-from.vue'),
+        name: 'GenCodeEdit',
+      }
+    ]
+  }
 ]
 
 //导出一个404页面，让动态路由引用，因为他必须放在路由的最后

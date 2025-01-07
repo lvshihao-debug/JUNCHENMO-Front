@@ -200,14 +200,18 @@ const handleSelectionChange = (val: []) => {
 
 //删除角色触发的事件
 const deleteItem = (item: any) => {
-  roleStore.deleteRole([item.roleId]).then(() => {
+  roleStore.deleteRole(item.roleId).then(() => {
     refresh();
   })
 }
 
 //删除多个字典类型触发的事件
 const deleteItems = () => {
-  const roleIds = roleStore.multipleSelection.map((item: any) => item.roleId);
+  const roleIds = roleStore.multipleSelection.map((item: any) => item.roleId).join(',');
+  if(roleStore.multipleSelection.length == 0){
+      ElMessage.warning({ message: '请选择要删除的数据' })
+      return;
+  }
   roleStore.deleteRole(roleIds).then(() => {
     refresh();
   })

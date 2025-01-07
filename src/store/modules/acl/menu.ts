@@ -8,7 +8,7 @@ import { getRouters,reqAddMenu,reqMenuList,reqDelMenu,reqUpInfoMenu,reqLastSortM
 //导入layout组件
 import Layout from '@/layout/index.vue'
 //引入路由（常量路由）
-import { constantRoutes } from '@/router/routes'
+import { constantRoutes,dynamicRoutes } from '@/router/routes'
 
 const modules = import.meta.glob('@/views/**/**/*.vue')
 //创建用户小仓库
@@ -45,25 +45,28 @@ const useMenuStore = defineStore('Menu', {
   actions: {
     //设置路由
     setRoutes(routes: any) {
-      this.routes = constantRoutes.concat(routes)
+      this.routes = constantRoutes.concat(routes).concat(dynamicRoutes)
     },
     //设置左侧菜单
     setSidebarRouters(routes: any) {
-      this.sidebarRouters = constantRoutes.concat(routes)
+      this.sidebarRouters = routes
     },
+
     async generateRoutes() {
       return new Promise((resolve) => {
         getRouters().then((res) => {
-          const RoutesData = filterAsyncRouter(res.data)
+          const RoutesData = filterAsyncRouter(res.data.routers);
+          const MenusData = filterAsyncRouter(res.data.menus);
+          this.setRoutes(RoutesData)
+          this.setSidebarRouters(MenusData)
           //添加404页面
           RoutesData.push(error404)
-          this.setRoutes(RoutesData)
-          this.setSidebarRouters(RoutesData)
-          RoutesData.forEach((route: any) => {
+          this.routes.forEach((route: any) => {
             if (isNotHttp(route.path)) {
               router.addRoute(route) // 动态添加可访问路由表
             }
           })
+          console.log(this.routes)
           resolve(RoutesData)
         })
       })

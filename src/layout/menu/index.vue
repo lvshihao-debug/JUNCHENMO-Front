@@ -35,8 +35,8 @@
         </el-menu-item>
       </template>
     </template>
-    <!-- 有子路由但是只有一个子路由 -->
-    <template v-if="item.children && item.children.length == 1">
+    <!-- 有子路由但是只有一个子路由,并且不是外联 -->
+    <template v-if="item.children && item.children.length == 1 && (!item.children[0].meta.frame)">
       <el-menu-item v-if="item.children[0].meta.hidden" :index="item.children[0].path" @click="
         TabsStore.addTab(
           {
@@ -57,9 +57,20 @@
         </template>
       </el-menu-item>
     </template>
+    <!-- 有子路由但是只有一个子路由,并且是外联 -->
+    <template v-if="item.children && item.children.length == 1 && item.children[0].meta.frame">
+        <el-menu-item v-if="item.children[0].meta.hidden"  @click="toFream( item.children[0].path)">
+          <div>
+              <svg-icon :name="item.children[0].meta.icon" />
+            </div>
+          <template #title>
+            <span >{{ item.children[0].meta.title }}</span>
+          </template>
+        </el-menu-item>
+      </template>
     <!-- 有子路由且个数大于一个 -->
     <template v-if="item.children && item.children.length > 1">
-      <el-sub-menu v-if="item.meta.hidden" :index="item.path">
+      <el-sub-menu v-if="item.meta && item.meta.hidden" :index="item.path">
         <template #title>
           <div>
             <svg-icon :name="item.meta.icon" />

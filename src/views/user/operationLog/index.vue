@@ -241,7 +241,7 @@ const handleSelectionChange = (val: []) => {
 //删除操作日志触发的事件
 const deleteItem = (item: any) => {
   operationLogStore
-    .deleteOperationLog([item.operId])
+    .deleteOperationLog(item.operId)
     .then(() => {
       refresh();
     })
@@ -249,8 +249,8 @@ const deleteItem = (item: any) => {
 
 //删除多个操作日志触发的事件
 const deleteItems = () => {
-  const operIds = operationLogStore.multipleSelection.map((item: any) => item.operId);
-  if(operIds.length == 0){
+  const operIds = operationLogStore.multipleSelection.map((item: any) => item.operId).join(',');
+  if(operationLogStore.multipleSelection.length == 0){
       ElMessage.warning({ message: '请选择要删除的数据' })
       return;
   }
