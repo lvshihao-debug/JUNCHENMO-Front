@@ -80,3 +80,9 @@ export const assign=(commonFrom:any, data:any)=> {
   });
 }
 
+
+// 通用下载方法
+// 辅助函数：验证是否为 Blob 对象
+export const blobValidate=(data:any)=> {
+  return data instanceof Blob;
+}

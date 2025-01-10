@@ -2,6 +2,8 @@ import axios from 'axios'
 import useUserStore from '@/store/modules/user/user'
 import type { AxiosRequestConfig } from 'axios'
 import { saveAs } from 'file-saver'
+import errorCode from '@/utils/errorCode'
+import { blobValidate } from '@/utils/common'
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 //创建axios实例
@@ -67,11 +69,6 @@ export default async function request<T>(config: AxiosRequestConfig) {
   return service.request<T>(config).then((res) => res as T) // 返回axios的里data数据
 }
 
-// 通用下载方法
-// 辅助函数：验证是否为 Blob 对象
-function blobValidate(data:any) {
-  return data instanceof Blob;
-}
 
 /**
 * 参数处理
@@ -107,7 +104,7 @@ export const download=(url:any, params:any, filename = 'export.xlsx', config = {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     responseType: 'blob',
     ...config
-  }).then((data) => {
+  }).then((data:any) => {
     const isBlob = blobValidate(data);
     if (isBlob) {
       const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });

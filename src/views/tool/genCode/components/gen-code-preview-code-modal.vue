@@ -1,5 +1,10 @@
 <template>
-    <el-dialog v-model="fromOpenStatus" width="1500" :show-close="false">
+    <el-dialog v-model="fromOpenStatus" width="1500" :show-close="false" top="5vh">
+        <template #header="{ titleId, titleClass }">
+            <div class="my-header">
+                <h4 :id="titleId" :class="titleClass">{{ title }}</h4>
+            </div>
+        </template>
         <div class="tab-container">
             <input v-for="(tab, index) in tabConfigs" :key="index" type="radio" :name="tab.name" :id="tab.id"
                 :class="['tab', `tab--${index + 1}`]" />
@@ -10,7 +15,7 @@
 
             <div class="indicator"></div>
         </div>
-        <editor v-model="genCodeStore.codeArrays[currentCodeMenu]" readonly="true"
+        <editor v-model="genCodeStore.codeArrays[currentCodeMenu]" readonly="true" height="700px"
             :theme="layoutSettingStore.getThemeStatus" />
     </el-dialog>
 </template>
@@ -27,7 +32,7 @@ const layoutSettingStore = useLayoutSettingStore();
 const currentCodeMenu = ref('vm/java/controller.java.vm');
 //表单打开的状态
 const fromOpenStatus = ref(false)
-
+const title = ref('');
 // 定义 tab 配置项类型
 type TabConfig = {
     id: string;
@@ -110,13 +115,18 @@ const codeMenuClick = (modalName: string) => {
     currentCodeMenu.value = modalName
 }
 // 打开modal框
-const open = () => {
+const open = (item: any) => {
     fromOpenStatus.value = true;
+    title.value = "预览 [" + item.tableName + "] 代码";
 };
 
 defineExpose({ open });
 </script>
-<style scoped>
+<style lang="scss" scoped>
+.el-dialog__header {
+    padding-bottom: 0px !important;
+}
+
 /* Remove this container when use*/
 .component-title {
     width: 100%;
@@ -224,9 +234,11 @@ defineExpose({ open });
 .tab--9:checked~.indicator {
     left: calc(130px * 8 + 2px);
 }
+
 .tab--10:checked~.indicator {
     left: calc(130px * 9 + 2px);
 }
+
 .tab--11:checked~.indicator {
     left: calc(130px * 10 + 2px);
 }

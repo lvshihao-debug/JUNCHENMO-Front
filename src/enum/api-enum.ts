@@ -75,6 +75,10 @@ enum SERVER_MODE_NAME {
    * 生成代码相关接口
    */
   GEN_CODE = '/gen/genCode',
+  /**
+   * 测试生成
+   */
+  TX_VIP = '/system/vip',
 }
 
 export default {

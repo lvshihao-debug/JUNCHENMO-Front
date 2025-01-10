@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { download } from '@/utils/request'
-import { copyText,resetObj,addDateRange,addPage,assign } from './utils/common.js';
+import { copyText,resetObj,addDateRange,addPage,assign } from './utils/common.ts';
+import downloadZip from './utils/downloadZip.ts';
 
 import router from '@/router'
 import App from '@/App.vue'
@@ -32,6 +33,7 @@ app.use(gloablComponent)
 app.config.globalProperties.$copyText = copyText;
 app.config.globalProperties.$resetObj = resetObj;
 app.config.globalProperties.$download = download;
+app.config.globalProperties.$downloadZip = downloadZip;
 app.config.globalProperties.$addDateRange = addDateRange;
 app.config.globalProperties.$addPage = addPage;
 app.config.globalProperties.$assign = assign;

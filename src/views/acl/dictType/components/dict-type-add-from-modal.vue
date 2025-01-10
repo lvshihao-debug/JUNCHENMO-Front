@@ -53,7 +53,7 @@
       </el-form>
       <template #footer>
         <div class="modal-style">
-          <el-button @click="fromOpenStatus = false">取消</el-button>
+          <el-button @click="fromOpenStatus = false" text bg>取消</el-button>
           <el-button type="primary" text bg @click="addItem(formRef)">
             确认
           </el-button>
