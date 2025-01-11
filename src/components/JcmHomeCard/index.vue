@@ -3,10 +3,10 @@
         <div class="card">
             <div class="title">
                 <span>
-                    <svg-icon name="白天"  color="currentColor" width="18px" height="18px" />
+                    <svg-icon :name="icon"  color="currentColor" width="15px" height="15px" />
                 </span>
                 <p class="title-text">
-                    用户数
+                    {{ title }}
                 </p>
                 <p class="percent">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1792" fill="currentColor" height="20"
@@ -14,12 +14,12 @@
                         <path
                             d="M1408 1216q0 26-19 45t-45 19h-896q-26 0-45-19t-19-45 19-45l448-448q19-19 45-19t45 19l448 448q19 19 19 45z">
                         </path>
-                    </svg> 2%
+                    </svg> {{rate}}
                 </p>
             </div>
             <div class="data">
                 <p>
-                    39,500条
+                    {{data}}
                 </p>
 
                 <!-- <div class="range">
@@ -36,7 +36,24 @@
  *  作者: JUN CHEN MO
  *  time: 2024/12/26 16:33:18  
  */
-
+ const props = defineProps({
+    icon: {
+        type: String,
+        default: ''
+    },
+    title: {
+        type: String,
+        default: ''
+    },
+    data: {
+        type: String,
+        default: ''
+    },
+    rate: {
+        type: String,
+        default: ''
+    }
+})
 
 </script>
 
@@ -44,9 +61,9 @@
 .card {
   padding: 1rem;
   background-color: #fff;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  max-width: 180px;
-  border-radius: 20px;
+//   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow:  0px 4px 20px #00000010;
+  border-radius: 8px;
 
 }
 
@@ -76,7 +93,7 @@
 .title-text {
   margin-left: 0.5rem;
   color: #374151;
-  font-size: 18px;
+  font-size: 17px;
 }
 
 .percent {
@@ -94,9 +111,9 @@
 
 .data p {
   margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.3rem;
   color: #1F2937;
-  font-size: 2.25rem;
+  font-size: 2rem;
   line-height: 2.5rem;
   font-weight: 700;
   text-align: left;

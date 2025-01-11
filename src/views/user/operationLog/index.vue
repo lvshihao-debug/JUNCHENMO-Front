@@ -114,10 +114,12 @@
         </el-table-column>
         <el-table-column prop="description" label="操作日志" align="center">
           <template #default="scope">
-            <div><span v-html="scope.row.description"></span></div>
-            <template v-if="scope.row.errorMsg != ''">
-              <div class="ellipsis-text"><span v-html="scope.row.errorMsg"></span></div>
-            </template>
+            <div style="display: flex;align-items: center;flex-direction:column;">
+              <div><span v-html="scope.row.descriptionHtml" @click="(instance?.proxy as any).$copyText(scope.row.description)" class="copy-span"></span></div>
+              <template v-if="scope.row.errorMsgHtml != null">
+                <div class="ellipsis-text"><span v-html="scope.row.errorMsgHtml"  @click="(instance?.proxy as any).$copyText(scope.row.errorMsg)" class="copy-span"></span></div>
+              </template>
+            </div>
           </template>
         </el-table-column>
         <el-table-column prop="requestTime" label="请求时间" align="center" />
@@ -276,14 +278,15 @@ const clearItems = () => {
 }
 
 const changeTitle = () => {
-  const title = operationLogStore.searchForm.title
-  operationLogStore.getBusinessNameOptionSelect(title)
+  const title = operationLogStore.searchForm.title;
+  operationLogStore.getBusinessNameOptionSelect(title);
 }
 
 //重置搜索表单
 const resetSearchForm = (ruleFormRef: any) => {
   if (!ruleFormRef) return
   ruleFormRef.resetFields()
+  requestTimeRange.value=[]
 }
 </script>
 <script lang="ts">

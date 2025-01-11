@@ -15,7 +15,9 @@ body {
   /* 设置字体 */
   font-family: 'MyCustomFont';
 
-  --el-box-shadow-light: 0px 4px 20px #00000008;
+  --el-box-shadow-light: 0px 4px 20px #00000010;
+  --el-box-shadow-moon: 0px 4px 20px #ffffff10;
+  // --el-box-shadow-light: 0px 4px 20px ;
 
   --el-card-border-none: 0px;
 
@@ -24,6 +26,8 @@ body {
   //主色彩
   --lvshihao-theme-color: #6f68f6;
   --lvshihao-moon-bg: #161618;
+  --lvshihao-moon-menu-box-shadow: 10px 10px 5px -4px #1c1c1c;
+  // --lvshihao-moon-menu-box-shadow: 10px 10px 5px -4px #000000;
   --lvshihao-suuny-bg: #fff;
   //色彩滤镜
   --lvshihao-theme-filter-grayscale: 0%;
@@ -375,6 +379,11 @@ html {
         fill: $lvshihao-menu-suuny-item-active-div-svg-color;
       }
     }
+  }
+
+  //卡片样式
+  .el-card{
+    box-shadow: var(--el-box-shadow-light);
   }
 
   //标签的文字颜色
@@ -771,6 +780,7 @@ html {
       }
     }
     .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger:hover{
+      color: #000 !important;
       background-color:  #fafafa !important;
     }
     .el-menu{
@@ -779,12 +789,10 @@ html {
       }
     }
   }
-  .el-sub-menu:hover{
-    .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger{
-      color: var(--lvshihao-moon-bg) !important;
-    }
-  }
   .el-sub-menu.is-active{
+    .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger:hover{
+      color:  var(--lvshihao-theme-color) !important;
+    }
     .el-sub-menu__title {
       border-bottom: 0px;
       div {
@@ -876,20 +884,7 @@ html {
     }
   }
 
-  .copy-span:hover {
-    text-decoration: underline;
-    color: var(--lvshihao-theme-color);
-    cursor: pointer;
-  }
 
-  .height-light-span {
-    margin: 0px 2px;
-    color: var(--lvshihao-theme-color);
-  }
-
-  .height-light-span-error {
-    color: red;
-  }
 }
 
 //暗黑主题
@@ -946,6 +941,11 @@ html.dark {
     color: var(--lvshihao-theme-color) !important;
   }
 
+    //卡片样式
+    .el-card{
+      box-shadow: var(--el-box-shadow-moon);
+    }
+
   //图标选择器样式
   .icon-container {
     background-color: var(--lvshihao-theme-color);
@@ -969,7 +969,7 @@ html.dark {
     //单标签被选择样式
     .el-menu-item.is-active {
       background-color: $lvshihao-menu-moon-item-active-bg;
-      // box-shadow: 10px 10px 5px -4px  var(--lvshihao-theme-color);
+      box-shadow: var(--lvshihao-moon-menu-box-shadow) !important;
       box-shadow: none;
       span {
         color: $lvshihao-menu-moon-item-div-svg-color;
@@ -1023,7 +1023,7 @@ html.dark {
       margin-top: 5px;
       .el-sub-menu__title {
         background-color: $lvshihao-menu-moon-item-active-bg;
-        // box-shadow: 10px 10px 5px -4px  var(--lvshihao-theme-color);
+        box-shadow: var(--lvshihao-moon-menu-box-shadow) !important;
         box-shadow: none;
         span {
           color: $lvshihao-menu-moon-item-div-svg-color !important;
@@ -1055,7 +1055,7 @@ html.dark {
         //第二层的sub-menu没被选中的样式
         .el-sub-menu {
           .el-sub-menu__title {
-            box-shadow: none;
+            box-shadow: none !important;
             background-color: $lvshihao-menu-moon-bg;
             div {
               background-color: transparent;
@@ -1100,7 +1100,7 @@ html.dark {
           margin-top: 5px;
           .el-sub-menu__title {
             background-color: $lvshihao-menu-moon-bg;
-            // box-shadow: 10px 10px 5px -4px  var(--lvshihao-theme-color);
+            box-shadow: var(--lvshihao-moon-menu-box-shadow) !important;
             box-shadow: none;
             div {
               margin-right: 10px;
@@ -1137,7 +1137,7 @@ html.dark {
         .el-menu-item.is-active {
           margin: 5px 0px;
           background-color: $lvshihao-menu-moon-bg;
-          box-shadow: none;
+          box-shadow: none !important;
           span {
             color: var(--lvshihao-theme-color);
           }
@@ -1410,6 +1410,7 @@ html.dark {
         }
       }
       .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger:hover{
+        color: #fff !important;
         background-color:  #000 !important;
       }
       .el-menu{
@@ -1418,12 +1419,10 @@ html.dark {
         }
       }
     }
-    .el-sub-menu:hover{
-      .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger{
-        color: var(--lvshihao-suuny-bg) !important;
-      }
-    }
     .el-sub-menu.is-active{
+      .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger:hover{
+        color:  var(--lvshihao-theme-color) !important;
+      }
       .el-sub-menu__title {
         border-bottom: 0px;
         div {
@@ -1533,18 +1532,19 @@ html.dark {
   .el-card{
     background-color: $lvshihao-menu-moon-bg;
   }
-  .copy-span:hover {
-    text-decoration: underline;
-    color: $lvshihao-menu-moon-item-active-div-svg-bg;
-    cursor: pointer;
-  }
 
-  .height-light-span {
-    margin: 0px 2px;
-    color: $lvshihao-menu-moon-item-active-div-svg-bg;
-  }
+}
+.copy-span:hover {
+  text-decoration: underline;
+  color: var(--lvshihao-theme-color);
+  cursor: pointer;
+}
 
-  .height-light-span-error {
-    color: red;
-  }
+.height-light-span {
+  margin: 0px 2px;
+  color: var(--lvshihao-theme-color);
+}
+
+.height-light-span-error {
+  color: red;
 }

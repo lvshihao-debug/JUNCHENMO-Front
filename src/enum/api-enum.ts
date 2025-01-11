@@ -79,6 +79,10 @@ enum SERVER_MODE_NAME {
    * 测试生成
    */
   TX_VIP = '/system/vip',
+  /**
+   * 用户登录日志
+   */
+  SYS_LOGININFOR = '/system/logininfor',
 }
 
 export default {

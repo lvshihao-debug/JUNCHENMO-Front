@@ -58,6 +58,7 @@ declare module 'vue' {
     JcmBarChat: typeof import('./src/components/JcmBarChat/index.vue')['default']
     JcmButton: typeof import('./src/components/JcmButton/index.vue')['default']
     JcmCodeTab: typeof import('./src/components/JcmCodeTab/index.vue')['default']
+    JcmHomeCard: typeof import('./src/components/JcmHomeCard/index.vue')['default']
     JcmIconSelect: typeof import('./src/components/JcmIconSelect/index.vue')['default']
     JcmiFrame: typeof import('./src/components/JcmiFrame/index.vue')['default']
     JcmInfoCard: typeof import('./src/components/JcmInfoCard/index.vue')['default']

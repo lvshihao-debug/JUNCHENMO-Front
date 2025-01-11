@@ -285,14 +285,17 @@ onMounted(async () => {
   await loadDictTypeSelect();
   const tableId = route.params && route.params.tableId;
   if (tableId) {
-    await genCodeStore.tableColumnsInfo(tableId);
-    genPathStatus.value = genCodeStore.editTableData.table.genPath == 1 ? true : false;
+    await genCodeStore.tableColumnsInfo(tableId).then(() => {
+      console.log(genCodeStore.editTableData.table.genType)
+      genPathStatus.value = genCodeStore.editTableData.table.genType == "1" ? true : false;
+      console.log(genPathStatus.value)
+    });
   }
 })
 
 // 监听自定义路径变更
 watch(() => genCodeStore.editTableData.table.genType, (v) => {
-  genPathStatus.value = v == 1 ? true : false;
+  genPathStatus.value = v == "1" ? true : false;
 });
 
 //取消修改

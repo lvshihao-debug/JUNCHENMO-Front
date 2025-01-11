@@ -2,12 +2,13 @@
 import { defineStore } from 'pinia'
 //导入请求
 import { DBList,importTable,genList,previewCode,delTable,InfoTableColumns,updateTableColumns,synchDB,genCode } from '@/api/tool/genCode'
+import { number } from 'echarts'
 
 //创建角色小仓库
 const useGenCodeStore = defineStore('genCode', {
   state: () => {
     return {
-      loading: false, //生成数据加载loading
+      tableLoading: false, //数据加载loading
       multipleSelection: [], //选的数据列表
       dictData:[],//字典数据
       dictTypeOptions:[],//字典选项
@@ -108,8 +109,8 @@ const useGenCodeStore = defineStore('genCode', {
       const result: any = await InfoTableColumns(tableId)
       if (result.code == 200) {
         this.editTableData.table = result.data.info
-        console.log(this.editTableData.table)
         this.editTableData.columns = result.data.rows
+        return Promise.resolve()
       } else {
         ElMessage.error({ message: '失败信息: ' + result.msg })
       }

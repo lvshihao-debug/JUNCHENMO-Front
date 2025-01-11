@@ -123,6 +123,7 @@ const open = (item: any) => {
 defineExpose({ open });
 </script>
 <style lang="scss" scoped>
+
 .el-dialog__header {
     padding-bottom: 0px !important;
 }
@@ -152,7 +153,7 @@ defineExpose({ open });
 
     padding: 2px;
 
-    background-color: #dadadb;
+    background-color: #fafafa;
     border-radius: 9px;
 }
 
@@ -169,6 +170,26 @@ defineExpose({ open });
     box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.12), 0px 3px 1px rgba(0, 0, 0, 0.04);
     border-radius: 7px;
     transition: all 0.2s ease-out;
+}
+
+.dark{
+    .tab-container {
+        background-color: #000000;
+    }
+    .indicator {
+        content: "";
+        width: 130px;
+        height: 28px;
+        background: #1e1b1b;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        z-index: 9;
+        border: 0.5px solid rgba(255, 255, 255, 0.04);
+        box-shadow: 0px 3px 8px rgba(255, 255, 255, 0.12), 0px 3px 1px rgba(255, 255, 255, 0.04);
+        border-radius: 7px;
+        transition: all 0.2s ease-out;
+    }
 }
 
 .tab {

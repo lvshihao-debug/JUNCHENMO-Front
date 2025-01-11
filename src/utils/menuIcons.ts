@@ -43,5 +43,8 @@ export const menuIcon = [
   '表单',
   '服务器',
   '代码',
+  '数据库监控',
+  'admin监控',
+  '登录log',
   //.....
 ]

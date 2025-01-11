@@ -39,10 +39,13 @@ import setting from '@/setting'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 //获取用户相关的小仓库
 import useUserStore from '@/store/modules/user/user'
+import useTabsStore from '@/store/modules/layout/tabs'
+const layoutSettingStore = useLayoutSettingStore()
+const userStore = useUserStore()
+const tabsStore = useTabsStore()
 
-let layoutSettingStore = useLayoutSettingStore()
 const $router = useRouter()
-let userStore = useUserStore()
+
 //设置头像的大小
 let avatarSize = ref(30)
 
@@ -71,6 +74,7 @@ const settingDrawer = () => {
 //退出登录按钮点击的回调
 const userLogout = async () => {
   await userStore.userLogout()
+  tabsStore.tabs = tabsStore.tabs.filter((tag: any) => tag.path == "/home")
   //跳转到主页
   $router.push('/login')
 }

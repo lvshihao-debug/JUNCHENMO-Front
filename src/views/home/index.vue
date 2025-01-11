@@ -23,7 +23,25 @@
       </div>
     </el-card>
     <el-row style="margin-top: 10px;">
-      <el-col :span="24">
+      <el-col :span="4" style="margin-right: 10px;">
+        <JcmHomeCard icon="user" title="用户" data="20人" rate="1%" ></JcmHomeCard>
+      </el-col>
+      <el-col :span="4" style="margin-right: 10px;">
+        <JcmHomeCard icon="dictType" title="字典项" data="23条" rate="12%" ></JcmHomeCard>
+      </el-col>
+      <el-col :span="4" style="margin-right: 10px;">
+        <JcmHomeCard icon="登录log" title="登录日志" data="415条" rate="2%" ></JcmHomeCard>
+      </el-col>
+      <el-col :span="4" style="margin-right: 10px;">
+        <JcmHomeCard icon="log" title="操作日志" data="3,208条" rate="8%" ></JcmHomeCard>
+      </el-col>
+      <el-col :span="4" style="margin-right: 10px;">
+        <JcmHomeCard icon="log" title="操作日志" data="3,208条" rate="8%" ></JcmHomeCard>
+      </el-col>
+    
+    </el-row>
+    <el-row style="margin-top: 10px;">
+      <el-col :span="11">
         <el-card>
           <JcmBarChat />
         </el-card>

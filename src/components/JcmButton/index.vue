@@ -13,9 +13,7 @@
   </button>
 </template>
 
-<script setup>
-import { ref, watchEffect } from 'vue';
-
+<script setup lang="ts">
 // 定义props接收外部传入的属性
 const props = defineProps({
   buttonVariant: {
