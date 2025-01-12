@@ -4,7 +4,6 @@
       suuny: LayoutSettingStore.getThemeStatus,
       moon: !LayoutSettingStore.getThemeStatus,
     }">
-
       <!-- 偏好设置 -->
       <Drawer></Drawer>
       <!-- 左侧菜单 -->

@@ -402,7 +402,7 @@ html {
   .el-menu.el-menu--vertical {
     margin: 0px 10px;
     border-radius: 5px;
-    padding: 10px 0px 5px;
+    padding: 0px 0px 5px;
     background-color: $lvshihao-menu-suuny-bg;
     //单标签被选择样式
     .el-menu-item.is-active {
@@ -964,7 +964,7 @@ html.dark {
   .el-menu.el-menu--vertical {
     margin: 0px 10px;
     border-radius: 5px;
-    padding: 10px 0px 5px;
+    padding: 0px 0px 5px;
     background-color: $lvshihao-menu-moon-bg;
     //单标签被选择样式
     .el-menu-item.is-active {

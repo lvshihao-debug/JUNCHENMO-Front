@@ -57,7 +57,7 @@
 
 
 </script>
-<style lang="scss" scoped>
+<style lang="scss" >
 /* From Uiverse.io by vinodjangid07 */
 .card {
   display: flex;

@@ -38,10 +38,11 @@ export const constantRoutes = [
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [
   {
-    path: '/',
+    path: '/tool/genCode',
     component: Layout,
     children: [
       {
+        title: '修改表生成信息', //菜单标题
         path: '/tool/genCode/edit/:tableId(\\d+)',
         component: () => import('@/views/tool/genCode/components/gen-code-update-from.vue'),
         name: 'GenCodeEdit',

@@ -13,7 +13,7 @@
       <!--顶部菜单-->
       <div class="topMenu animate__animated animate__bounceInRight" v-if="layoutSettingStore.setting.topMenu">
         <!-- 菜单组件 -->
-        <el-menu mode="horizontal" :default-active="$route.path" ellipsis="true"
+        <el-menu mode="horizontal" :default-active="$route.path"  style="max-width: 300px;"
           :class="{ 'suuny': layoutSettingStore.getThemeValue, 'moon': !layoutSettingStore.getThemeValue }" router>
           <Menu :menuList="usePermissionStore.sidebarRouters"></Menu>
         </el-menu>
