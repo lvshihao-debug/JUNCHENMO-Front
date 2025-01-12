@@ -1,12 +1,14 @@
 <template>
-    <el-menu mode="horizontal" ellipsis="false" 
-       >
-        <template v-for="item in usePermissionStore.sidebarRouters" >
+    <el-menu mode="horizontal" :default-active="$route.path" style="max-width: 900px;"
+        :class="{ 'suuny': layoutSettingStore.getThemeValue, 'moon': !layoutSettingStore.getThemeValue }" router>
+        <template v-for="item in usePermissionStore.sidebarRouters" :key="item.path">
             <!-- 没有子路由 -->
             <template v-if="!item.children">
                 <template v-if="item.meta.frame">
                     <el-menu-item v-if="item.meta.hidden" @click="toFream(item.path)">
-                   
+                        <div>
+                            <svg-icon :name="item.meta.icon" />
+                        </div>
                         <template #title>
                             <span>{{ item.meta.title }}</span>
                         </template>
@@ -25,7 +27,9 @@
                             $router,
                         )
                         ">
-                      
+                        <div>
+                            <svg-icon :name="item.meta.icon" />
+                        </div>
                         <template #title>
 
                             <span>{{ item.meta.title }}</span>
@@ -47,7 +51,9 @@
                         $router,
                     )
                     ">
-                  
+                    <div>
+                        <svg-icon :name="item.children[0].meta.icon" />
+                    </div>
                     <template #title>
                         <span>{{ item.children[0].meta.title }}</span>
                     </template>
@@ -56,7 +62,9 @@
             <!-- 有子路由但是只有一个子路由,并且是外联 -->
             <template v-if="item.children && item.children.length == 1 && item.children[0].meta.frame">
                 <el-menu-item v-if="item.children[0].meta.hidden" @click="toFream(item.children[0].path)">
-                  
+                    <div>
+                        <svg-icon :name="item.children[0].meta.icon" />
+                    </div>
                     <template #title>
                         <span>{{ item.children[0].meta.title }}</span>
                     </template>
@@ -71,14 +79,16 @@
                         </div>
                         <span>{{ item.meta.title }}</span>
                     </template>
+                    <Menu :menuList="item.children"></Menu>
                 </el-sub-menu>
             </template>
         </template>
-  
     </el-menu>
 </template>
 
 <script setup lang="ts">
+//引入菜单组件
+import Menu from '../menu/index.vue'
 //仓库
 import PermissionStore from '@/store/modules/acl/menu'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
@@ -87,12 +97,11 @@ import { useRouter } from 'vue-router'
 import useTabsStore from '@/store/modules/layout/tabs'
 
 const usePermissionStore = PermissionStore()
-let layoutSettingStore = useLayoutSettingStore()
+const layoutSettingStore = useLayoutSettingStore()
 
 const $router = useRouter()
 const TabsStore = useTabsStore()
-//获取父组件传递过来的全部路由数组
-defineProps(['menuList'])
+
 //外联点击跳转
 const toFream = (path: any) => {
   window.open(path + '')

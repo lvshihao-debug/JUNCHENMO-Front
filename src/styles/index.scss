@@ -1,6 +1,6 @@
 /* 引入重置样式和过渡动画样式 */
-@import './reset.scss';
-@import './transition.scss';
+@use './reset.scss';
+@use './transition.scss';
 
 /* 引入自定义字体 */
 @font-face {
@@ -20,7 +20,8 @@ body {
   // --el-box-shadow-light: 0px 4px 20px ;
 
   --el-card-border-none: 0px;
-
+  //输入框的宽度
+  --base-input-width:220px;
   //统一border-radius
   --lvshihao-border-radius: 6px;
   //主色彩
@@ -96,10 +97,10 @@ body {
   }
   .el-card__body {
     .el-input {
-      width: $base-input-width;
+      width: variable.$base-input-width;
     }
     .el-select {
-      width: $base-select-width;
+      width: variable.$base-select-width;
     }
   }
   .el-card__footer {
@@ -200,6 +201,12 @@ body {
 //监控面板card样式
 .card-info-item-value {
   color: var(--lvshihao-theme-color);
+}
+//卡片中的图标样式
+.card-chat{
+  .el-card__body{
+    padding: 10px 0px !important;
+  }
 }
 //footer的超链接颜色样式1111
 .ivu-global-footer-links a {
@@ -376,7 +383,7 @@ html {
     background-color: var(--lvshihao-theme-color);
     svg {
       use {
-        fill: $lvshihao-menu-suuny-item-active-div-svg-color;
+        fill: variable.$lvshihao-menu-suuny-item-active-div-svg-color;
       }
     }
   }
@@ -397,17 +404,17 @@ html {
   overflow-x: hidden;
   //修改侧边菜单栏
   .el-menu {
-    background-color: $lvshihao-menu-suuny-bg;
+    background-color: variable.$lvshihao-menu-suuny-bg;
   }
   .el-menu.el-menu--vertical {
     margin: 0px 10px;
     border-radius: 5px;
     padding: 0px 0px 5px;
-    background-color: $lvshihao-menu-suuny-bg;
+    background-color: variable.$lvshihao-menu-suuny-bg;
     //单标签被选择样式
     .el-menu-item.is-active {
-      background-color: $lvshihao-menu-suuny-item-active-bg;
-      box-shadow: 10px 10px 5px -4px $lvshihao-menu-suuny-item-active-box-shadow;
+      background-color:variable.$lvshihao-menu-suuny-item-active-bg;
+      box-shadow: 10px 10px 5px -4px variable.$lvshihao-menu-suuny-item-active-box-shadow;
       span {
         color: var(--lvshihao-theme-color);
       }
@@ -422,14 +429,14 @@ html {
         background-color: var(--lvshihao-theme-color);
         svg {
           use {
-            fill: $lvshihao-menu-suuny-item-active-div-svg-color;
+            fill: variable.$lvshihao-menu-suuny-item-active-div-svg-color;
           }
         }
       }
     }
     //单标签被选择，但是触摸的样式
     .el-menu-item.is-active:hover {
-      background-color: $lvshihao-menu-suuny-item-active-hover-bg;
+      background-color: variable.$lvshihao-menu-suuny-item-active-hover-bg;
     }
     //单标签没有被选择样式
     .el-menu-item {
@@ -445,22 +452,22 @@ html {
         border-radius: 4px;
         svg {
           use {
-            fill: $lvshihao-menu-suuny-item-div-svg-color;
+            fill: variable.$lvshihao-menu-suuny-item-div-svg-color;
           }
         }
       }
     }
     //单标签没有被选择，但是触摸的样式
     .el-menu-item:hover {
-      background-color: $lvshihao-menu-suuny-item-hover-bg;
+      background-color: variable.$lvshihao-menu-suuny-item-hover-bg;
     }
 
     //多标签子标签被选中的时候，父标签样式
     .el-sub-menu.is-active {
       margin-top: 5px;
       .el-sub-menu__title {
-        background-color: $lvshihao-menu-suuny-item-active-bg;
-        box-shadow: 10px 10px 5px -4px $lvshihao-menu-suuny-item-active-box-shadow;
+        background-color: variable.$lvshihao-menu-suuny-item-active-bg;
+        box-shadow: 10px 10px 5px -4px variable.$lvshihao-menu-suuny-item-active-box-shadow;
         div {
           margin-right: 10px;
           width: 25px;
@@ -472,21 +479,21 @@ html {
           background-color: var(--lvshihao-theme-color);
           svg {
             use {
-              fill: $lvshihao-menu-suuny-item-active-div-svg-color;
+              fill: variable.$lvshihao-menu-suuny-item-active-div-svg-color;
             }
           }
         }
       }
       //多标签子标签被选中的时候，但是触摸的样式
       .el-sub-menu__title:hover {
-        background-color: $lvshihao-menu-suuny-item-active-hover-bg;
+        background-color: variable.$lvshihao-menu-suuny-item-active-hover-bg;
       }
       .el-menu.el-menu--inline {
         //第二层的sub-menu没被选中的样式
         .el-sub-menu {
           .el-sub-menu__title {
             box-shadow: none;
-            background-color: $lvshihao-menu-suuny-bg;
+            background-color: variable.$lvshihao-menu-suuny-bg;
             div {
               background-color: transparent;
               margin-right: 0px;
@@ -498,28 +505,28 @@ html {
               border-radius: 4px;
               svg {
                 use {
-                  fill: $lvshihao-menu-suuny-item-div-svg-color;
+                  fill: variable.$lvshihao-menu-suuny-item-div-svg-color;
                 }
               }
             }
           }
           //多标签子标签被选中的时候，但是触摸的样式
           .el-sub-menu__title:hover {
-            background-color: $lvshihao-menu-suuny-item-hover-bg;
+            background-color: variable.$lvshihao-menu-suuny-item-hover-bg;
             div {
-              background-color: $lvshihao-menu-suuny-item-hover-bg;
+              background-color: variable.$lvshihao-menu-suuny-item-hover-bg;
             }
           }
           .el-menu.el-menu--inline {
-            background-color: $lvshihao-menu-suuny-bg !important;
+            background-color: variable.$lvshihao-menu-suuny-bg !important;
             .el-menu-item {
               margin: 5px 0px;
-              background-color: $lvshihao-menu-suuny-bg;
+              background-color: variable.$lvshihao-menu-suuny-bg;
               box-shadow: none;
-              color: $lvshihao-menu-suuny-item-div-svg-color;
+              color: variable.$lvshihao-menu-suuny-item-div-svg-color;
               svg {
                 use {
-                  fill: $lvshihao-menu-suuny-item-div-svg-color;
+                  fill: variable.$lvshihao-menu-suuny-item-div-svg-color;
                 }
               }
             }
@@ -529,8 +536,8 @@ html {
         .el-sub-menu.is-active {
           margin-top: 5px;
           .el-sub-menu__title {
-            background-color: $lvshihao-menu-suuny-bg;
-            box-shadow: 10px 10px 5px -4px $lvshihao-menu-suuny-item-active-box-shadow;
+            background-color: variable.$lvshihao-menu-suuny-bg;
+            box-shadow: 10px 10px 5px -4px variable.$lvshihao-menu-suuny-item-active-box-shadow;
             div {
               margin-right: 10px;
               width: 25px;
@@ -542,7 +549,7 @@ html {
               background-color: var(--lvshihao-theme-color);
               svg {
                 use {
-                  fill: $lvshihao-menu-suuny-item-active-div-svg-color;
+                  fill: variable.$lvshihao-menu-suuny-item-active-div-svg-color;
                 }
               }
             }
@@ -551,7 +558,7 @@ html {
             //第三层的单个标签被选择的样式
             .el-menu-item.is-active {
               margin: 5px 0px;
-              background-color: $lvshihao-menu-suuny-bg;
+              background-color: variable.$lvshihao-menu-suuny-bg;
               box-shadow: none;
               color: var(--lvshihao-theme-color);
               svg {
@@ -565,12 +572,12 @@ html {
         //第二层的单个标签被选择的样式
         .el-menu-item.is-active {
           margin: 5px 0px;
-          background-color: $lvshihao-menu-suuny-bg;
+          background-color: variable.$lvshihao-menu-suuny-bg;
           box-shadow: none;
           color: var(--lvshihao-theme-color);
           div {
             margin-right: 0px;
-            background-color: $lvshihao-menu-suuny-bg;
+            background-color: variable.$lvshihao-menu-suuny-bg;
             svg {
               use {
                 fill: var(--lvshihao-theme-color);
@@ -595,25 +602,25 @@ html {
           border-radius: 4px;
           svg {
             use {
-              fill: $lvshihao-menu-suuny-item-div-svg-color;
+              fill: variable.$lvshihao-menu-suuny-item-div-svg-color;
             }
           }
         }
       }
       //标签子标签未被选中的时候，但是触摸的样式
       .el-sub-menu__title:hover {
-        background-color: $lvshihao-menu-suuny-item-hover-bg;
+        background-color: variable.$lvshihao-menu-suuny-item-hover-bg;
       }
       .el-menu.el-menu--inline {
-        background-color: $lvshihao-menu-suuny-bg !important;
+        background-color: variable.$lvshihao-menu-suuny-bg !important;
         .el-menu-item {
           margin: 5px 0px;
-          background-color: $lvshihao-menu-suuny-bg;
+          background-color: variable.$lvshihao-menu-suuny-bg;
           box-shadow: none;
-          color: $lvshihao-menu-suuny-item-div-svg-color;
+          color: variable.$lvshihao-menu-suuny-item-div-svg-color;
           svg {
             use {
-              fill: $lvshihao-menu-suuny-item-div-svg-color;
+              fill: variable.$lvshihao-menu-suuny-item-div-svg-color;
             }
           }
         }
@@ -647,7 +654,7 @@ html {
   }
   .el-popper.is-pure {
     border-radius: 8px;
-    background: $lvshihao-menu-suuny-bg;
+    background: variable.$lvshihao-menu-suuny-bg;
     .el-menu--vertical.el-menu--popup-container {
       border-radius: 8px;
       .el-menu.el-menu--popup.el-menu--popup-right-start {
@@ -670,11 +677,11 @@ html {
         .el-menu-item.is-active {
           border-radius: 8px;
           background-color: var(--lvshihao-theme-color);
-          color: $lvshihao-menu-suuny-item-active-div-svg-color;
+          color: variable.$lvshihao-menu-suuny-item-active-div-svg-color;
           div {
             svg {
               use {
-                fill: $lvshihao-menu-suuny-item-active-div-svg-color;
+                fill: variable.$lvshihao-menu-suuny-item-active-div-svg-color;
               }
             }
           }
@@ -696,12 +703,12 @@ html {
         .el-sub-menu.is-active {
           .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger {
             background-color: var(--lvshihao-theme-color);
-            color: $lvshihao-menu-suuny-item-active-div-svg-color;
+            color: variable.$lvshihao-menu-suuny-item-active-div-svg-color;
           }
           div {
             svg {
               use {
-                fill: $lvshihao-menu-suuny-item-active-div-svg-color;
+                fill: variable.$lvshihao-menu-suuny-item-active-div-svg-color;
               }
             }
           }
@@ -711,7 +718,7 @@ html {
   }
 
   .el-radio-button__inner:hover {
-    color: $lvshihao-menu-suuny-item-div-svg-color;
+    color: variable.$lvshihao-menu-suuny-item-div-svg-color;
   }
 
 //修改顶部菜单栏
@@ -756,7 +763,7 @@ html {
       background-color: var(--lvshihao-theme-color);
       svg {
         use {
-          fill: $lvshihao-menu-suuny-item-active-div-svg-color;
+          fill: variable.$lvshihao-menu-suuny-item-active-div-svg-color;
         }
       }
     }
@@ -806,7 +813,7 @@ html {
         background-color: var(--lvshihao-theme-color);
         svg {
           use {
-            fill: $lvshihao-menu-suuny-item-active-div-svg-color;
+            fill: variable.$lvshihao-menu-suuny-item-active-div-svg-color;
           }
         }
       }
@@ -819,7 +826,7 @@ html {
   .el-check-tag.is-checked.el-check-tag--primary,
   .el-check-tag.is-checked.el-check-tag--primary:hover {
     color: var(--lvshihao-theme-color);
-    background-color: $lvshihao-menu-suuny-bg;
+    background-color: variable.$lvshihao-menu-suuny-bg;
   }
   .el-check-tag.is-checked.el-check-tag--primary {
     div {
@@ -840,13 +847,13 @@ html {
     }
   }
   .el-check-tag.el-check-tag--primary {
-    color: $lvshihao-menu-suuny-item-div-svg-color;
-    background-color: $lvshihao-menu-suuny-bg;
+    color: variable.$lvshihao-menu-suuny-item-div-svg-color;
+    background-color: variable.$lvshihao-menu-suuny-bg;
     box-shadow: --el-box-shadow-light;
   }
   .el-check-tag.el-check-tag--primary:hover {
     color: var(--lvshihao-theme-color);
-    background-color: $lvshihao-menu-suuny-bg;
+    background-color: variable.$lvshihao-menu-suuny-bg;
     box-shadow: --el-box-shadow-light;
     div {
       div {
@@ -868,13 +875,13 @@ html {
 
   //图标按钮样式
   .el-button.iconBtn {
-    background-color: $lvshihao-menu-suuny-item-active-bg;
-    border-color: $lvshihao-menu-suuny-item-active-hover-bg;
+    background-color: variable.$lvshihao-menu-suuny-item-active-bg;
+    border-color: variable.$lvshihao-menu-suuny-item-active-hover-bg;
   }
 
   //图标按钮样式
   .el-button.iconBtn:hover {
-    background-color: var($lvshihao-menu-suuny-item-active-hover-bg);
+    background-color: var(variable.$lvshihao-menu-suuny-item-active-hover-bg);
     transform: scale(0.9);
     transition: all 0.6s ease;
     svg {
@@ -931,7 +938,18 @@ html.dark {
     color: #999ca1;
     background-color: #000000;
   }
-
+  .home-card {
+    background-color: variable.$lvshihao-menu-moon-bg;
+    // box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow:  0px 4px 20px #00000010;
+    .data p {
+      color: #ffffff;
+    }
+  }
+  .home-card-title-text {
+    color: #ffffff;
+  }
+ 
   //面包屑的样式
   .el-breadcrumb.breadcurmb
     .el-breadcrumb__item:first-child
@@ -951,7 +969,7 @@ html.dark {
     background-color: var(--lvshihao-theme-color);
     svg {
       use {
-        fill: $lvshihao-menu-suuny-item-active-div-svg-color;
+        fill: variable.$lvshihao-menu-suuny-item-active-div-svg-color;
       }
     }
   }
@@ -959,20 +977,20 @@ html.dark {
   overflow-x: hidden;
   //修改侧边菜单栏
   .el-menu {
-    background-color: $lvshihao-menu-moon-bg;
+    background-color: variable.$lvshihao-menu-moon-bg;
   }
   .el-menu.el-menu--vertical {
     margin: 0px 10px;
     border-radius: 5px;
     padding: 0px 0px 5px;
-    background-color: $lvshihao-menu-moon-bg;
+    background-color: variable.$lvshihao-menu-moon-bg;
     //单标签被选择样式
     .el-menu-item.is-active {
-      background-color: $lvshihao-menu-moon-item-active-bg;
+      background-color: variable.$lvshihao-menu-moon-item-active-bg;
       box-shadow: var(--lvshihao-moon-menu-box-shadow) !important;
       box-shadow: none;
       span {
-        color: $lvshihao-menu-moon-item-div-svg-color;
+        color: variable.$lvshihao-menu-moon-item-div-svg-color;
       }
       div {
         margin-right: 10px;
@@ -985,14 +1003,14 @@ html.dark {
         background-color: var(--lvshihao-theme-color);
         svg {
           use {
-            fill: $lvshihao-menu-moon-bg;
+            fill: variable.$lvshihao-menu-moon-bg;
           }
         }
       }
     }
     //单标签被选择，但是触摸的样式
     .el-menu-item.is-active:hover {
-      background-color: $lvshihao-menu-moon-item-active-hover-bg;
+      background-color: variable.$lvshihao-menu-moon-item-active-hover-bg;
     }
     //单标签没有被选择样式
     .el-menu-item {
@@ -1008,25 +1026,25 @@ html.dark {
         border-radius: 4px;
         svg {
           use {
-            fill: $lvshihao-menu-moon-item-div-svg-color;
+            fill: variable.$lvshihao-menu-moon-item-div-svg-color;
           }
         }
       }
     }
     //单标签没有被选择，但是触摸的样式
     .el-menu-item:hover {
-      background-color: $lvshihao-menu-moon-item-hover-bg;
+      background-color: variable.$lvshihao-menu-moon-item-hover-bg;
     }
 
     //多标签子标签被选中的时候，父标签样式
     .el-sub-menu.is-active {
       margin-top: 5px;
       .el-sub-menu__title {
-        background-color: $lvshihao-menu-moon-item-active-bg;
+        background-color: variable.$lvshihao-menu-moon-item-active-bg;
         box-shadow: var(--lvshihao-moon-menu-box-shadow) !important;
         box-shadow: none;
         span {
-          color: $lvshihao-menu-moon-item-div-svg-color !important;
+          color: variable.$lvshihao-menu-moon-item-div-svg-color !important;
         }
         div {
           margin-right: 10px;
@@ -1039,7 +1057,7 @@ html.dark {
           background-color: var(--lvshihao-theme-color);
           svg {
             use {
-              fill: $lvshihao-menu-moon-bg;
+              fill: variable.$lvshihao-menu-moon-bg;
             }
           }
         }
@@ -1049,14 +1067,14 @@ html.dark {
       }
       //多标签子标签被选中的时候，但是触摸的样式
       .el-sub-menu__title:hover {
-        background-color: $lvshihao-menu-moon-item-active-hover-bg;
+        background-color: variable.$lvshihao-menu-moon-item-active-hover-bg;
       }
       .el-menu.el-menu--inline {
         //第二层的sub-menu没被选中的样式
         .el-sub-menu {
           .el-sub-menu__title {
             box-shadow: none !important;
-            background-color: $lvshihao-menu-moon-bg;
+            background-color: variable.$lvshihao-menu-moon-bg;
             div {
               background-color: transparent;
               margin-right: 0px;
@@ -1068,28 +1086,28 @@ html.dark {
               border-radius: 4px;
               svg {
                 use {
-                  fill: $lvshihao-menu-moon-item-div-svg-color;
+                  fill: variable.$lvshihao-menu-moon-item-div-svg-color;
                 }
               }
             }
           }
           //多标签子标签被选中的时候，但是触摸的样式
           .el-sub-menu__title:hover {
-            background-color: $lvshihao-menu-moon-item-hover-bg;
+            background-color: variable.$lvshihao-menu-moon-item-hover-bg;
             div {
-              background-color: $lvshihao-menu-moon-item-hover-bg;
+              background-color: variable.$lvshihao-menu-moon-item-hover-bg;
             }
           }
           .el-menu.el-menu--inline {
-            background-color: $lvshihao-menu-moon-bg !important;
+            background-color: variable.$lvshihao-menu-moon-bg !important;
             .el-menu-item {
               margin: 5px 0px;
-              background-color: $lvshihao-menu-moon-bg;
+              background-color: variable.$lvshihao-menu-moon-bg;
               box-shadow: none;
-              color: $lvshihao-menu-moon-item-div-svg-color;
+              color: variable.$lvshihao-menu-moon-item-div-svg-color;
               svg {
                 use {
-                  fill: $lvshihao-menu-moon-item-div-svg-color;
+                  fill: variable.$lvshihao-menu-moon-item-div-svg-color;
                 }
               }
             }
@@ -1099,7 +1117,7 @@ html.dark {
         .el-sub-menu.is-active {
           margin-top: 5px;
           .el-sub-menu__title {
-            background-color: $lvshihao-menu-moon-bg;
+            background-color: variable.$lvshihao-menu-moon-bg;
             box-shadow: var(--lvshihao-moon-menu-box-shadow) !important;
             box-shadow: none;
             div {
@@ -1113,7 +1131,7 @@ html.dark {
               background-color: var(--lvshihao-theme-color);
               svg {
                 use {
-                  fill: $lvshihao-menu-moon-bg;
+                  fill: variable.$lvshihao-menu-moon-bg;
                 }
               }
             }
@@ -1122,7 +1140,7 @@ html.dark {
             //第三层的单个标签被选择的样式
             .el-menu-item.is-active {
               margin: 5px 0px;
-              background-color: $lvshihao-menu-moon-bg;
+              background-color: variable.$lvshihao-menu-moon-bg;
               box-shadow: none;
               color: var(--lvshihao-theme-color);
               svg {
@@ -1136,14 +1154,14 @@ html.dark {
         //第二层的单个标签被选择的样式
         .el-menu-item.is-active {
           margin: 5px 0px;
-          background-color: $lvshihao-menu-moon-bg;
+          background-color: variable.$lvshihao-menu-moon-bg;
           box-shadow: none !important;
           span {
             color: var(--lvshihao-theme-color);
           }
           div {
             margin-right: 0px;
-            background-color: $lvshihao-menu-moon-bg;
+            background-color: variable.$lvshihao-menu-moon-bg;
             svg {
               use {
                 fill: var(--lvshihao-theme-color);
@@ -1168,28 +1186,28 @@ html.dark {
           border-radius: 4px;
           svg {
             use {
-              fill: $lvshihao-menu-moon-item-div-svg-color;
+              fill: variable.$lvshihao-menu-moon-item-div-svg-color;
             }
           }
         }
         span {
-          color: $lvshihao-menu-moon-item-div-svg-color !important;
+          color: variable.$lvshihao-menu-moon-item-div-svg-color !important;
         }
       }
       //标签子标签未被选中的时候，但是触摸的样式
       .el-sub-menu__title:hover {
-        background-color: $lvshihao-menu-moon-item-hover-bg;
+        background-color: variable.$lvshihao-menu-moon-item-hover-bg;
       }
       .el-menu.el-menu--inline {
-        background-color: $lvshihao-menu-moon-bg !important;
+        background-color: variable.$lvshihao-menu-moon-bg !important;
         .el-menu-item {
           margin: 5px 0px;
-          background-color: $lvshihao-menu-moon-bg;
+          background-color: variable.$lvshihao-menu-moon-bg;
           box-shadow: none;
-          color: $lvshihao-menu-moon-item-div-svg-color;
+          color: variable.$lvshihao-menu-moon-item-div-svg-color;
           svg {
             use {
-              fill: $lvshihao-menu-moon-item-div-svg-color;
+              fill: variable.$lvshihao-menu-moon-item-div-svg-color;
             }
           }
         }
@@ -1223,7 +1241,7 @@ html.dark {
   }
   .el-popper.is-pure {
     border-radius: 8px;
-    background: $lvshihao-menu-moon-bg;
+    background: variable.$lvshihao-menu-moon-bg;
     .el-menu--vertical.el-menu--popup-container {
       border-radius: 8px;
       .el-menu.el-menu--popup.el-menu--popup-right-start {
@@ -1236,7 +1254,7 @@ html.dark {
           div {
             svg {
               use {
-                fill: $lvshihao-menu-moon-item-div-svg-color;
+                fill: variable.$lvshihao-menu-moon-item-div-svg-color;
               }
             }
           }
@@ -1252,7 +1270,7 @@ html.dark {
         //单菜单被点击状态
         .el-menu-item.is-active {
           border-radius: 8px;
-          background-color: $lvshihao-menu-moon-item-active-div-svg-bg;
+          background-color: variable.$lvshihao-menu-moon-item-active-div-svg-bg;
           color: var(--lvshihao-theme-color);
           div {
             svg {
@@ -1272,7 +1290,7 @@ html.dark {
             div {
               svg {
                 use {
-                  fill: $lvshihao-menu-moon-item-div-svg-color;
+                  fill: variable.$lvshihao-menu-moon-item-div-svg-color;
                 }
               }
             }
@@ -1300,7 +1318,7 @@ html.dark {
         //多级菜单被点击
         .el-sub-menu.is-active {
           .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger {
-            background-color: $lvshihao-menu-moon-item-active-div-svg-bg;
+            background-color: variable.$lvshihao-menu-moon-item-active-div-svg-bg;
             color: var(--lvshihao-theme-color);
           }
           div {
@@ -1317,7 +1335,7 @@ html.dark {
                   div {
                     svg {
                       use {
-                        fill: $lvshihao-menu-moon-item-div-svg-color;
+                        fill: variable.$lvshihao-menu-moon-item-div-svg-color;
                       }
                     }
                   }
@@ -1331,7 +1349,7 @@ html.dark {
   }
 
   .el-radio-button__inner:hover {
-    color: $lvshihao-menu-moon-item-div-svg-color;
+    color: variable.$lvshihao-menu-moon-item-div-svg-color;
   }
 
   //修改顶部菜单栏
@@ -1448,8 +1466,8 @@ html.dark {
     表格样式
   **/
   .el-table {
-    --el-table-tr-bg-color: $lvshihao-menu-moon-bg;
-    --el-table-header-bg-color: $lvshihao-menu-moon-bg;
+    --el-table-tr-bg-color: variable.$lvshihao-menu-moon-bg;
+    --el-table-header-bg-color: variable.$lvshihao-menu-moon-bg;
   }
 
   //tab标签页
@@ -1457,7 +1475,7 @@ html.dark {
   .el-check-tag.is-checked.el-check-tag--primary,
   .el-check-tag.is-checked.el-check-tag--primary:hover {
     color: var(--lvshihao-theme-color);
-    background-color: $lvshihao-menu-moon-bg;
+    background-color: variable.$lvshihao-menu-moon-bg;
   }
   .el-check-tag.is-checked.el-check-tag--primary {
     div {
@@ -1471,7 +1489,7 @@ html.dark {
     }
   }
   .el-check-tag.el-check-tag--primary:hover {
-    background-color: $lvshihao-menu-moon-bg;
+    background-color: variable.$lvshihao-menu-moon-bg;
     box-shadow: --el-box-shadow-dark;
     color: var(--lvshihao-theme-color);
     div {
@@ -1492,14 +1510,14 @@ html.dark {
     }
   }
   .el-check-tag.el-check-tag--primary {
-    color: $lvshihao-menu-moon-item-div-svg-color;
-    background-color: $lvshihao-menu-moon-bg;
+    color: variable.$lvshihao-menu-moon-item-div-svg-color;
+    background-color: variable.$lvshihao-menu-moon-bg;
     box-shadow: --el-box-shadow-dark;
     div {
       .jcm-tabs-titleWithIcon {
         svg {
           use {
-            fill: $lvshihao-menu-moon-item-active-div-svg-bg;
+            fill: variable.$lvshihao-menu-moon-item-active-div-svg-bg;
           }
         }
       }
@@ -1513,7 +1531,7 @@ html.dark {
     span {
       svg {
         use {
-          fill: $lvshihao-menu-moon-item-div-svg-color;
+          fill: variable.$lvshihao-menu-moon-item-div-svg-color;
         }
       }
     }
@@ -1521,7 +1539,7 @@ html.dark {
 
   //图标按钮样式
   .el-button.iconBtn:hover {
-    background-color: var($lvshihao-menu-suuny-item-active-hover-bg);
+    background-color: var(variable.$lvshihao-menu-suuny-item-active-hover-bg);
     transition: all 0.6s ease;
     svg {
       use {
@@ -1530,7 +1548,7 @@ html.dark {
     }
   }
   .el-card{
-    background-color: $lvshihao-menu-moon-bg;
+    background-color: variable.$lvshihao-menu-moon-bg;
   }
 
 }

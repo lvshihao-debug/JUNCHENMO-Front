@@ -167,18 +167,18 @@ export default {
     }
 
     position: fixed;
-    width: $base-menu-width;
+    width: variable.$base-menu-width;
     box-shadow: --el-box-shadow-light;
     height: 100vh;
     top: 0px;
 
     // 导航栏折叠
     &.fold {
-      width: $base-menu-min-width;
+      width: variable.$base-menu-min-width;
     }
 
     .scrollbar {
-      height: calc(100vh - $base-menu-logo-height);
+      height: calc(100vh - variable.$base-menu-logo-height);
 
       .el-menu {
         border-right: none;
@@ -197,11 +197,11 @@ export default {
   .layout_tabbar {
     top: 0px;
     position: fixed;
-    left: $base-menu-width;
-    width: calc(100% - $base-menu-width);
+    left: variable.$base-menu-width;
+    width: calc(100% - variable.$base-menu-width);
 
     &.showNavigationBar {
-      height: $base-tabbar-height;
+      height: variable.$base-tabbar-height;
     }
 
     &.hidenNavigationBar {
@@ -226,16 +226,16 @@ export default {
     // 折叠中
     &.fold {
       &.showMenu {
-        width: calc(100% - $base-menu-min-width);
-        left: $base-menu-min-width;
+        width: calc(100% - variable.$base-menu-min-width);
+        left: variable.$base-menu-min-width;
       }
     }
 
     // 展开中
     &.unfold {
       &.showMenu {
-        width: calc(100% - $base-menu-width);
-        left: $base-menu-width;
+        width: calc(100% - variable.$base-menu-width);
+        left: variable.$base-menu-width;
       }
     }
 
@@ -272,20 +272,20 @@ export default {
 
     &.showTabs {
       &.showNavigationBar {
-        top: calc($base-tabbar-height + $base-tabs-height);
-        height: calc(100vh - $base-tabs-height - $base-tabs-height);
+        top: calc(variable.$base-tabbar-height + variable.$base-tabs-height);
+        height: calc(100vh - variable.$base-tabs-height - variable.$base-tabs-height);
       }
 
       &.hidenNavigationBar {
-        top: calc($base-tabbar-height);
-        height: calc(100vh - $base-tabs-height);
+        top: calc(variable.$base-tabbar-height);
+        height: calc(100vh - variable.$base-tabs-height);
       }
     }
 
     &.hidenTabs {
       &.showNavigationBar {
-        top: $base-tabbar-height;
-        height: calc(100vh - $base-tabs-height);
+        top: variable.$base-tabbar-height;
+        height: calc(100vh - variable.$base-tabs-height);
       }
 
       &.hidenNavigationBar {
@@ -303,16 +303,16 @@ export default {
     // 折叠中
     &.fold {
       &.showMenu {
-        width: calc(100% - $base-menu-min-width);
-        left: $base-menu-min-width;
+        width: calc(100% - variable.$base-menu-min-width);
+        left: variable.$base-menu-min-width;
       }
     }
 
     // 展开中
     &.unfold {
       &.showMenu {
-        width: calc(100% - $base-menu-width);
-        left: $base-menu-width;
+        width: calc(100% - variable.$base-menu-width);
+        left: variable.$base-menu-width;
       }
     }
 
@@ -324,10 +324,10 @@ export default {
   .layout_tabs {
     scrollbar-width: thin;
     position: fixed;
-    height: $base-tabs-height;
+    height: variable.$base-tabs-height;
 
     &.showNavigationBar {
-      top: $base-tabbar-height;
+      top: variable.$base-tabbar-height;
     }
 
     &.hidenNavigationBar {
@@ -345,13 +345,13 @@ export default {
     }
 
     &.showMenu {
-      width: calc(100% - $base-menu-width);
-      left: $base-menu-width;
+      width: calc(100% - variable.$base-menu-width);
+      left: variable.$base-menu-width;
     }
 
     &.fold {
-      width: calc(100% - $base-menu-min-width);
-      left: $base-menu-min-width;
+      width: calc(100% - variable.$base-menu-min-width);
+      left: variable.$base-menu-min-width;
     }
 
     &.hidenMenu {

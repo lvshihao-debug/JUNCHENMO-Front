@@ -12,11 +12,8 @@
       </div>
       <!--顶部菜单-->
       <div class="topMenu animate__animated animate__bounceInRight" v-if="layoutSettingStore.setting.topMenu">
-        <!-- 菜单组件 -->
-        <el-menu mode="horizontal" :default-active="$route.path"  style="max-width: 300px;"
-          :class="{ 'suuny': layoutSettingStore.getThemeValue, 'moon': !layoutSettingStore.getThemeValue }" router>
-          <Menu :menuList="usePermissionStore.sidebarRouters"></Menu>
-        </el-menu>
+        <!-- 水平菜单组件 -->
+        <horizontalMenu></horizontalMenu>
       </div>
     </div>
     <div class="tabbar_right">
@@ -29,15 +26,10 @@
 //引入菜单组件
 import Setting from './setting/index.vue'
 //引入菜单组件
-import Menu from '../menu/index.vue'
+import horizontalMenu from '@/layout/horizontal-menu/index.vue'
 //引入设置标题与logog配置文件
 import setting from '@/setting'
-//仓库
-import PermissionStore from '@/store/modules/acl/menu'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
-
-
-const usePermissionStore = PermissionStore()
 let layoutSettingStore = useLayoutSettingStore()
 
 </script>

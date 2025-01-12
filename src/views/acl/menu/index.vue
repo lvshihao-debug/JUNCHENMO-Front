@@ -21,7 +21,7 @@
                 <svg-icon name="加号" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList(menuStore.searchForm)">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList()">
               <template #icon>
                 <svg-icon name="搜索" />
               </template>
@@ -71,7 +71,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="sort" label="排序" width="100px" align="center" />
-        <el-table-column prop="status" label="状态" width="150px" align="center">
+        <el-table-column prop="status" label="状态" width="170px" align="center">
           <template #default="scope">
             <!--状态-->
             <el-popconfirm width="200" icon-color="#626AEF"
@@ -93,17 +93,11 @@
                   </el-tag>
                 </template>
               </template>
-              <template #actions>
-                <el-button size="small">取消</el-button>
-                <el-button type="danger" size="small">
-                  确定
-                </el-button>
-              </template>
             </el-popconfirm>
             <!--显示隐藏-->
             <el-popconfirm width="200" icon-color="#626AEF"
               :title="scope.row.visible === 0 ? '确定要将当前节点以及所有子节点改为隐藏?' : '确定要将当前节点以及所有子节点改为显示?'"
-              @confirm="tagUpdateVisibleButtonClick(scope.row)">
+              @confirm="console.log(scope.row); tagUpdateVisibleButtonClick(scope.row)">
               <template #reference>
                 <template v-if="scope.row.visible">
                   <el-tag checked size="small" class="menu-status-tag menu-status-tag-margin">
@@ -119,12 +113,6 @@
                     </el-tooltip>
                   </el-tag>
                 </template>
-              </template>
-              <template #actions>
-                <el-button size="small">取消</el-button>
-                <el-button type="danger" size="small">
-                  确定
-                </el-button>
               </template>
             </el-popconfirm>
           </template>
@@ -245,6 +233,7 @@ const deleteItemClick = (item: any) => {
 
 //点击标签更改状态中的启用/禁用
 const tagUpdateStatusButtonClick = (item: any) => {
+  console.log("sss")
   item.status = item.status == 0 ? 1 : 0
   menuStore
     .upStatusMenu(item)
@@ -255,6 +244,8 @@ const tagUpdateStatusButtonClick = (item: any) => {
 
 //点击标签更改状态中的显示/隐藏
 const tagUpdateVisibleButtonClick = (item: any) => {
+  console.log("eeee")
+
   item.visible = item.visible == 0 ? 1 : 0
   menuStore
     .upStatusMenu(item)

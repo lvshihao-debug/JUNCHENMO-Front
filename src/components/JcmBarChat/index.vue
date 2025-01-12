@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div ref="chartDom" style="width: 600px; height: 400px;"></div>
+        <div ref="chartDom" style="width: 800px; height: 400px;"></div>
     </div>
 </template>
 
@@ -14,81 +14,123 @@ const layoutSettingStore = useLayoutSettingStore()
 const chartDom = ref(null);
 let chartInstance = null;
 
+/**
+ * themeColor:主题颜色
+ * shadowColor:阴影颜色
+ * theme:字体主题颜色
+ */
+const initOption = (themeColor: string, shadowColor: string,fontTheme: string) => {
+    return {
+        title: {
+            text: '操作记录数 (7日)',
+            textStyle:{
+                color: fontTheme,
+                fontSize:15
+            },
+            x: 'center',
+            y: 'top',
+            textAlign: 'left',
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        xAxis: [{
+            type: 'category',
+            data: ['2023-01-01', '2023-01-02', '2023-01-03', '2023-01-04', '2023-01-05', '2023-01-06', '2023-01-07'],
+            axisLine: {
+                lineStyle: {
+                    color: '#999'
+                }
+            }
+        }],
+        yAxis: [{
+            type: 'value',
+            splitNumber: 4,
+            splitLine: {
+                lineStyle: {
+                    type: 'dashed',
+                    color: '#DDD'
+                }
+            },
+            axisLine: {
+                show: false,
+                lineStyle: {
+                    color: fontTheme
+                },
+            },
+            nameTextStyle: {
+                color: '#999'
+            },
+            splitArea: {
+                show: false
+            }
+        }],
+        series: [{
+            name: '操作次数',
+            type: 'line',
+            data: [23, 60, 20, 36, 23, 85, 55],
+            lineStyle: {
+                normal: {
+                    width: 8,
+                    color: {
+                        type: 'linear',
+                        colorStops: [{
+                            offset: 1,
+                            color: themeColor // 100% 处的颜色
+                        }],
+                        globalCoord: false // 缺省为 false
+                    },
+                    shadowColor: shadowColor,
+                    shadowBlur: 10,
+                    shadowOffsetY: 20
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#fff',
+                    borderWidth: 10,
+                    shadowColor: 'rgba(72,216,191, 0.3)',
+                    shadowBlur: 100,
+                    borderColor: '#A9F387'
+                }
+            },
+            smooth: true
+        }]
+    };
+}
+
 onMounted(async () => {
     await nextTick();
     chartInstance = echarts.init(chartDom.value);
-    // const body = document.querySelector('body')
-    // options.borderColor = body?.style.getPropertyValue('--lvshihao-theme-color')
-    let option = {
-        color: ['#80FFA5', '#00DDFF', '#37A2FF', '#FF0087', '#FFBF00'],
-        title: {
-            text: '访问量统计'
-        },
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'cross',
-                label: {
-                    backgroundColor: '#6a7985'
-                }
-            }
-        },
-        legend: {
-            data: ['Line 1', 'Line 2', 'Line 3', 'Line 4', 'Line 5']
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis: [
-            {
-                type: 'category',
-                boundaryGap: false,
-                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-            }
-        ],
-        yAxis: [
-            {
-                type: 'value'
-            }
-        ],
-        series: [
-            {
-                name: 'Line 1',
-                type: 'line',
-                stack: 'Total',
-                smooth: true,
-                lineStyle: {
-                    width: 0
-                },
-                showSymbol: false,
-                areaStyle: {
-                    opacity: 0.8,
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                            offset: 0,
-                            color: 'rgb(128, 255, 165)'
-                        },
-                        {
-                            offset: 1,
-                            color: 'rgb(1, 191, 236)'
-                        }
-                    ])
-                },
-                emphasis: {
-                    focus: 'series'
-                },
-                data: [140, 232, 101, 264, 90, 340, 250]
-            },
-        ]
-    };
-
-    chartInstance.setOption(option);
+    ceshi()
 })
 
+//主题模式的变化
+watch(() => layoutSettingStore.setting.themeColor, (v) => {
+    if (chartInstance) {
+        chartInstance.clear();
+    }
+    ceshi()
+});
 
+//主题模式的变化
+watch(() => layoutSettingStore.setting.theme, (v) => {
+    if (chartInstance) {
+        chartInstance.clear();
+    }
+    ceshi()
+});
+
+const ceshi = () => {
+    if (chartInstance) {
+        const body = document.querySelector('body')
+        const themeColor = body?.style.getPropertyValue('--lvshihao-theme-color');
+        const theme = layoutSettingStore.getThemeStatus ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.)";
+        const fontTheme = layoutSettingStore.getThemeStatus ?"#000": "#fff";
+        chartInstance.setOption(initOption(themeColor as string, theme,fontTheme));
+    }
+
+}
 
 </script>
 
