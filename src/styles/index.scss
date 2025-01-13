@@ -295,6 +295,7 @@ element表单区域
 }
 /* 单选框选中的背景颜色 */
 .el-radio-button__original-radio:checked + .el-radio-button__inner {
+  color: #ffffff;
   border: var(--lvshihao-theme-color);
   background-color: var(--lvshihao-theme-color);
   box-shadow: none;

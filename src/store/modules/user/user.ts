@@ -7,7 +7,7 @@ import type {
   loginResponseData,
   logoutResponseData,
   userInfoReponseData,
-} from '@/api/user/type'
+} from '@/api/user/user/type'
 //导入Token工具类
 import { SET_TOKEN, GET_TOKEN, RENOVE_TOKEN } from '@/utils/token'
 //导入请求
@@ -22,8 +22,9 @@ import {
   addUser,
   delUser,
   updateUser,
-  userList
-} from '@/api/user'
+  userList,
+  optionSelect
+} from '@/api/user/user'
 
 //创建用户小仓库
 const useUserStore = defineStore('User', {
@@ -34,13 +35,15 @@ const useUserStore = defineStore('User', {
       permissions: [], //用户拥有的权限信息
       roles: [], //用户拥有的角色
       tableLoading: true, //表格数据加载loading
-      dataList: { //表格数据
+      dataList: {
+        //表格数据
         list: [],
         total: 0,
         page: 1,
         size: 10,
       },
-      commonForm: { //表单数据
+      commonForm: {
+        //表单数据
         userId: undefined,
         username: undefined,
         nickname: undefined,
@@ -107,6 +110,15 @@ const useUserStore = defineStore('User', {
         ElMessage.error({ message: '失败信息: ' + result.msg })
       }
     },
+    //获取所有启用的用户
+    async optionSelect() {
+      const result: any = await optionSelect()
+      if (result.code == 200) {
+        return result
+      } else {
+        ElMessage.error({ message: '失败信息: ' + result.msg })
+      }
+    },
     //添加用户
     async addUser(data: any) {
       const result: any = await addUser(data)
@@ -159,7 +171,7 @@ const useUserStore = defineStore('User', {
     },
     //分配选择的角色
     async authRoleUser(userId: any, rolesId: any) {
-      const rIds = rolesId.join(",");
+      const rIds = rolesId.join(',')
       const result: any = await reqAuthRole({ userId: userId, roleIds: rIds })
       if (result.code == 200) {
         ElMessage.success({ message: '分配成功' })
@@ -173,7 +185,7 @@ const useUserStore = defineStore('User', {
     //获取名称的第一个字符
     getUserNameTextFirst(): string {
       return this.user.username?.charAt(0) as string
-    }
+    },
   },
 })
 

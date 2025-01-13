@@ -83,6 +83,10 @@ enum SERVER_MODE_NAME {
    * 用户登录日志
    */
   SYS_LOGININFOR = '/system/logininfor',
+  /**
+   * 用户任务
+   */
+  SYS_USER_TASK = '/system/task',
 }
 
 export default {

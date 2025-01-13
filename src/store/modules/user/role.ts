@@ -10,7 +10,7 @@ import {
   reqUserRoleList,
   reqDelRole,
   reqAuthMenu
-} from '@/api/role'
+} from '@/api/user/role'
 
 //创建角色小仓库
 const useRoleStore = defineStore('role', {

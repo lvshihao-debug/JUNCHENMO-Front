@@ -33,6 +33,8 @@ export const API = {
   UPDATE_USER_PASSWORD_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/changePassword`,
   //用户授权角色
   UPDATE_AUTH_ROLE_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/authRole`,
+  //获取用户选择框列表
+  USER_OPTION_SELECT_URL: `${API_ENUM.SERVER_MODE_NAME.SYSTEM_USER}/optionSelect`,
 }
 
 /**
@@ -94,7 +96,7 @@ export const updateUser = (data: any) =>
     method: 'put',
     url: API.UPDATE_USER_URL,
     data,
-})
+  })
 
 /**
  * 获取用户列表
@@ -140,14 +142,22 @@ export const reqUpPasswordUser = (data: any) =>
     data,
   })
 
-
 /**
  * 分配用户选择的角色
  * @param {any} data - 用户id和角色id集合
  */
-export const reqAuthRole = (data:any) =>
+export const reqAuthRole = (data: any) =>
   request<any>({
     method: 'put',
     url: API.UPDATE_AUTH_ROLE_URL,
     params: data,
+  })
+
+/**
+ * 获取没有被禁用的全部用户列表的接口
+ */
+export const optionSelect = () =>
+  request<any>({
+    method: 'get',
+    url: API.USER_OPTION_SELECT_URL,
   })

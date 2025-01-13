@@ -25,9 +25,9 @@ export const genTable = (prompts:string) =>
  */
 export const genTableSql = (prompts:string) =>
   request<any>({
-    method: 'get',
+    method: 'post',
     url: API.GEN_TABLE_SQL,
-    params: {prompts},
+    data: prompts,
   })
 
 

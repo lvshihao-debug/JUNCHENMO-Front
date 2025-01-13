@@ -9,7 +9,7 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 //创建axios实例
 const service = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
-  timeout: 40000,
+  timeout: 80000,
 })
 //请求拦截器
 service.interceptors.request.use((config) => {

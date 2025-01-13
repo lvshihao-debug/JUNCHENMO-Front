@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 //导入请求
 import {
    reqDictDataList,reqAddDictData,reqDelDictData,reqDictDataInfoList,reqDictDataInfo,reqUpInfoDictData,reqDictDataRefreshCache
-} from '@/api/dictData'
+} from '@/api/acl/dictData'
 
 //创建角色小仓库
 const useDictDataStore = defineStore('dictData', {

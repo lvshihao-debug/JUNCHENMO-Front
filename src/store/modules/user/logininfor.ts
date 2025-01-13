@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 
 //导入请求
-import { listLogininfor,delLogininfor,clearLogininfor} from '@/api/logininfor'
+import { listLogininfor,delLogininfor,clearLogininfor} from '@/api/user/logininfor'
 
 //创建用户小仓库
 const useLogininforStore = defineStore('Logininfor', {

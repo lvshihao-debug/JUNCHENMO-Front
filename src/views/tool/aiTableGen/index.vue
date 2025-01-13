@@ -219,16 +219,16 @@ const columnConfig = reactive<VxeTablePropTypes.ColumnConfig<RowVO>>({
 const sqlView = () => {
     aiTableGenStore.loading = true;
     aiTableGenStore.genTableSql(JSON.stringify(tableData.value)).then(res => {
-        console.log("返回的数据")
-        console.log(res)
+        console.debug("返回的数据")
+        console.debug(res)
         // const jsonStringWithExtra = res.output.choices[0].message.content
         // 先去除字符串前后多余的部分（去掉开头的json以及最后的）
         const trimmedString = res.replace("```sql", "").replace("```", "").replace("\n", "");
-        console.log(trimmedString)
+        console.debug(trimmedString)
         // 再去除可能存在的多余空白字符（比如换行、空格等，使其格式更规范便于解析）
         const cleanedString = trimmedString.trim();
-        console.log(format(cleanedString, { language: 'mysql' }))
-        sqlEditor?.value?.open(format(cleanedString, { language: 'mysql' }), "测试表")
+        console.debug(format(cleanedString, { language: 'mysql' }))
+        sqlEditor?.value?.open(format(cleanedString, { language: 'mysql' }), "创建表SQL预览")
         // 此时 jsonArray 就是你想要的 JSON 数组了，可以进行后续的操作，比如遍历等
         aiTableGenStore.loading = false;
     }).catch(err => {

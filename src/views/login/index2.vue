@@ -96,7 +96,7 @@
 </template>
 
 <script setup lang="ts">
-import type { loginFormData } from '@/api/user/type'
+import type { loginFormData } from '@/api/user/user/type'
 import type { FormInstance, FormRules } from 'element-plus'
 import { User, Lock, Eleme } from '@element-plus/icons-vue'
 import UserStore from '@/store/modules/user/user'

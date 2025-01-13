@@ -7,7 +7,7 @@ import {
   reqDictTypeOptionSelect,
   reqDelDictType,
   reqUpInfoDictType,
-} from '@/api/dictType'
+} from '@/api/acl/dictType'
 
 //创建角色小仓库
 const useDictTypeStore = defineStore('dictType', {
