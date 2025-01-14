@@ -15,6 +15,10 @@ enum SERVER_NAME {
    * 生成相关接口
    */
   GEN = '/gen',
+  /**
+   * 定时任务相关接口
+   */
+  JOB = '/job',
 }
 
 /**
@@ -75,18 +79,26 @@ enum SERVER_MODE_NAME {
    * 生成代码相关接口
    */
   GEN_CODE = '/gen/genCode',
+
   /**
    * 测试生成
    */
   TX_VIP = '/system/vip',
+
   /**
    * 用户登录日志
    */
   SYS_LOGININFOR = '/system/logininfor',
+
   /**
    * 用户任务
    */
   SYS_USER_TASK = '/system/task',
+
+  /**
+   * 系统定时任务
+   */
+  SYS_JOB = '/job/jobTask',
 }
 
 export default {
