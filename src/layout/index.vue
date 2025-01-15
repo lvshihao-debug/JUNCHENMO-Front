@@ -50,7 +50,8 @@
         showMenu: LayoutSettingStore.setting.menu,
         hidenMenu: !LayoutSettingStore.setting.menu,
       }" v-show="LayoutSettingStore.setting.tabs">
-        <Tabs></Tabs>
+        <!-- <Tabs></Tabs> -->
+        <TabsCeshi></TabsCeshi>
       </div>
 
       <!-- 内容展示区域 -->
@@ -95,6 +96,7 @@ import Logo from './logo/index.vue'
 import Tabbar from './tabbar/index.vue'
 //引入顶部tabs组件
 import Tabs from './tabs/index.vue'
+import TabsCeshi from './tabs-ceshi/index.vue'
 //引入顶部面包屑组件
 import Breadcrumb from './tabbar/breadcrumb/index.vue'
 //引入当前路由

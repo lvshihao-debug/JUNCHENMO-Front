@@ -8,7 +8,7 @@ import {
   reqOperNameOptionSelect,
   reqTitleOptionSelect,
   reqBusinessNameOptionSelect,
-} from '@/api/user/operationLog'
+} from '@/api/log/operationLog'
 
 //创建操作日志小仓库
 const useOperationLogStore = defineStore('operationLog', {

@@ -1,13 +1,32 @@
 <template>
-  <el-button title="刷新"  class="iconBtn"  @click="updateRefsh">
-    <svg-icon  name="刷新"  />
+  <el-button title="刷新" class="iconBtn" @click="updateRefsh">
+    <svg-icon name="刷新" />
   </el-button>
-  <el-button title="全屏" class="iconBtn"   @click="fullScreen">
-    <svg-icon  name="全屏"  />
+  <el-popover placement="bottom" :width="300" trigger="click">
+    <template #reference>
+      <el-button title="消息" class="iconBtn">
+        <el-badge :value="5" class="item">
+          <svg-icon name="铃铛" />
+        </el-badge>
+      </el-button>
+    </template>
+    <template #default>
+      <div style="display: flex;justify-content:center;">
+        <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+          <el-tab-pane label="任务消息" name="first"></el-tab-pane>
+          <el-tab-pane label="系统公告" name="second"></el-tab-pane>
+        </el-tabs>
+      </div>
+
+    </template>
+  </el-popover>
+
+  <el-button title="全屏" class="iconBtn" @click="fullScreen">
+    <svg-icon name="全屏" />
   </el-button>
 
-  <el-button  class="iconBtn" title="设置"  @click="settingDrawer">
-    <svg-icon  name="设置"  />
+  <el-button class="iconBtn" title="设置" @click="settingDrawer">
+    <svg-icon name="设置" />
   </el-button>
   <!-- 下拉菜单 -->
   <el-dropdown trigger="hover" class="test">
@@ -85,19 +104,22 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.el-button + .el-button {
+.el-button+.el-button {
   margin-left: 0px;
 }
+
 .el-button {
   height: 100%;
   --el-border: 0px;
 }
+
 .test {
   height: 100%;
   align-items: center;
   padding: 10px;
   margin-right: 5px;
 }
+
 .test:hover {
   background-color: var(--el-color-primary-light-9);
 }

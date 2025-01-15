@@ -169,7 +169,7 @@
 import type { FormInstance } from 'element-plus'
 import API_ENUM from '@/enum/api-enum'
 //仓库
-import useOperationLogStore from '@/store/modules/user/operationLog'
+import useOperationLogStore from '@/store/modules/log/operationLog'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 
 const operationLogStore = useOperationLogStore()

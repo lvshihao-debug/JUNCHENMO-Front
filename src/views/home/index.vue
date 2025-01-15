@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card>
+    <el-card class="animate__animated animate__bounceInRight">
       <div class="block" style="display: flex; justify-content: flex-start; align-items: center">
         <el-avatar :size="50" shape="square">
           {{ userStore.getUserNameTextFirst }}
@@ -23,34 +23,34 @@
       </div>
     </el-card>
     <el-row style="margin-top: 10px;" :gutter="10">
-      <el-col :span="4">
+      <el-col :span="4" class="animate__animated animate__flipInX">
         <JcmHomeCard icon="user" title="用户" data="3,208人" rate="8%"></JcmHomeCard>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="4" class="animate__animated animate__flipInY">
         <JcmHomeCard icon="role" title="角色" data="5种" rate="1%"></JcmHomeCard>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="4" class="animate__animated animate__flipInX">
         <JcmHomeCard icon="dictType" title="字典项" data="108条" rate="4%"></JcmHomeCard>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="4" class="animate__animated animate__flipInY">
         <JcmHomeCard icon="AI" title="TOKEN消耗" data="10,887" rate="2%"></JcmHomeCard>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="4" class="animate__animated animate__flipInX">
         <JcmHomeCard icon="登录log" title="登录日志" data="415条" rate="2%"></JcmHomeCard>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="4" class="animate__animated animate__flipInY">
         <JcmHomeCard icon="log" title="操作日志" data="3,208条" rate="8%"></JcmHomeCard>
       </el-col>
     </el-row>
     <el-row style="margin-top: 10px;" :gutter="10">
       <el-col :span="13">
-        <el-card class="card-chat">
+        <el-card class="card-chat animate__animated animate__slideInUp">
           <JcmBarChat />
         </el-card>
       </el-col>
       <el-col :span="11">
-        <div class="cards">
-          <div class="card blue">
+        <div class="cards  animate__animated animate__slideInUp">
+          <div class="card blue" >
             <p class="tip">当前版本：1.0.0</p><br/>
             <p class="second-text"></p><br/>
             <p class="second-text">用户管理</p><br/>

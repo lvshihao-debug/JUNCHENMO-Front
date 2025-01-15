@@ -136,7 +136,7 @@ import API_ENUM from '@/enum/api-enum'
 //仓库
 import useDictDataStore from '@/store/modules/acl/dictData'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
-import useSysLogininforStore from '@/store/modules/user/logininfor'
+import useSysLogininforStore from '@/store/modules/log/logininfor'
 
 const dictDataStore = useDictDataStore()
 const layoutSettingStore = useLayoutSettingStore();

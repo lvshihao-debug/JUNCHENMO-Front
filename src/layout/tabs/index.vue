@@ -30,7 +30,6 @@
                       </div>
                     </div>
                   </el-check-tag>
-              
               </template>
               <template v-else>
                 <el-check-tag

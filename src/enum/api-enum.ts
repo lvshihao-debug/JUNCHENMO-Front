@@ -99,6 +99,11 @@ enum SERVER_MODE_NAME {
    * 系统定时任务
    */
   SYS_JOB = '/job/jobTask',
+
+  /**
+   * 系统定时任务日志
+   */
+  SYS_JOB_LOG = '/job/jobTaskLog',
 }
 
 export default {

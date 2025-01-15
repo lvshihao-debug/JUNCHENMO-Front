@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 
 //导入请求
-import { listJob,getJob,addJob,updateJob,delJob} from '@/api/montior/jobTask'
+import { listJob,getJob,addJob,updateJob,delJob} from '@/api/acl/jobTask'
 
 //创建用户小仓库
 const useJobStore = defineStore('Job', {

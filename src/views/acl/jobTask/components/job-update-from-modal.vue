@@ -1,11 +1,12 @@
 <template>
+  <!--修改用户信息弹出框-->
   <el-dialog v-model="fromOpenStatus" width="500" :show-close="false">
     <template #header="{ titleId, titleClass }">
       <div class="my-header">
-        <h4 :id="titleId" :class="titleClass">新增job</h4>
+        <h4 :id="titleId" :class="titleClass">修改用户信息</h4>
       </div>
     </template>
-    <el-form :model="sysJobStore.commonForm" label-width="90" :rules="formRules" ref="formRef">
+    <el-form :model="sysJobStore.commonForm" label-width="90" ref="formRef" :rules="formRules">
       <el-form-item label="任务名称" prop="jobName">
         <el-input v-model="sysJobStore.commonForm.jobName" placeholder="请输入任务名称" />
       </el-form-item>
@@ -21,8 +22,14 @@
       <el-form-item label="cron表达式" prop="cronExpression">
         <el-input v-model="sysJobStore.commonForm.cronExpression" placeholder="请输入cron执行表达式" />
       </el-form-item>
-      <el-form-item label="执行策略" prop="misfirePolicy">
-        <el-radio-group v-model="sysJobStore.commonForm.misfirePolicy"  size="small">
+      <el-form-item label="状态" prop="status">
+        <el-radio-group v-model="sysJobStore.commonForm.status"  size="small">
+          <el-radio v-for="dict in loadDictDataByName('jobTaskStatus')" :key="dict.value" :value="dict.value" border>{{
+            dict.description }}</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="执行策略" prop="misfirePolicy"  size="small">
+        <el-radio-group v-model="sysJobStore.commonForm.misfirePolicy">
           <el-radio-button v-for="dict in loadDictDataByName('jobTaskMisfirePolicy')" :key="dict.value"
             :label="dict.description" :value="dict.value" />
         </el-radio-group>
@@ -37,7 +44,7 @@
     <template #footer>
       <div class="modal-style">
         <el-button @click="fromOpenStatus = false" text bg>取消</el-button>
-        <el-button type="primary" text bg @click="addItem(formRef)">
+        <el-button type="primary" text bg @click="updateInfoItem(formRef)">
           确认
         </el-button>
       </div>
@@ -49,44 +56,44 @@
 import type { FormInstance } from 'element-plus'
 import { formRules } from '../types/form.rules'
 //仓库
-import useSysJobStore from '@/store/modules/montior/jobTask'
+import useSysJobStore from '@/store/modules/acl/jobTask'
 
-const sysJobStore = useSysJobStore();
+const sysJobStore = useSysJobStore()
 
 //获取当前组件实例
 const instance = getCurrentInstance();
-//表单打开的状态
-const fromOpenStatus = ref(false)
 //表单对象引用
 const formRef = ref<FormInstance>()
+//添加表单打开的状态
+const fromOpenStatus = ref(false)
 
-// 打开modal框
-const open = () => {
+// 打开
+const open = (item: any) => {
   const commonForm = sysJobStore.commonForm;
-  (instance?.proxy as any).$resetObj(commonForm)
+  (instance?.proxy as any).$resetObj(commonForm);
+  (instance?.proxy as any).$assign(commonForm, item);
   fromOpenStatus.value = true;
 };
 
-//点击添加按钮触发的事件
-const addItem = (formEl: FormInstance | undefined) => {
+const updateInfoItem = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
-      sysJobStore.add(sysJobStore.commonForm).then(() => {
-        const searchQuery = sysJobStore.searchForm;
-        const page = sysJobStore.dataList.page;
-        const size = sysJobStore.dataList.size;
+      const searchQuery = sysJobStore.searchForm;
+      const commonForm = sysJobStore.commonForm;
+      const page = sysJobStore.dataList.page;
+      const size = sysJobStore.dataList.size;
+      sysJobStore.update(commonForm).then(() => {
         (instance?.proxy as any).$addPage(searchQuery, page, size);
         sysJobStore.list(searchQuery);
         fromOpenStatus.value = false;
       })
     } else {
       //弹出数据校验失败的message
-      ElMessage.error({ message: '请按提示填写完整' })
+      ElMessage.error({ message: '请将信息填写完整' })
     }
   })
 }
-
 
 //根据名称加载字典数据
 const loadDictDataByName = (name: string) => {
@@ -95,6 +102,7 @@ const loadDictDataByName = (name: string) => {
 
 
 defineExpose({ open });
+
 
 </script>
 

@@ -6,6 +6,8 @@ import type { Tag } from '../types/tabsType'
 const useTabsStore = defineStore('Tabs', {
   state: () => {
     return {
+      count: 0,
+      actionName : undefined|| '',
       tabs: [{
         title: '首页',
         closable: false,
@@ -35,9 +37,11 @@ const useTabsStore = defineStore('Tabs', {
         this.tabSelected(tag)
         $router.push(tag.path)
       } else {
+        this.count++
         this.tabs.push(tag)
         $router.push(tag.path)
       }
+      this.actionName = tag.title
     },
     //关闭标签
     removeTab(menuTag: Tag, $router: any) {
@@ -50,13 +54,16 @@ const useTabsStore = defineStore('Tabs', {
         const tabLast = this.tabs[this.tabs.length - 1]
         this.tabSelected(tabLast)
         $router.push(tabLast.path)
+        this.actionName = tabLast.title
       }
+      this.count--
     },
     //关闭其他标签
     removeOutherTab(currentTagPath: string) {
       this.tabs = this.tabs.filter(
         (tag: Tag) => tag.path == currentTagPath || tag.closable == false,
       )
+      this.actionName =this.tabs[0].title
     },
     //关闭所有标签
     removeAllTab($router: any) {
@@ -64,6 +71,28 @@ const useTabsStore = defineStore('Tabs', {
       const tabLast = this.tabs[this.tabs.length - 1]
       this.tabSelected(tabLast)
       $router.push(tabLast.path)
+      this.actionName =this.tabs[0].title
+    },
+    //关闭左侧所有标签
+    removeAllLeftTab(currentTagPath: string) {
+      const currentIndex = this.tabs.findIndex((tag: Tag) => tag.path == currentTagPath);
+      console.log( this.tabs.slice(0, currentIndex))
+      const leftTabs = this.tabs.slice(0, currentIndex).filter(
+        (tag: Tag) => tag.closable == false,
+      );
+      this.tabs = leftTabs.concat(this.tabs.slice(currentIndex));
+      this.actionName =this.tabs[0].title
+      this.actionName =this.tabs[leftTabs.length - 1].title
+    },
+    //关闭左侧所有标签
+    removeAllRightTab(currentTagPath: string) {
+      const currentIndex = this.tabs.findIndex((tag: Tag) => tag.path == currentTagPath);
+      const rightTabs = this.tabs.slice(currentIndex).filter(
+        (tag: Tag) => tag.closable == false,
+      );
+      this.tabs = this.tabs.slice(0, currentIndex +1).concat(rightTabs);
+      // this.actionName =this.tabs[0].title
+      this.actionName =this.tabs[currentIndex].title
     },
     //判断当前是否已经添加了Tag
     exitsTab(menuTag: Tag) {
@@ -81,6 +110,7 @@ const useTabsStore = defineStore('Tabs', {
       this.tabNotSelected()
       this.tabSelected(menuTag)
       $router.push(menuTag.path)
+      this.actionName = menuTag.title
     },
     //Tag全部设置为没有点击状态
     tabNotSelected() {
@@ -102,6 +132,7 @@ const useTabsStore = defineStore('Tabs', {
   persist: {
     key: 'tabs_store', // 自定义一个合适的缓存键名
     storage: sessionStorage,
+    pick: ['tabs'],
   }
 })
 
