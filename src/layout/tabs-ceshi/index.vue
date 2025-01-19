@@ -137,8 +137,6 @@ const next = () => {
                 if (moveX.value + tabsRef.value.clientWidth > totalWidth) {
                     moveX.value = moveX.value - 127;
                 }
-                console.log("移动")
-                console.log(moveX.value)
                 translateX(moveX.value);
             }
         }

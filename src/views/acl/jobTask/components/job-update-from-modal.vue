@@ -12,7 +12,7 @@
       </el-form-item>
       <el-form-item label="任务分组" prop="jobGroup">
         <el-select v-model="sysJobStore.commonForm.jobGroup" placeholder="请选择任务组名" clearable>
-          <el-option v-for="dict in loadDictDataByName('jobTaskGroup')" :key="dict.value" :label="dict.description"
+          <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysJobStore,'jobTaskGroup')" :key="dict.value" :label="dict.description"
             :value="dict.value" />
         </el-select>
       </el-form-item>
@@ -24,19 +24,19 @@
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-radio-group v-model="sysJobStore.commonForm.status"  size="small">
-          <el-radio v-for="dict in loadDictDataByName('jobTaskStatus')" :key="dict.value" :value="dict.value" border>{{
+          <el-radio v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysJobStore,'jobTaskStatus')" :key="dict.value" :value="dict.value" border>{{
             dict.description }}</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="执行策略" prop="misfirePolicy"  size="small">
         <el-radio-group v-model="sysJobStore.commonForm.misfirePolicy">
-          <el-radio-button v-for="dict in loadDictDataByName('jobTaskMisfirePolicy')" :key="dict.value"
+          <el-radio-button v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysJobStore,'jobTaskMisfirePolicy')" :key="dict.value"
             :label="dict.description" :value="dict.value" />
         </el-radio-group>
       </el-form-item>
       <el-form-item label="是否并发" prop="concurrent">
         <el-radio-group v-model="sysJobStore.commonForm.concurrent"  size="small">
-          <el-radio-button v-for="dict in loadDictDataByName('jobTaskConcurrent')" :key="dict.value"
+          <el-radio-button v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysJobStore,'jobTaskConcurrent')" :key="dict.value"
             :label="dict.description" :value="dict.value" />
         </el-radio-group>
       </el-form-item>
@@ -94,12 +94,6 @@ const updateInfoItem = (formEl: FormInstance | undefined) => {
     }
   })
 }
-
-//根据名称加载字典数据
-const loadDictDataByName = (name: string) => {
-  return sysJobStore.dictData.filter((item: any) => item.name === name)
-}
-
 
 defineExpose({ open });
 

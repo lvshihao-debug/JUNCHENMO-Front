@@ -418,6 +418,7 @@ form.sign-in-form {
   z-index: 1;
 }
 
+//打字机动画
 #typing-animation {
   white-space: nowrap;
   /* 防止文本换行 */

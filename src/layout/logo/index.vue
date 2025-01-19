@@ -1,11 +1,11 @@
 <template>
-  <div class="logo logo-fold noselect" v-show="!layoutSettingStore.fold">
+  <div class="logo logo-fold" v-show="!layoutSettingStore.fold">
     <div class="animate__animated animate__bounceIn">
       <svg-icon name="logo"  width="20px" height="20px" :color="layoutSettingStore.getThemeInvert"/>
       <span >{{ setting.title }}</span>
     </div>
   </div>
-  <div class="logo logo-unfold noselect"  v-show="layoutSettingStore.fold" >
+  <div class="logo logo-unfold"  v-show="layoutSettingStore.fold" >
     <div>
       <svg-icon name="logo"  width="20px" height="20px" :color="layoutSettingStore.getThemeInvert"/>
     </div>

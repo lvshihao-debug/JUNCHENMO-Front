@@ -131,7 +131,7 @@ const useTabsStore = defineStore('Tabs', {
   // 配置 persist
   persist: {
     key: 'tabs_store', // 自定义一个合适的缓存键名
-    storage: sessionStorage,
+    storage: localStorage,
     pick: ['tabs'],
   }
 })

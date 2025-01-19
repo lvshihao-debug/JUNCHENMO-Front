@@ -9,13 +9,13 @@
           </el-form-item>
           <el-form-item label="任务分组" prop="jobGroup">
             <el-select v-model="sysJobStore.searchForm.jobGroup" placeholder="请选择任务组名" clearable>
-              <el-option v-for="dict in loadDictDataByName('jobTaskGroup')" :key="dict.value" :label="dict.description"
+              <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysJobStore,'jobTaskGroup')" :key="dict.value" :label="dict.description"
                 :value="dict.value" />
             </el-select>
           </el-form-item>
           <el-form-item label="任务状态" prop="jobGroup">
             <el-select v-model="sysJobStore.searchForm.status" placeholder="请选择任务状态" clearable>
-              <el-option v-for="dict in loadDictDataByName('jobTaskStatus')" :key="dict.value" :label="dict.description"
+              <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysJobStore,'jobTaskStatus')" :key="dict.value" :label="dict.description"
                 :value="dict.value" />
             </el-select>
           </el-form-item>
@@ -77,14 +77,34 @@
         <el-table-column label="任务名称" align="center" prop="jobName"/>
         <el-table-column label="任务组名" align="center" prop="jobGroup" >
           <template #default="scope">
-            <el-tag checked>{{ getStrByJobGroup(scope.row.jobGroup) }} </el-tag>
+           {{ getStrByJobGroup(scope.row.jobGroup) }}
           </template>
         </el-table-column>
         <el-table-column label="调用目标字符串" align="center" prop="invokeTarget" />
         <el-table-column label="cron执行表达式" align="center" prop="cronExpression" />
         <el-table-column label="状态" align="center" prop="status">
           <template #default="scope">
-            <el-tag checked>{{ getStrByStatus(scope.row.status) }} </el-tag>
+                <!--状态-->
+                <el-popconfirm width="200" icon-color="#626AEF"
+              :title="scope.row.status === 0 ? '确定要将当前任务改为暂停状态?' : '确定要将当前前任务改为正常状态?'"
+              @confirm="tagUpdateStatusButtonClick(scope.row)">
+              <template #reference>
+                <template v-if="Number(scope.row.status) === 0">
+                  <el-tag checked size="small" class="menu-status-tag">
+                    <el-tooltip class="box-item" effect="dark" content="点击切换状态" placement="top">
+                      正常
+                    </el-tooltip>
+                  </el-tag>
+                </template>
+                <template v-if="Number(scope.row.status) === 1">
+                  <el-tag checked size="small" color="#393e46" class="menu-status-tag">
+                    <el-tooltip class="box-item" effect="dark" content="点击切换状态" placement="top">
+                      暂停
+                    </el-tooltip>
+                  </el-tag>
+                </template>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作">
@@ -95,7 +115,7 @@
             <el-button size="small" type="primary" @click="deleteItem(scope.row)" text>
               删除
             </el-button>
-            <el-button size="small" type="primary" @click="Item(scope.row)" text>
+            <el-button size="small" type="primary" @click="runItem(scope.row)" text>
               执行一次
             </el-button>
             <el-button size="small" type="primary" @click="Item(scope.row)" text>
@@ -212,7 +232,9 @@ const deleteItems = () => {
     refresh();
   })
 }
-
+const runItem = (item: any) =>{
+  sysJobStore.run(item)
+}
 //刷新数据方法
 const refresh = () => {
   const searchQuery = sysJobStore.searchForm;
@@ -244,10 +266,14 @@ const loadDictData = () => {
       ElMessage.error({ message: error })
     })
 }
-//根据名称加载字典数据
-const loadDictDataByName = (name: string) => {
-  return sysJobStore.dictData.filter((item: any) => item.name === name)
+
+const tagUpdateStatusButtonClick = (item:any) =>{
+  item.status = Number(item.status) === 0 ? 1 : 0
+  sysJobStore.changeStatus(item).then(() => {
+    refresh();
+  })
 }
+
 //重置搜索表单
 const resetSearchForm = (ruleFormRef: any) => {
   if (!ruleFormRef) return
@@ -265,20 +291,16 @@ const getStrByJobGroup = (type: any) => {
   }
 }
 
-//根据状态值转化为状态名
-const getStrByStatus = (type: any) => {
-  const typeNumber = Number.parseInt(type);
-  switch (typeNumber) {
-    case 0:
-      return '正常';
-    case 1:
-      return '暂停';
-  }
-}
 </script>
+
 <script lang="ts">
 export default {
   name: 'jobTask',
 }
 </script>
-<style scoped></style>
+
+<style scoped>
+.menu-status-tag {
+  cursor: pointer;
+}
+</style>

@@ -10,7 +10,7 @@
           </el-form-item>
           <el-form-item label="任务组名" prop="jobGroup">
             <el-select v-model="sysJobLogStore.searchForm.jobGroup" placeholder="请选择任务组名" clearable>
-              <el-option v-for="dict in loadDictDataByName('jobTaskGroup')" :key="dict.value" :label="dict.description"
+              <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysJobLogStore,'jobTaskGroup')" :key="dict.value" :label="dict.description"
                 :value="dict.value" />
             </el-select>
           </el-form-item>
@@ -21,7 +21,7 @@
           </el-form-item>
           <el-form-item v-show="more" label="执行状态" prop="jobGroup">
             <el-select v-model="sysJobLogStore.searchForm.status" placeholder="请选择执行状态" clearable>
-              <el-option v-for="dict in loadDictDataByName('jobTaskLogStatus')" :key="dict.value"
+              <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysJobLogStore,'jobTaskLogStatus')" :key="dict.value"
                 :label="dict.description" :value="dict.value" />
             </el-select>
           </el-form-item>
@@ -235,10 +235,8 @@ const loadDictData = () => {
       ElMessage.error({ message: error })
     })
 }
-//根据名称加载字典数据
-const loadDictDataByName = (name: string) => {
-  return sysJobLogStore.dictData.filter((item: any) => item.name === name)
-}
+
+
 //重置搜索表单
 const resetSearchForm = (ruleFormRef: any) => {
   if (!ruleFormRef) return

@@ -16,7 +16,7 @@
       </el-form-item>
       <el-form-item label="菜单类型" prop="type" required>
         <el-radio-group v-model="menuStore.commonForm.type" size="small">
-          <template v-for="item in loadDictDataByName('menuType')">
+          <template v-for="item in (instance?.proxy as any).$loadDictDataByName(menuStore,'menuType')">
             <el-radio-button :label="item.label" :value="item.value" />
           </template>
         </el-radio-group>
@@ -133,11 +133,6 @@ watch(() => menuStore.commonForm.type, (newVal) => {
   catalogueStatus.value = (newVal == 0)
   featureStatus.value = (newVal == 2)
 });
-
-//根据名称加载字典数据
-const loadDictDataByName = (name: string) => {
-  return menuStore.dictData.filter((item: any) => item.name === name)
-}
 
 
 /**

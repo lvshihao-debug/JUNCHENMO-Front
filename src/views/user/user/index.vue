@@ -28,7 +28,7 @@
                 <svg-icon name="擦除" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList()">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="refresh()">
               <template #icon>
                 <svg-icon name="搜索" />
               </template>
@@ -65,8 +65,8 @@
       </el-col>
     </el-row>
 
-    <el-card class="card-table-style" v-if="loadingStatus">
-      <el-table :data="userStore.dataList.list" table-layout="auto">
+    <el-card class="card-table-style">
+      <el-table :data="userStore.dataList.list" table-layout="auto" v-loading="!loadingStatus" element-loading-text="Loading..."  >
         <el-table-column prop="userId" label="ID" align="center" />
         <el-table-column prop="avatar" label="头像">
           <template #default="scope">
@@ -144,10 +144,7 @@
         </div>
       </template>
     </el-card>
-    <!--加载动画-->
-    <div class="table-data-loading" v-else>
-      <Loading />
-    </div>
+
     <!--弹出框组件列表-->
     <UserAddFromModal ref="userAddFromModal"></UserAddFromModal>
     <UserUpdateFromModal ref="userUpdateFromModal"></UserUpdateFromModal>
@@ -181,9 +178,7 @@ onMounted(() => {
   userStore.tableLoading = true;
   //进入页面初始化的数据 手动触发更新页数的逻辑
   handleSizeChange(Number(layoutSettingStore.setting.size));
-  setTimeout(() => {
-    userStore.tableLoading = false
-  }, 500)
+  userStore.tableLoading = false
 })
 
 //表单对象
@@ -197,21 +192,16 @@ const userAuthRolesFromModal = ref<FromModal>()
 const more = ref(false)
 
 //刷新数据方法
-const refresh = () => {
-  const searchQuery = userStore.searchForm;
-  (instance?.proxy as any).$addPage(searchQuery, userStore.dataList.page, userStore.dataList.size);
-  userStore.userList(searchQuery);
-}
-//根据搜索条件进行搜索
-const searchList = () => {
+const refresh = async () => {
   userStore.tableLoading = true;
 
-  refresh();
+  const searchQuery = userStore.searchForm;
+  (instance?.proxy as any).$addPage(searchQuery, userStore.dataList.page, userStore.dataList.size);
+  await userStore.userList(searchQuery);
 
-  setTimeout(() => {
-    userStore.tableLoading = false
-  }, 500)
+  userStore.tableLoading = false
 }
+
 //页面数据加载的状态
 const loadingStatus = computed(() => {
   return !userStore.tableLoading || !layoutSettingStore.setting.dataLoading;
@@ -234,7 +224,6 @@ const deleteItem = (item: any) => {
   userStore.delUser(item.userId).then(() => {
     refresh();
   })
-
 }
 
 //停用用户触发的事件

@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { download } from '@/utils/request'
 import { copyText,resetObj,addDateRange,addPage,assign } from './utils/common.ts';
+import { loadDictDataByName } from './utils/dict.ts';
 import downloadZip from './utils/downloadZip.ts';
 
 import router from '@/router'
@@ -37,5 +38,6 @@ app.config.globalProperties.$downloadZip = downloadZip;
 app.config.globalProperties.$addDateRange = addDateRange;
 app.config.globalProperties.$addPage = addPage;
 app.config.globalProperties.$assign = assign;
+app.config.globalProperties.$loadDictDataByName = loadDictDataByName;
 app.mount('#app')
 

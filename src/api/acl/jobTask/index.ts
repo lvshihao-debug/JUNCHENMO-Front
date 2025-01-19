@@ -15,6 +15,10 @@ export const API = {
   UPDATE_SYS_JOB_URL: `${API_ENUM.SERVER_MODE_NAME.SYS_JOB}/`,
   //获取定时任务调度信息
   INFO_SYS_JOB_URL: `${API_ENUM.SERVER_MODE_NAME.SYS_JOB}/info`,
+  //定时任务立即执行一次
+  RUN_SYS_JOB_URL: `${API_ENUM.SERVER_MODE_NAME.SYS_JOB}/run`,
+  //定时任务状态修改
+  CHANGE_STATUS_SYS_JOB_URL: `${API_ENUM.SERVER_MODE_NAME.SYS_JOB}/changeStatus`,
 }
 
 /**
@@ -77,5 +81,29 @@ export const delJob = (jobId:any) => {
   return request({
     url: API.DEL_SYS_JOB_URL+jobId,
     method: 'delete'
+  })
+}
+
+/**
+ * 修改定时任务状态
+ * @param {Object} data - 定时任务调度信息
+ */
+export const changeJobStatus = (data:any) => {
+  return request({
+    url: API.CHANGE_STATUS_SYS_JOB_URL,
+    method: 'put',
+    data: data
+  })
+}
+
+/**
+ * 立即执行一次定时任务
+ * @param {Object} data - 定时任务调度信息
+ */
+export const runJob = (data:any) => {
+  return request({
+    url: API.RUN_SYS_JOB_URL,
+    method: 'put',
+    data: data
   })
 }

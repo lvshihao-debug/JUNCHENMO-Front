@@ -15,19 +15,19 @@
                     </el-form-item>
                     <el-form-item v-show="more" label="任务优先级" prop="priority">
                         <el-select v-model="sysUserTaskStore.searchForm.priority" placeholder="请选择任务优先级" clearable>
-                            <el-option v-for="dict in loadDictDataByName('taskPriority')" :key="dict.value"
+                            <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysUserTaskStore,'taskPriority')" :key="dict.value"
                                 :label="dict.description" :value="dict.value" />
                         </el-select>
                     </el-form-item>
                     <el-form-item v-show="more" label="任务状态" prop="status">
                         <el-select v-model="sysUserTaskStore.searchForm.status" placeholder="请选择任务状态" clearable>
-                            <el-option v-for="dict in loadDictDataByName('taskStatus')" :key="dict.value"
+                            <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysUserTaskStore,'taskStatus')" :key="dict.value"
                                 :label="dict.description" :value="dict.value" />
                         </el-select>
                     </el-form-item>
                     <el-form-item v-show="more" label="任务类型" prop="type">
                         <el-select v-model="sysUserTaskStore.searchForm.type" placeholder="请选择任务类型" clearable>
-                            <el-option v-for="dict in loadDictDataByName('taskType')" :key="dict.value"
+                            <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysUserTaskStore,'taskType')" :key="dict.value"
                                 :label="dict.description" :value="dict.value" />
                         </el-select>
                     </el-form-item>
@@ -106,13 +106,13 @@
                 <el-table-column label="优先级" align="center" prop="priority" width="80">
                     <template #default="scope">
                         <template v-if="scope.row.priority === 0">
-                            <el-check-tag checked type="info">{{ getStrByPriority(scope.row.priority) }} </el-check-tag>
+                            <el-tag checked type="info">{{ getStrByPriority(scope.row.priority) }} </el-tag>
                         </template>
                         <template v-if="scope.row.priority === 1">
-                            <el-check-tag checked type="warning">{{ getStrByPriority(scope.row.priority) }} </el-check-tag>
+                            <el-tag checked type="warning">{{ getStrByPriority(scope.row.priority) }} </el-tag>
                         </template>
                         <template v-if="scope.row.priority === 2">
-                            <el-check-tag checked type="danger">{{ getStrByPriority(scope.row.priority) }} </el-check-tag>
+                            <el-tag checked type="danger">{{ getStrByPriority(scope.row.priority) }} </el-tag>
                         </template>
                     </template>
                 </el-table-column>
@@ -276,10 +276,7 @@ const loadDictData = () => {
             ElMessage.error({ message: error })
         })
 }
-//根据名称加载字典数据
-const loadDictDataByName = (name: string) => {
-    return sysUserTaskStore.dictData.filter((item: any) => item.name === name)
-}
+
 //重置搜索表单
 const resetSearchForm = (ruleFormRef: any) => {
     if (!ruleFormRef) return;

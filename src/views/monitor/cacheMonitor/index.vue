@@ -60,7 +60,7 @@ const layoutSettingStore = useLayoutSettingStore()
 
 onMounted(() => {
     cacheMonitorStore.loading = true
-    setInterval(intervalCacheBaseInfo, 5000)
+    // setInterval(intervalCacheBaseInfo, 5000)
     cacheMonitorStore.getCacheInfo().then(() => {
         cacheMonitorStore.getCacheBaseInfo().then(() => {
             cacheMonitorStore.loading = false

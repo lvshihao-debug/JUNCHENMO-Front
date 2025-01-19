@@ -68,7 +68,7 @@
         <vxe-column field="javaType" title="Java类型" width="105" :edit-render="{}">
           <template #edit="{ row }">
             <el-select v-model="row.javaType" style="width: 100px;">
-              <template v-for="item in loadDictDataByName('javaType')">
+              <template v-for="item in (instance?.proxy as any).$loadDictDataByName(genCodeStore,'javaType')">
                 <el-option :label="item.value" :value="item.value" />
               </template>
             </el-select>
@@ -122,7 +122,7 @@
         <vxe-column field="queryType" title="查询方式" width="110" :edit-render="{}">
           <template #edit="{ row }">
             <el-select v-model="row.queryType" style="width: 105px;">
-              <template v-for="item in loadDictDataByName('queryType')">
+              <template v-for="item in (instance?.proxy as any).$loadDictDataByName(genCodeStore,'queryType')">
                 <el-option :label="item.description" :value="item.value" />
               </template>
             </el-select>
@@ -142,7 +142,7 @@
         <vxe-column field="htmlType" title="显示类型" width="110" :edit-render="{}">
           <template #edit="{ row }">
             <el-select v-model="row.htmlType" style="width: 105px;">
-              <template v-for="item in loadDictDataByName('htmlType')">
+              <template v-for="item in (instance?.proxy as any).$loadDictDataByName(genCodeStore,'htmlType')">
                 <el-option :label="item.description" :value="item.value" />
               </template>
             </el-select>
@@ -181,7 +181,7 @@
         <el-row>
           <el-form-item label="生成模版" prop="tableName">
             <el-select v-model="genCodeStore.editTableData.table.tplCategory">
-              <template v-for="item in loadDictDataByName('moduleType')">
+              <template v-for="item in (instance?.proxy as any).$loadDictDataByName(genCodeStore,'moduleType')">
                 <el-option :label="item.description" :value="item.value" />
               </template>
             </el-select>
@@ -252,6 +252,8 @@ const dictTypeStore = useDictTypeStore()
 const tabStore = useTabsStore();
 const layoutSettingStore = useLayoutSettingStore();
 
+//获取当前组件实例
+const instance = getCurrentInstance();
 const $router = useRouter()
 const route = useRoute();
 const genPathStatus = ref(false);
@@ -331,12 +333,6 @@ const loadDictTypeSelect = () => {
     }).catch((error) => {
       ElMessage.error({ message: error })
     })
-}
-
-
-//根据名称加载字典数据
-const loadDictDataByName = (name: string) => {
-  return genCodeStore.dictData.filter((item: any) => item.name === name)
 }
 
 //加载所需要的字典数据

@@ -7,7 +7,7 @@
       <!-- 偏好设置 -->
       <Drawer></Drawer>
       <!-- 左侧菜单 -->
-      <div class="layout_slider animate__animated animate__bounceInLeft" :class="{
+      <div class="layout_slider animate__animated animate__bounceInLeft"  :class="{
         suuny: LayoutSettingStore.getThemeStatus,
         moon: !LayoutSettingStore.getThemeStatus,
         fold: LayoutSettingStore.fold
@@ -73,7 +73,6 @@
             <svg-icon name="火箭" width="20px" height="20px" />
           </div>
         </el-backtop>
-        <Breadcrumb class="breadcurmb" v-show="LayoutSettingStore.setting.breadcrumb"></Breadcrumb>
         <Main class="context">
         </Main>
         <copyright v-show="LayoutSettingStore.setting.copyright"></copyright>
@@ -97,8 +96,7 @@ import Tabbar from './tabbar/index.vue'
 //引入顶部tabs组件
 import Tabs from './tabs/index.vue'
 import TabsCeshi from './tabs-ceshi/index.vue'
-//引入顶部面包屑组件
-import Breadcrumb from './tabbar/breadcrumb/index.vue'
+
 //引入当前路由
 import { useRoute } from 'vue-router'
 //获取用户相关的小仓库
@@ -262,10 +260,6 @@ export default {
     //黑夜
     &.moon {
       background-color: #000000;
-    }
-
-    .breadcurmb {
-      padding: 5px 15px;
     }
 
     .context {

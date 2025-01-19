@@ -247,10 +247,7 @@ const loadDictData = () => {
         ElMessage.error({ message: error })
       })
 }
-//根据名称加载字典数据
-const loadDictDataByName = (name:string) => {
-  return txVipStore.dictData.filter((item: any) => item.name === name)
-}
+
 //重置搜索表单
 const resetSearchForm = (ruleFormRef: any) => {
   if (!ruleFormRef) return

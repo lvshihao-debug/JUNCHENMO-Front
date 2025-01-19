@@ -20,19 +20,19 @@
             </el-form-item>
             <el-form-item label="优先级" prop="priority">
                 <el-select v-model="sysUserTaskStore.commonForm.priority" placeholder="请选择任务优先级" clearable>
-                    <el-option v-for="dict in loadDictDataByName('taskPriority')" :key="dict.value"
+                    <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysUserTaskStore,'taskPriority')" :key="dict.value"
                         :label="dict.description" :value="parseInt(dict.value)"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="状态" prop="status">
                 <el-select v-model="sysUserTaskStore.commonForm.status" placeholder="请选择任务状态" clearable>
-                    <el-option v-for="dict in loadDictDataByName('taskStatus')" :key="dict.value"
+                    <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysUserTaskStore,'taskStatus')" :key="dict.value"
                         :label="dict.description" :value="parseInt(dict.value)"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="类型" prop="type">
                 <el-select v-model="sysUserTaskStore.commonForm.type" placeholder="请选择任务类型" clearable>
-                    <el-option v-for="dict in loadDictDataByName('taskType')" :key="dict.value"
+                    <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysUserTaskStore,'taskType')" :key="dict.value"
                         :label="dict.description" :value="parseInt(dict.value)"></el-option>
                 </el-select>
             </el-form-item>
@@ -102,10 +102,7 @@ const updateInfoItem = (formEl: FormInstance | undefined) => {
     })
 }
 
-//根据名称加载字典数据
-const loadDictDataByName = (name: string) => {
-    return sysUserTaskStore.dictData.filter((item: any) => item.name === name)
-}
+
 
 
 defineExpose({ open });

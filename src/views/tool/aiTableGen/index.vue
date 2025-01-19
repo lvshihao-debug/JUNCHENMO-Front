@@ -85,7 +85,7 @@
                 <vxe-column field="type" title="类型" width="180" :edit-render="{}">
                     <template #edit="{ row }">
                         <el-select v-model="row.type">
-                            <template v-for="item in loadDictDataByName('mysqlType')">
+                            <template v-for="item in (instance?.proxy as any).$loadDictDataByName(aiTableGenStore,'mysqlType')">
                                 <el-option :label="item.value" :value="item.value" />
                             </template>
                         </el-select>
@@ -157,6 +157,8 @@ const dictDataStore = useDictDataStore()
 const layoutSettingStore = useLayoutSettingStore()
 const aiTableGenStore = useAiTableGenStore()
 
+//获取当前组件实例
+const instance = getCurrentInstance();
 //表格引用
 const tableRef = ref<VxeTableInstance<RowVO>>();
 //sql编辑引用
@@ -357,11 +359,6 @@ const loadDictData = () => {
             ElMessage.error({ message: error })
         })
 }
-//根据名称加载字典数据
-const loadDictDataByName = (name: string) => {
-    return aiTableGenStore.dictData.filter((item: any) => item.name === name)
-}
-
 
 </script>
 <script lang="ts">

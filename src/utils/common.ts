@@ -38,7 +38,7 @@ export const resetObj=(obj: any) =>{
   }
 }
 
-// utils.js
+// 复制内容
 export const copyText=(text:any) => {
   return navigator.clipboard.writeText(text).then(() => {
     ElMessage.success({ message: text +' 已复制' })
@@ -46,8 +46,6 @@ export const copyText=(text:any) => {
     console.error("复制失败：", err);
   });
 }
-
-
 
 // 添加日期范围
 export const addDateRange=(params:any, dateRange:any, propName:any)=> {
@@ -86,3 +84,4 @@ export const assign=(commonFrom:any, data:any)=> {
 export const blobValidate=(data:any)=> {
   return data instanceof Blob;
 }
+

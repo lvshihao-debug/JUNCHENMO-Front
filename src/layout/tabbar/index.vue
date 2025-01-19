@@ -2,7 +2,7 @@
   <div class="tabbar">
     <!--左侧菜单显示时显示名言-->
     <div class="menu-title animate__animated animate__backInRight" v-if="layoutSettingStore.setting.menu">
-      逆向决定高度，开发决定深度
+      <Breadcrumb class="breadcurmb" v-show="layoutSettingStore.setting.breadcrumb"></Breadcrumb>
     </div>
     <div class="tabbar_left">
       <!--顶部菜单显示时显示Logo-->
@@ -25,6 +25,8 @@
 <script setup lang="ts">
 //引入菜单组件
 import Setting from './setting/index.vue'
+//引入顶部面包屑组件
+import Breadcrumb from './breadcrumb/index.vue'
 //引入菜单组件
 import horizontalMenu from '@/layout/horizontal-menu/index.vue'
 //引入设置标题与logog配置文件

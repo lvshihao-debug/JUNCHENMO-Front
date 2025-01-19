@@ -14,7 +14,7 @@
                     </el-form-item>
                     <el-form-item label="登录状态" prop="status">
                         <el-select v-model="sysLogininforStore.searchForm.status" placeholder="请选择登录状态" clearable>
-                            <el-option v-for="dict in loadDictDataByName('loginStatus')" :key="dict.value"
+                            <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysLogininforStore,'loginStatus')" :key="dict.value"
                                 :label="dict.description" :value="dict.value" />
                         </el-select>
                     </el-form-item>
@@ -230,10 +230,7 @@ const loadDictData = () => {
             ElMessage.error({ message: error })
         })
 }
-//根据名称加载字典数据
-const loadDictDataByName = (name: string) => {
-    return sysLogininforStore.dictData.filter((item: any) => item.name === name)
-}
+
 //重置搜索表单
 const resetSearchForm = (ruleFormRef: any) => {
     if (!ruleFormRef) return

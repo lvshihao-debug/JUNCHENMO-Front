@@ -11,7 +11,7 @@
       </el-form-item>
       <el-form-item label="任务分组" prop="jobGroup">
         <el-select v-model="sysJobStore.commonForm.jobGroup" placeholder="请选择任务组名" clearable>
-          <el-option v-for="dict in loadDictDataByName('jobTaskGroup')" :key="dict.value" :label="dict.description"
+          <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysJobStore,'jobTaskGroup')" :key="dict.value" :label="dict.description"
             :value="dict.value" />
         </el-select>
       </el-form-item>
@@ -35,13 +35,13 @@
       </el-form-item>
       <el-form-item label="执行策略" prop="misfirePolicy">
         <el-radio-group v-model="sysJobStore.commonForm.misfirePolicy" size="small">
-          <el-radio-button v-for="dict in loadDictDataByName('jobTaskMisfirePolicy')" :key="dict.value"
+          <el-radio-button v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysJobStore,'jobTaskMisfirePolicy')" :key="dict.value"
             :label="dict.description" :value="dict.value" />
         </el-radio-group>
       </el-form-item>
       <el-form-item label="是否并发" prop="concurrent">
         <el-radio-group v-model="sysJobStore.commonForm.concurrent" size="small">
-          <el-radio-button v-for="dict in loadDictDataByName('jobTaskConcurrent')" :key="dict.value"
+          <el-radio-button v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysJobStore,'jobTaskConcurrent')" :key="dict.value"
             :label="dict.description" :value="dict.value" />
         </el-radio-group>
       </el-form-item>
@@ -98,12 +98,6 @@ const addItem = (formEl: FormInstance | undefined) => {
       ElMessage.error({ message: '请按提示填写完整' })
     }
   })
-}
-
-
-//根据名称加载字典数据
-const loadDictDataByName = (name: string) => {
-  return sysJobStore.dictData.filter((item: any) => item.name === name)
 }
 
 

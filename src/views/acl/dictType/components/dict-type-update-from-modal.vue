@@ -12,7 +12,7 @@
             </el-form-item>
             <el-form-item label="配置值类型" prop="type">
                 <el-select v-model="dictTypeStore.commonForm.type">
-                    <template v-for="item in loadDictDataByName('extrasDefaultStatus')">
+                    <template v-for="item in (instance?.proxy as any).$loadDictDataByName(dictTypeStore,'extrasDefaultStatus')">
                         <el-option :label="item.description" :value="item.value" />
                     </template>
                 </el-select>
@@ -26,7 +26,7 @@
             <div v-for="(param, index) in dictTypeStore.extraSchemas" :key="index">
                 <el-form-item :label="'额外参数' + (index + 1)" :prop="'extra' + (index + 1)">
                     <el-select v-model="param.type" style="width: 30%;">
-                        <template v-for="item in loadDictDataByName('extrasDefaultStatus')">
+                        <template v-for="item in (instance?.proxy as any).$loadDictDataByName(dictTypeStore,'extrasDefaultStatus')">
                             <el-option :label="item.description" :value="item.value" />
                         </template>
                     </el-select>
@@ -41,7 +41,7 @@
             </div>
 
             <div class="tag-container">
-                <div class="tag-wrapper" v-for="item in loadDictDataByName('extrasDefaultTag')">
+                <div class="tag-wrapper" v-for="item in (instance?.proxy as any).$loadDictDataByName(dictTypeStore,'extrasDefaultTag')">
                     <el-tag type="primary" class="flex-tag" @click="addExtraClick(item.value, item.type)">{{ item.value
                         }}</el-tag>
                 </div>
@@ -152,10 +152,7 @@ const deleteExtraClick = (index: number) => {
     dictTypeStore.extraSchemas.splice(index, 1);
 };
 
-//根据名称加载字典数据
-const loadDictDataByName = (name:string) => {
- return dictTypeStore.dictData.filter((item: any) => item.name === name)
-}
+
 
 defineExpose({ open });
 

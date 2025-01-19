@@ -101,12 +101,6 @@
     })
   }
 
-  //根据名称加载字典数据
-  const loadDictDataByName = (name:string) => {
-    return txVipStore.dictData.filter((item: any) => item.name === name)
-  }
-
-
   defineExpose({ open });
 
 

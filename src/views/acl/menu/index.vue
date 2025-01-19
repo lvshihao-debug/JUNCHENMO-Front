@@ -97,7 +97,7 @@
             <!--显示隐藏-->
             <el-popconfirm width="200" icon-color="#626AEF"
               :title="scope.row.visible === 0 ? '确定要将当前节点以及所有子节点改为隐藏?' : '确定要将当前节点以及所有子节点改为显示?'"
-              @confirm="console.log(scope.row); tagUpdateVisibleButtonClick(scope.row)">
+              @confirm="tagUpdateVisibleButtonClick(scope.row)">
               <template #reference>
                 <template v-if="scope.row.visible">
                   <el-tag checked size="small" class="menu-status-tag menu-status-tag-margin">
@@ -233,7 +233,6 @@ const deleteItemClick = (item: any) => {
 
 //点击标签更改状态中的启用/禁用
 const tagUpdateStatusButtonClick = (item: any) => {
-  console.log("sss")
   item.status = item.status == 0 ? 1 : 0
   menuStore
     .upStatusMenu(item)
@@ -244,8 +243,6 @@ const tagUpdateStatusButtonClick = (item: any) => {
 
 //点击标签更改状态中的显示/隐藏
 const tagUpdateVisibleButtonClick = (item: any) => {
-  console.log("eeee")
-
   item.visible = item.visible == 0 ? 1 : 0
   menuStore
     .upStatusMenu(item)
