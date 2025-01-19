@@ -22,7 +22,7 @@
                 <svg-icon name="擦除" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList()">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="refresh()">
               <template #icon>
                 <svg-icon name="搜索" />
               </template>
@@ -64,8 +64,8 @@
       </el-col>
     </el-row>
 
-    <el-card class="card-table-style" v-if="loadingStatus">
-      <el-table :data="dictDataStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange">
+    <el-card class="card-table-style" >
+      <el-table :data="dictDataStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange" v-loading="!loadingStatus" element-loading-text="Loading..." >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="dictTypeId" label="ID" align="center" />
         <el-table-column prop="name" label="配置项" align="center" />
@@ -113,10 +113,7 @@
         </div>
       </template>
     </el-card>
-    <!--加载动画-->
-    <div class="table-data-loading" v-else>
-      <Loading />
-    </div>
+
     <!--弹出框组件列表-->
     <DictDataAddFromModal ref="dictDataAddFromModal"></DictDataAddFromModal>
     <DictDataUpdateFromModal ref="dictDataUpdateFromModal" ></DictDataUpdateFromModal>
@@ -145,16 +142,12 @@ const layoutSettingStore = useLayoutSettingStore()
 onMounted(() => {
   instance?.proxy?.$resetObj(dictDataStore.searchForm);
   
-  dictDataStore.tableLoading = true
 
   //手动触发更新页数的逻辑
   handleSizeChange(Number(layoutSettingStore.setting.size))
   //加载字典类型选项的数据
   loadDictTypeSelect()
   
-  setTimeout(() => {
-    dictDataStore.tableLoading = false
-  }, 500)
 });
 
 //表单对象
@@ -171,21 +164,14 @@ const loadingStatus = computed(() => {
 });
 
 //刷新数据方法
-const refresh = () => {
-  const searchQuery = dictDataStore.searchForm;
-  (instance?.proxy as any).$addPage(searchQuery, dictDataStore.dataList.page, dictDataStore.dataList.size);
-  dictDataStore.dictDataList(searchQuery);
-}
-
-//根据搜索条件进行搜索
-const searchList = () => {
+const refresh = async() => {
   dictDataStore.tableLoading = true
 
-  refresh();
+  const searchQuery = dictDataStore.searchForm;
+  (instance?.proxy as any).$addPage(searchQuery, dictDataStore.dataList.page, dictDataStore.dataList.size);
+  await dictDataStore.dictDataList(searchQuery);
 
-  setTimeout(() => {
-    dictDataStore.tableLoading = false
-  }, 500)
+  dictDataStore.tableLoading = false
 }
 
 //页码变更处理方法

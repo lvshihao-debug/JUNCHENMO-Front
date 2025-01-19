@@ -80,7 +80,7 @@
 
 
     <el-card class="card-table-style">
-      <el-table :data="sysJobLogStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange">
+      <el-table :data="sysJobLogStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange" v-loading="!loadingStatus" element-loading-text="Loading..." >
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="任务名称" align="center" prop="jobName" />
         <el-table-column label="任务组名" align="center" prop="jobGroup">
@@ -197,12 +197,16 @@ const deleteItems = () => {
 
 //刷新数据方法
 const refresh = () => {
+  sysJobLogStore.tableLoading = true;
+
   const searchQuery = sysJobLogStore.searchForm;
   const page = sysJobLogStore.dataList.page;
   const size = sysJobLogStore.dataList.size;
   (instance?.proxy as any).$addPage(searchQuery, page, size);
   (instance?.proxy as any).$addDateRange(searchQuery, jobTaskExecuteTimeRange.value, 'ExecuteTime');
   sysJobLogStore.list(searchQuery);
+
+  sysJobLogStore.tableLoading = false;
 }
 
 //清空操作日志数据
@@ -264,6 +268,11 @@ const getStrByStatus = (type: any) => {
       return '失败';
   }
 }
+
+//页面数据加载的状态
+const loadingStatus = computed(() => {
+  return !sysJobLogStore.tableLoading || !layoutSettingStore.setting.dataLoading;
+});
 </script>
 <script lang="ts">
 export default {

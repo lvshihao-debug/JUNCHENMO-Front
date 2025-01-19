@@ -89,8 +89,8 @@
       </el-col>
     </el-row>
 
-    <el-card class="card-table-style" v-if="loadingStatus">
-      <el-table :data="operationLogStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange">
+    <el-card class="card-table-style">
+      <el-table :data="operationLogStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange" v-loading="!loadingStatus" element-loading-text="Loading..." >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="operName" label="操作人员" align="center" />
         <el-table-column label="模块/业务" align="center">
@@ -158,10 +158,7 @@
         </div>
       </template>
     </el-card>
-    <!--加载动画-->
-    <div class="table-data-loading" v-else>
-      <Loading />
-    </div>
+
   </div>
 </template>
 
@@ -179,7 +176,6 @@ const layoutSettingStore = useLayoutSettingStore()
 const instance = getCurrentInstance();
 
 onMounted(() => {
-  operationLogStore.tableLoading = true;
 
   //进入页面初始化的数据 手动触发更新页数的逻辑
   handleSizeChange(Number(layoutSettingStore.setting.size))
@@ -188,9 +184,6 @@ onMounted(() => {
   //加载可选操作模块选项
   operationLogStore.getTitleOptionSelect()
 
-  setTimeout(() => {
-    operationLogStore.tableLoading = false
-  }, 500)
 })
 //表单对象
 const searchFormRef = ref<FormInstance>()
@@ -202,22 +195,17 @@ const requestTimeRange=ref([])
 
 
 //刷新数据方法
-const refresh = () => {
+const refresh = async() => {
+  operationLogStore.tableLoading = true;
+
   const searchQuery = operationLogStore.searchForm;
   (instance?.proxy as any).$addPage(searchQuery,operationLogStore.dataList.page,operationLogStore.dataList.size);
   (instance?.proxy as any).$addDateRange(searchQuery, requestTimeRange.value, 'RequestTime');
   operationLogStore.operationLogList(searchQuery);
-}
-//根据搜索条件进行搜索
-const searchList = () => {
-  operationLogStore.tableLoading = true;
 
-  refresh();
-
-  setTimeout(() => {
-    operationLogStore.tableLoading = false
-  }, 500)
+  operationLogStore.tableLoading = false
 }
+
 
 //页面数据加载的状态
 const loadingStatus = computed(() => {

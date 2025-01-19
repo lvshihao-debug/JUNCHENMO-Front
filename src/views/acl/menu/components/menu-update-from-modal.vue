@@ -83,7 +83,9 @@ const open = (item: any) => {
     Object.keys(menuStore.commonForm).forEach((key) => {
         if (key == "parentId") {
             menuStore.commonForm.parentId = "" + item[key];
-        } else {
+        } else if (key == "type") {
+            menuStore.commonForm.type = "" + item[key];
+        }else{
             menuStore.commonForm[key] = item[key];
         }
     });

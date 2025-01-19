@@ -21,7 +21,7 @@
                 <svg-icon name="加号" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList()">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="refresh()">
               <template #icon>
                 <svg-icon name="搜索" />
               </template>
@@ -53,10 +53,10 @@
       </el-form>
     </el-card>
     <!-- 权限列表卡片 -->
-    <el-card class="card-table-style" v-if="loadingStatus">
+    <el-card class="card-table-style" >
       <el-table :data="menuStore.dataList" table-layout="auto" row-key="menuId"  
         :default-expand-all="menuStore.expandStatus" :default-sort="{ prop: 'sort', order: 'ascending' }"  :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-        v-if="menuStore.refreshTable">
+        v-if="menuStore.refreshTable" v-loading="!loadingStatus" element-loading-text="Loading..." >
         <el-table-column prop="name" label="菜单名称"   />
         <el-table-column prop="icon" label="图标" width="60px" align="center">
           <template #default="scope">
@@ -146,10 +146,7 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <!--加载动画-->
-    <div class="table-data-loading" v-else>
-      <Loading />
-    </div>
+
 
     <!--弹出框组件列表-->
     <MenuAddFromModal ref="menuAddFromModal" ></MenuAddFromModal>
@@ -182,16 +179,10 @@ const dictDataStore = useDictDataStore()
 
 onMounted(() => {
   instance?.proxy?.$resetObj(menuStore.searchForm);
-  menuStore.tableLoading = true
-  
   //进入页面初始化的数据
-  searchList();
+  refresh();
   //初始化字典数据
   loadDictData();
-
-  setTimeout(() => {
-      menuStore.tableLoading = false
-  },500)
 })
 
 //表单对象
@@ -207,20 +198,14 @@ const loadingStatus = computed(() => {
 
 
 //刷新数据方法
-const refresh = () => {
-  menuStore.menuList(menuStore.searchForm)
-}
-
-//根据搜索条件进行搜索
-const searchList = () => {
+const refresh = async() => {
   menuStore.tableLoading = true
 
-  refresh();
+  await menuStore.menuList(menuStore.searchForm)
 
-  setTimeout(() => {
-      menuStore.tableLoading = false
-  },500)
+  menuStore.tableLoading = false
 }
+
 
 //删除菜单触发的事件
 const deleteItemClick = (item: any) => {

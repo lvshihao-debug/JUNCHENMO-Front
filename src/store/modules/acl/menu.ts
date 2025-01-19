@@ -31,7 +31,7 @@ const useMenuStore = defineStore('Menu', {
         menuId:''||undefined,
         parentId: '0',
         name: undefined,
-        type: 0,
+        type: '0',
         icon: '',
         component: undefined,
         link: ''||undefined,

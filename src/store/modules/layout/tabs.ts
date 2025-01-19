@@ -6,6 +6,7 @@ import type { Tag } from '../types/tabsType'
 const useTabsStore = defineStore('Tabs', {
   state: () => {
     return {
+      status: 0,
       count: 0,
       actionName : undefined|| '',
       tabs: [{

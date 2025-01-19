@@ -21,7 +21,7 @@
                                 <svg-icon name="擦除" />
                             </template>
                         </JcmButton>
-                        <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList()">
+                        <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="refresh()">
                             <template #icon>
                                 <svg-icon name="搜索" />
                             </template>
@@ -31,7 +31,6 @@
             </el-form>
         </el-card>
 
-        <div v-if="loadingStatus">
             <el-row>
                 <el-col :span="24">
                     <div class="card-header-style">
@@ -61,7 +60,7 @@
 
             <el-card class="card-table-style">
                 <el-table :data="genCodeStore.dataList.list" table-layout="auto"
-                    @selection-change="handleSelectionChange">
+                    @selection-change="handleSelectionChange" v-loading="!loadingStatus" element-loading-text="Loading..." >
                     <el-table-column type="selection" width="55" />
                     <el-table-column prop="tableId" label="序号" align="center" />
                     <el-table-column prop="tableName" label="表名称" align="center" />
@@ -100,14 +99,10 @@
                     </div>
                 </template>
             </el-card>
-        </div>
-        <!--加载动画-->
-        <div class="table-data-loading" v-else>
-            <Loading />
-        </div>
+            
         <GenCodeImportFromModal ref="importFromModal"></GenCodeImportFromModal>
         <PreviewCodeModal ref="previewCodeModal"></PreviewCodeModal>
-    </div>
+   </div>
 </template>
 
 <script setup lang="ts">
@@ -141,25 +136,10 @@ const previewCodeModal = ref<FromModal>()
 const createTimeRange = ref([]);
 
 onMounted(() => {
-    genCodeStore.tableLoading = true;
     instance?.proxy?.$resetObj(genCodeStore.searchForm);
     //进入页面初始化的数据 手动触发更新页数的逻辑
     handleSizeChange(Number(layoutSettingStore.setting.size));
-    setTimeout(() => {
-        genCodeStore.tableLoading = false
-    }, 500)
 })
-
-//根据搜索条件进行搜索
-const searchList = () => {
-    genCodeStore.tableLoading = true;
-
-    refresh();
-
-    setTimeout(() => {
-        genCodeStore.tableLoading = false
-    }, 500)
-}
 
 //页码变更触发的方法
 const handleCurrentChange = (currentPage: number) => {
@@ -179,11 +159,14 @@ const handleSelectionChange = (val: []) => {
 }
 
 //刷新数据方法
-const refresh = () => {
+const refresh = async() => {
     genCodeStore.tableLoading = true;
+
     const searchQuery = genCodeStore.searchForm;
     (instance?.proxy as any).$addPage(searchQuery, genCodeStore.dataList.page, genCodeStore.dataList.size);
-    genCodeStore.genList(searchQuery);
+    await genCodeStore.genList(searchQuery);
+
+    genCodeStore.tableLoading = false
 }
 
 //预览代码

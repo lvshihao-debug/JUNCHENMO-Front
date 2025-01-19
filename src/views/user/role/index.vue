@@ -22,7 +22,7 @@
                 <svg-icon name="擦除" />
               </template>
             </JcmButton>
-            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="searchList()">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="refresh()">
               <template #icon>
                 <svg-icon name="搜索" />
               </template>
@@ -54,8 +54,8 @@
       </el-col>
     </el-row>
 
-    <el-card class="card-table-style" v-if="loadingStatus">
-      <el-table :data="roleStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange">
+    <el-card class="card-table-style">
+      <el-table :data="roleStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange" v-loading="!loadingStatus" element-loading-text="Loading..." >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="roleId" label="ID" align="center" />
         <el-table-column prop="name" label="角色名称" align="center" />
@@ -74,7 +74,7 @@
             </template>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作" fixed="right">
+        <el-table-column align="center" label="操作" >
           <template #default="scope">
             <template v-if="!isAdminById(scope.row.roleId)">
               <el-button size="small" type="primary" @click="disableItem(scope.row)" text>
@@ -110,10 +110,7 @@
         </div>
       </template>
     </el-card>
-    <!--加载动画-->
-    <div class="table-data-loading" v-else>
-      <Loading />
-    </div>
+
     <!--弹出框组件列表-->
     <RoleAddFromModal ref="roleAddFromModal"></RoleAddFromModal>
     <RoleAuthMenusFromModal ref="roleAuthMenusFromModal"></RoleAuthMenusFromModal>
@@ -143,13 +140,8 @@ const layoutSettingStore = useLayoutSettingStore()
 
 onMounted(() => {
   instance?.proxy?.$resetObj(roleStore.searchForm);
-  roleStore.tableLoading = true;
   //进入页面初始化的数据 手动触发更新页数的逻辑
   handleSizeChange(Number(layoutSettingStore.setting.size))
-  
-  setTimeout(() => {
-    roleStore.tableLoading = false
-  }, 500)
 })
 
 //表单对象
@@ -161,22 +153,16 @@ const roleUpdateFromModal = ref<FromModal>()
 
 
 //刷新数据方法
-const refresh = () => {
-  const searchQuery = roleStore.searchForm;
-  (instance?.proxy as any).$addPage(searchQuery, roleStore.dataList.page, roleStore.dataList.size);
-  roleStore.roleList(searchQuery);
-}
-
-//根据搜索条件进行搜索
-const searchList = () => {
+const refresh = async() => {
   roleStore.tableLoading = true;
 
-  refresh();
+  const searchQuery = roleStore.searchForm;
+  (instance?.proxy as any).$addPage(searchQuery, roleStore.dataList.page, roleStore.dataList.size);
+  await roleStore.roleList(searchQuery);
 
-  setTimeout(() => {
-    roleStore.tableLoading = false
-  }, 500)
+  roleStore.tableLoading = false
 }
+
 //页面数据加载的状态
 const loadingStatus = computed(() => {
   return !roleStore.tableLoading || !layoutSettingStore.setting.dataLoading;
@@ -223,14 +209,9 @@ const disableItem = (item: any) => {
     ElMessage.warning({ message: '角色已经是停用状态' })
   } else {
     roleStore.upStatusRole(item).then(() => {
-        searchList()
+      refresh()
     })
   }
-}
-
-//提供给子组件刷新数据的方法
-const refreshData = () => {
-  searchList()
 }
 
 //重置搜索表单

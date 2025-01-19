@@ -94,6 +94,11 @@ const width = ref(0);
 // 获取 tabs 的引用
 const tabsRef = ref<HTMLElement | null>(null);
 
+//1.获取当前的可视区域宽度
+//2.获取当前tag的所占用宽度总合
+//3.添加元素，增加tag的所占宽度 ,如果超出可视区域则动画移动超出的宽度
+//4.删除元素，减少tag的所占宽度
+//4.点击元素，减少tag的所占宽度
 
 //获取主题样式
 const themeClass = computed(() => {

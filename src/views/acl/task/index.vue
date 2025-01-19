@@ -15,20 +15,23 @@
                     </el-form-item>
                     <el-form-item v-show="more" label="任务优先级" prop="priority">
                         <el-select v-model="sysUserTaskStore.searchForm.priority" placeholder="请选择任务优先级" clearable>
-                            <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysUserTaskStore,'taskPriority')" :key="dict.value"
-                                :label="dict.description" :value="dict.value" />
+                            <el-option
+                                v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysUserTaskStore, 'taskPriority')"
+                                :key="dict.value" :label="dict.description" :value="dict.value" />
                         </el-select>
                     </el-form-item>
                     <el-form-item v-show="more" label="任务状态" prop="status">
                         <el-select v-model="sysUserTaskStore.searchForm.status" placeholder="请选择任务状态" clearable>
-                            <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysUserTaskStore,'taskStatus')" :key="dict.value"
-                                :label="dict.description" :value="dict.value" />
+                            <el-option
+                                v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysUserTaskStore, 'taskStatus')"
+                                :key="dict.value" :label="dict.description" :value="dict.value" />
                         </el-select>
                     </el-form-item>
                     <el-form-item v-show="more" label="任务类型" prop="type">
                         <el-select v-model="sysUserTaskStore.searchForm.type" placeholder="请选择任务类型" clearable>
-                            <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysUserTaskStore,'taskType')" :key="dict.value"
-                                :label="dict.description" :value="dict.value" />
+                            <el-option
+                                v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysUserTaskStore, 'taskType')"
+                                :key="dict.value" :label="dict.description" :value="dict.value" />
                         </el-select>
                     </el-form-item>
                     <el-form-item v-show="more" label="用户名称" prop="userId">
@@ -93,7 +96,7 @@
 
         <el-card class="card-table-style">
             <el-table :data="sysUserTaskStore.dataList.list" table-layout="auto"
-                @selection-change="handleSelectionChange">
+                @selection-change="handleSelectionChange" v-loading="!loadingStatus" element-loading-text="Loading..." >
                 <el-table-column type="selection" width="55" align="center" />
                 <el-table-column label="执行人" align="center" prop="username" />
                 <el-table-column label="标题" align="center" prop="title" width="250">
@@ -242,15 +245,25 @@ const deleteItems = () => {
 }
 
 //刷新数据方法
-const refresh = () => {
+const refresh = async() => {
+    sysUserTaskStore.tableLoading = true;
+
     const searchQuery = sysUserTaskStore.searchForm;
     const page = sysUserTaskStore.dataList.page;
     const size = sysUserTaskStore.dataList.size;
     searchQuery.startDate = taskTimeRange.value[0];
     searchQuery.endDate = taskTimeRange.value[1];
     (instance?.proxy as any).$addPage(searchQuery, page, size);
-    sysUserTaskStore.list(searchQuery);
+    await sysUserTaskStore.list(searchQuery);
+
+    sysUserTaskStore.tableLoading = false;
+
 }
+
+//页面数据加载的状态
+const loadingStatus = computed(() => {
+  return !sysUserTaskStore.tableLoading || !layoutSettingStore.setting.dataLoading;
+});
 
 //导出操作日志数据
 const exportData = () => {

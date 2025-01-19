@@ -37,7 +37,15 @@ html.dark{
     --vxe-ui-font-primary-color: var(--lvshihao-suuny-bg);
     --vxe-ui-table-header-background-color: var(--lvshihao-moon-bg);
     --vxe-ui-layout-background-color: var(--lvshihao-moon-bg);
-
+    
+    .vxe-table--render-default.border--default .vxe-body--column,
+    .vxe-table--render-default.border--default .vxe-footer--column,
+    .vxe-table--render-default.border--default .vxe-header--column,
+    .vxe-table--render-default.border--inner .vxe-body--column,
+    .vxe-table--render-default.border--inner .vxe-footer--column,
+    .vxe-table--render-default.border--inner .vxe-header--column {
+      background-image: none;
+    }
     //vxe表格样式
   .vxe-table--header-wrapper.body--wrapper {
     color: #a3a6ad;

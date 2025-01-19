@@ -1,10 +1,5 @@
 <template>
   <div>
-    <el-alert type="info" center show-icon >
-      <template #title>
-        <div id="typing-animation"> 大家好，我是{{ userStore.user.username }}</div>
-      </template>
-    </el-alert>
     <el-card class="animate__animated animate__bounceInRight">
       <div class="block" style="display: flex; justify-content: flex-start; align-items: center">
         <el-avatar :size="50" shape="square">

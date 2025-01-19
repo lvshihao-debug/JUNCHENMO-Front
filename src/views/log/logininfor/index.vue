@@ -14,8 +14,9 @@
                     </el-form-item>
                     <el-form-item label="登录状态" prop="status">
                         <el-select v-model="sysLogininforStore.searchForm.status" placeholder="请选择登录状态" clearable>
-                            <el-option v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysLogininforStore,'loginStatus')" :key="dict.value"
-                                :label="dict.description" :value="dict.value" />
+                            <el-option
+                                v-for="dict in (instance?.proxy as any).$loadDictDataByName(sysLogininforStore, 'loginStatus')"
+                                :key="dict.value" :label="dict.description" :value="dict.value" />
                         </el-select>
                     </el-form-item>
                     <el-form-item v-show="more" label="操作系统" prop="os">
@@ -83,7 +84,7 @@
 
         <el-card class="card-table-style">
             <el-table :data="sysLogininforStore.dataList.list" table-layout="auto"
-                @selection-change="handleSelectionChange">
+                @selection-change="handleSelectionChange" v-loading="!loadingStatus" element-loading-text="Loading...">
                 <el-table-column type="selection" width="55" align="center" />
                 <el-table-column label="用户账号" align="center" prop="userName" />
                 <el-table-column label="浏览器类型" align="center" prop="browser" />
@@ -193,12 +194,17 @@ const deleteItems = () => {
 
 //刷新数据方法
 const refresh = () => {
+    sysLogininforStore.tableLoading = true;
+
     const searchQuery = sysLogininforStore.searchForm;
     const page = sysLogininforStore.dataList.page;
     const size = sysLogininforStore.dataList.size;
     (instance?.proxy as any).$addPage(searchQuery, page, size);
     (instance?.proxy as any).$addDateRange(searchQuery, loginTimeRange.value, 'LoginTime');
     sysLogininforStore.list(searchQuery);
+
+    sysLogininforStore.tableLoading = false;
+
 }
 
 //清空操作日志数据
@@ -237,6 +243,11 @@ const resetSearchForm = (ruleFormRef: any) => {
     ruleFormRef.resetFields()
     loginTimeRange.value = []
 }
+
+//页面数据加载的状态
+const loadingStatus = computed(() => {
+    return !sysLogininforStore.tableLoading || !layoutSettingStore.setting.dataLoading;
+});
 </script>
 <script lang="ts">
 export default {

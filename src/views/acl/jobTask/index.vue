@@ -236,12 +236,16 @@ const runItem = (item: any) =>{
   sysJobStore.run(item)
 }
 //刷新数据方法
-const refresh = () => {
+const refresh = async() => {
+  sysJobStore.tableLoading = true
+
   const searchQuery = sysJobStore.searchForm;
   const page = sysJobStore.dataList.page;
   const size = sysJobStore.dataList.size;
   (instance?.proxy as any).$addPage(searchQuery, page, size);
-  sysJobStore.list(searchQuery);
+  await sysJobStore.list(searchQuery);
+
+  sysJobStore.tableLoading = false
 }
 
 //导出操作日志数据

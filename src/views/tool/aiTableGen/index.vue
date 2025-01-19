@@ -1,6 +1,5 @@
 <template>
     <div>
-   
         <el-row>
             <el-col :span="24">
                 <div class="form-control">
@@ -139,7 +138,7 @@
 
         <!--加载动画-->
         <div class="table-data-loading" v-else>
-            <Loading />
+            <Loading  />
         </div>
         <JcmSqlEditor ref="sqlEditor"></JcmSqlEditor>
     </div>
