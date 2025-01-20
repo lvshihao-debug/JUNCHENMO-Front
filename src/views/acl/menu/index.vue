@@ -54,10 +54,10 @@
     </el-card>
     <!-- 权限列表卡片 -->
     <el-card class="card-table-style" >
-      <el-table :data="menuStore.dataList" table-layout="auto" row-key="menuId"  
+      <el-table :data="menuStore.dataList" table-layout="auto" row-key="menuId"
         :default-expand-all="menuStore.expandStatus" :default-sort="{ prop: 'sort', order: 'ascending' }"  :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
         v-if="menuStore.refreshTable" v-loading="!loadingStatus" element-loading-text="Loading..." >
-        <el-table-column prop="name" label="菜单名称"   />
+        <el-table-column prop="name" label="菜单名称"  width="200px" />
         <el-table-column prop="icon" label="图标" width="60px" align="center">
           <template #default="scope">
             <svg-icon :name="scope.row.icon" :color="layoutSettingStore.getThemeInvert" />
@@ -129,8 +129,8 @@
               scope.row.component }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="link" label="链接路径" width="240px" align="center" show-overflow-tooltip/>
-        <el-table-column prop="remark" label="操作" width="250px" align="center">
+        <el-table-column prop="link" label="链接路径"  align="center" show-overflow-tooltip/>
+        <el-table-column prop="remark" label="操作" align="center" width="240px">
           <template #default="scope">
             <el-button size="small" type="primary" @click="menuAddFromModal?.open(scope.row)" text
               v-show="scope.row.type != 2">

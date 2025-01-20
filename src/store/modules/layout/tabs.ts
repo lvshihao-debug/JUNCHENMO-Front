@@ -6,9 +6,6 @@ import type { Tag } from '../types/tabsType'
 const useTabsStore = defineStore('Tabs', {
   state: () => {
     return {
-      status: 0,
-      count: 0,
-      actionName : undefined|| '',
       tabs: [{
         title: '首页',
         closable: false,
@@ -16,6 +13,7 @@ const useTabsStore = defineStore('Tabs', {
         checked: true,
         icon: 'home',
       }] as any,
+      actionName : undefined|| '',
     }
   },
   actions: {
@@ -31,15 +29,15 @@ const useTabsStore = defineStore('Tabs', {
       }
     },
     //添加Tag
-    addTab(tag: Tag, $router: any) {
+    addTab(tag: Tag, $router: any,type :string) {
       //全部变为未选择灰色
       this.tabNotSelected()
       if (this.exitsTab(tag)) {
         this.tabSelected(tag)
-        $router.push(tag.path)
       } else {
-        this.count++
         this.tabs.push(tag)
+      }
+      if(type === 'add'){
         $router.push(tag.path)
       }
       this.actionName = tag.title
@@ -57,13 +55,13 @@ const useTabsStore = defineStore('Tabs', {
         $router.push(tabLast.path)
         this.actionName = tabLast.title
       }
-      this.count--
     },
     //关闭其他标签
     removeOutherTab(currentTagPath: string) {
       this.tabs = this.tabs.filter(
         (tag: Tag) => tag.path == currentTagPath || tag.closable == false,
       )
+      //TODO：偷个懒直接定位到第一个首页，因为固定标签一般不会很多，默认只有一个
       this.actionName =this.tabs[0].title
     },
     //关闭所有标签
@@ -72,6 +70,7 @@ const useTabsStore = defineStore('Tabs', {
       const tabLast = this.tabs[this.tabs.length - 1]
       this.tabSelected(tabLast)
       $router.push(tabLast.path)
+      //TODO：偷个懒直接定位到第一个首页，因为固定标签一般不会很多，默认只有一个
       this.actionName =this.tabs[0].title
     },
     //关闭左侧所有标签
@@ -129,12 +128,6 @@ const useTabsStore = defineStore('Tabs', {
     },
   },
   getters: {},
-  // 配置 persist
-  persist: {
-    key: 'tabs_store', // 自定义一个合适的缓存键名
-    storage: localStorage,
-    pick: ['tabs'],
-  }
 })
 
 //对外暴露获取小仓库的方法

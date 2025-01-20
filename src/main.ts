@@ -13,6 +13,8 @@ import 'vxe-table/lib/style.css'
 import VXETablePluginElement from 'vxe-table-plugin-element'
 import 'vxe-table-plugin-element/dist/style.css'
 VxeUITable.use(VXETablePluginElement)
+
+import { createTerminal } from 'vue-web-terminal'
 //配置ElementUIDark样式
 import 'element-plus/theme-chalk/dark/css-vars.css'
 //配置路由守卫（鉴权+进度条）
@@ -29,6 +31,7 @@ const app = createApp(App)
 app.use(pinia)
 app.use(router)
 app.use(VxeUITable)
+app.use(createTerminal())
 // 全局注册自定义组件的插件
 app.use(gloablComponent)
 app.config.globalProperties.$copyText = copyText;

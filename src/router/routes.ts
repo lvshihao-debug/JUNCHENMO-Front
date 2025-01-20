@@ -42,10 +42,13 @@ export const dynamicRoutes = [
     component: Layout,
     children: [
       {
-        title: '修改表生成信息', //菜单标题
         path: '/tool/genCode/edit/:tableId(\\d+)',
         component: () => import('@/views/tool/genCode/components/gen-code-update-from.vue'),
         name: 'GenCodeEdit',
+        meta:{
+          icon: '修改',
+          title: '修改表生成信息', //菜单标题
+        }
       }
     ]
   }

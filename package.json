@@ -28,7 +28,9 @@
     "pinia-plugin-persistedstate": "^4.2.0",
     "sql-formatter": "^15.4.8",
     "vue": "^3.4.21",
+    "vue-command": "^35.2.1",
     "vue-router": "^4.3.0",
+    "vue-web-terminal": "3",
     "vxe-table": "4.9.26",
     "vxe-table-plugin-element": "^4.0.3"
   },

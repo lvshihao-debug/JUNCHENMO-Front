@@ -22,7 +22,7 @@
               checked: true,
               icon: item.meta.icon,
             },
-            $router,
+            $router,'add'
           )
           ">
            <div>
@@ -46,7 +46,7 @@
             checked: true,
             icon: item.children[0].meta.icon,
           },
-          $router,
+          $router,'add'
         )
         ">
         <div>

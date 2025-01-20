@@ -1,122 +1,55 @@
 <template>
-    <div>
-        <div class="card">
-            <div class="title">
-                <span>
-                    <svg-icon name="白天"  color="currentColor" width="18px" height="18px" />
-                </span>
-                <p class="title-text">
-                    用户数
-                </p>
-                <p class="percent">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1792" fill="currentColor" height="20"
-                        width="20">
-                        <path
-                            d="M1408 1216q0 26-19 45t-45 19h-896q-26 0-45-19t-19-45 19-45l448-448q19-19 45-19t45 19l448 448q19 19 19 45z">
-                        </path>
-                    </svg> 2%
-                </p>
-            </div>
-            <div class="data">
-                <p>
-                    39,500条
-                </p>
-
-                <!-- <div class="range">
-                    <div class="fill">
-                    </div>
-                </div> -->
-            </div>
-        </div>
-
-    </div>
+  <vue-command :commands="commands" :style="themeStyles" hide-title="true" invert="true"  >
+    <template #title>
+    bash - 720x350
+  </template>
+  <template #prompt>
+    @lvshihao127.0.0.1
+  </template>
+  <template #buttons>
+    &times; &#95; &square;
+  </template>
+  </vue-command>
 </template>
-<script setup lang="ts">
-/** 
- *  作者: JUN CHEN MO
- *  time: 2024/12/26 16:33:18  
- */
 
+<script setup>
+import VueCommand, { createStdout } from "vue-command";
+import "vue-command/dist/vue-command.css";
 
+// 定义命令对象
+const commands = {
+  "hello-world": () => createStdout("🔥<span color='red'>Hello world</span>"),
+  "echo": (args) => createStdout(args.join(',')),
+  "date": () => createStdout(new Date().toLocaleString())
+};
+
+const themeStyles = {
+  backgroundColor: '#282c34',
+  color: '#abb2bf',
+  '--prompt-color': '#56b6c2',
+  '--stdout-color': '#98c379',
+  '--stderr-color': '#e06c75'
+};
 </script>
-
 <style lang="scss" scoped>
-.card {
-  padding: 1rem;
-  background-color: #fff;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  max-width: 180px;
-  border-radius: 20px;
-
+/* 更改终端的背景颜色 */
+.vue-command {
+  background-color: #282c34;
 }
-
-.title {
-  display: flex;
-  align-items: center;
+/* 更改终端的文本颜色 */
+.vue-command.vue-command__content {
+  color: #abb2bf;
 }
-
-.title span {
-  position: relative;
-  padding: 0.5rem;
-  background-color: #10B981;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 9999px;
+/* 更改提示符的颜色 */
+.vue-command.vue-command__prompt {
+  color: #56b6c2;
 }
-
-.title span svg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #ffffff;
-  height: 1rem;
+/* 更改命令输出的颜色 */
+.vue-command.vue-command__stdout {
+  color: #98c379;
 }
-
-.title-text {
-  margin-left: 0.5rem;
-  color: #374151;
-  font-size: 18px;
-}
-
-.percent {
-  margin-left: 0.5rem;
-  color: #02972f;
-  font-weight: 600;
-  display: flex;
-}
-
-.data {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.data p {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  color: #1F2937;
-  font-size: 2.25rem;
-  line-height: 2.5rem;
-  font-weight: 700;
-  text-align: left;
-}
-
-.data .range {
-  position: relative;
-  background-color: #E5E7EB;
-  width: 100%;
-  height: 0.5rem;
-  border-radius: 0.25rem;
-}
-
-.data .range .fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: #10B981;
-  width: 72%;
-  height: 100%;
-  border-radius: 0.25rem;
+/* 更改错误输出的颜色 */
+.vue-command.vue-command__stderr {
+  color: #e06c75;
 }
 </style>

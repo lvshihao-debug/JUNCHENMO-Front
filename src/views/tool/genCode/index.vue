@@ -185,11 +185,11 @@ const editItem = (item: any) => {
     const updateRouter = {
         title: "修改[" + item.tableName + "]生成配置",
         path: "/tool/genCode/edit/" + item.tableId,
-        icon: "home",
+        icon: "修改",
         closable: true,
         checked: true
     }
-    tabStore.addTab(updateRouter, $router);
+    tabStore.addTab(updateRouter, $router,'add');
 }
 //删除多个字典类型触发的事件
 const deleteItems = () => {

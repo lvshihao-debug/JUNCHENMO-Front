@@ -10,6 +10,7 @@ declare module 'vue' {
     Copyright: typeof import('./src/components/copyright/index.vue')['default']
     Editor: typeof import('./src/components/editor/index.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
+    ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBacktop: typeof import('element-plus/es')['ElBacktop']
     ElBadge: typeof import('element-plus/es')['ElBadge']

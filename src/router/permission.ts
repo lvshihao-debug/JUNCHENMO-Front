@@ -12,7 +12,12 @@ import pinia from '@/store'
 import useUserStore from '@/store/modules/user/user'
 import usePermissionStore from '@/store/modules/acl/menu'
 import useUserSettingStore from '@/store/modules/layout/layoutSetting'
+//创建Tabs相关的小仓库
+import useTabsStore from '@/store/modules/layout/tabs'
+
 const userStore = useUserStore(pinia)
+/* TODO因为这里初始化了store所有不能够缓存tabs，所有这里没有实现换tabs */
+const tabsStore = useTabsStore(pinia)
 const permissionStore = usePermissionStore(pinia)
 const userSettingStore = useUserSettingStore(pinia)
 
@@ -33,6 +38,13 @@ router.beforeEach(async(to, from, next) => {
     if (to.path === '/login') {
       next('/')
     } else {
+      let tab = {
+        checked: true,
+        closable: true,
+        icon: to.meta.icon,
+        path: to.path,
+        title: to.meta.title
+      }
       //判断是否已经获取权限信息
       if (userStore.roles.length === 0) {
         try{
@@ -45,6 +57,7 @@ router.beforeEach(async(to, from, next) => {
           next('/');
         }
       } else {
+        tabsStore.addTab(tab,router,"router");
         next();
       }
     }

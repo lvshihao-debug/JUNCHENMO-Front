@@ -16,11 +16,11 @@
         <Logo class="logo"></Logo>
         <!-- 展示菜单 -->
         <el-scrollbar class="scrollbar">
-          <!-- 菜单组件 -->
-          <el-menu :collapse="LayoutSettingStore.fold" :default-active="$route.path" :collapse-transition="false"
-            router>
-            <Menu :menuList="usePermissionStore.sidebarRouters"></Menu>
-          </el-menu>
+            <!-- 菜单组件 -->
+            <el-menu :collapse="LayoutSettingStore.fold" :default-active="$route.path" :collapse-transition="false"
+              router>
+              <Menu :menuList="usePermissionStore.sidebarRouters"></Menu>
+            </el-menu>
         </el-scrollbar>
         <el-button class="foldwithExpand iconBtn" @click="changeIcon">
           <svg-icon :name="LayoutSettingStore.fold ? '折叠-展开' : '折叠-收起'"
@@ -50,8 +50,7 @@
         showMenu: LayoutSettingStore.setting.menu,
         hidenMenu: !LayoutSettingStore.setting.menu,
       }" v-show="LayoutSettingStore.setting.tabs">
-        <!-- <Tabs></Tabs> -->
-        <TabsCeshi></TabsCeshi>
+        <Tabs></Tabs>
       </div>
 
       <!-- 内容展示区域 -->
@@ -95,8 +94,6 @@ import Logo from './logo/index.vue'
 import Tabbar from './tabbar/index.vue'
 //引入顶部tabs组件
 import Tabs from './tabs/index.vue'
-import TabsCeshi from './tabs-ceshi/index.vue'
-
 //引入当前路由
 import { useRoute } from 'vue-router'
 //获取用户相关的小仓库
@@ -171,10 +168,11 @@ export default {
     box-shadow: --el-box-shadow-light;
     height: 100vh;
     top: 0px;
-
+    transition: width 0.3s ease; // 添加过渡效果
     // 导航栏折叠
     &.fold {
       width: variable.$base-menu-min-width;
+      transition: width 0.3s ease; // 添加过渡效果
     }
 
     .scrollbar {
@@ -238,7 +236,7 @@ export default {
         left: variable.$base-menu-width;
       }
     }
-
+    transition: width 0.3s ease, left 0.3s ease; // 添加过渡效果
   }
 
   .layout_main {
@@ -312,7 +310,7 @@ export default {
       }
     }
 
-
+    transition: width 0.3s ease, left 0.3s ease; // 添加过渡效果
 
   }
 
@@ -354,6 +352,8 @@ export default {
       left: 0;
       width: 100%;
     }
+    transition: width 0.3s ease, left 0.3s ease; // 添加过渡效果
+
   }
 
 
