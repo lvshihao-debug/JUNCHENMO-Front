@@ -10,13 +10,6 @@ import { reactive } from "vue";
 
 const layoutSettingStore = useLayoutSettingStore()
 const textContainer = ref<HTMLElement | null>(null);
-//初始化日志
-// const initLog = reactive<Message>({
-//   content: "import Terminal from 'vue-web-terminal'\n\nVue.use(Terminal)",
-//   type: "json",
-//   class: "success",
-//   tag: "ccc",
-// })
 
 // 内置命令
 const commandStore = reactive<Command>({
@@ -78,7 +71,9 @@ const setting = reactive({
   logHighlight: false,
   shellHint: false,
   shellSampleHint: false,
-  inputHint: false
+  inputHint: false,
+  lineSpace: 15,
+  fontSize: 14
 })
 //全屏按钮点击的回调
 const fullScreen = () => {
@@ -103,17 +98,20 @@ const logHighlight = () => {
 //全选
 const selectAllText = () => {
   const text = document.getElementsByClassName("t-window")[0]
-  console.log(text)
   var selection = window.getSelection();
   var range = document.createRange();
   range.selectNodeContents(text);
-  selection.removeAllRanges();
-  selection.addRange(range);
+  if(selection){
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
 };
 
 //复制选择的内容
-const copy = () => {
-  document.execCommand("Copy");	
+const copy = async () => {
+  const divElement = document.getElementsByClassName("t-window")[0]
+  const textContent = divElement.textContent;
+  navigator.clipboard.writeText(textContent);
 }
 //清空
 const clear = () => {
@@ -129,17 +127,12 @@ const jumpToBottom = () => {
 
 //粘贴
 const paste = async () => {
-  try {
-    if (!navigator.clipboard) {
-      throw new Error('Clipboard API 不受支持');
-    }
-    const text = await navigator.clipboard.readText();
-    TerminalApi.setCommand('my-terminal', text)
-  } catch (err) {
-    console.error('无法读取剪切板内容:', err);
-    alert('无法读取剪切板内容，请检查权限或浏览器支持。');
-  }
+  navigator.clipboard.readText().then(data=>{
+      TerminalApi.setCommand('my-terminal',  TerminalApi.getCommand('my-terminal')+data)
+  });
 };
+//字体行间距
+
 //结束命令 
 const ctrlC = () => {
   TerminalApi.execute('my-terminal', '^C')
@@ -152,32 +145,71 @@ const jumpToTop = () => {
 }
 
 
+//禁用双击放大事件
+const disableDoubleClick = () => {
+  console.log('禁用双击放大事件');
+}
+
+//字体大小变化
+const fontSizeEdit = (size) =>{
+  const divs = document.querySelectorAll('.t-window')
+  setting.fontSize = setting.fontSize + size;
+    divs.forEach(div => {
+      div?.style.setProperty('--t-font-size', setting.fontSize  + 'px')
+  });
+}
+
+
+const autoCopy = () => {
+  // 创建一个用于存储选中文本的变量
+  let selectedText = '';
+  // 获取要监听的元素
+  const textArea = document.getElementsByClassName("t-window")[0];
+  // 添加鼠标释放事件监听器
+  textArea.addEventListener('mouseup', function() {
+    // 获取选中的文本
+    selectedText = window.getSelection().toString();
+    navigator.clipboard.writeText(selectedText);
+  });
+}
+
+
 //监听快捷键
 const onKeydown = (event: Event) => {
-    if (event.key === 'c' && event.ctrlKey) {
-      event.preventDefault()
-      //  设置结束命令
-      TerminalApi.execute('my-terminal', '^C')
-    }
+  if (event.key === 'c' && event.ctrlKey) {
+    event.preventDefault()
+    //  设置结束命令
+    TerminalApi.execute('my-terminal', '^C')
+  }
 }
 </script>
 
 <template>
   <div style="height: 75vh;">
-    <terminal ref="textContainer" name="my-terminal" title="客户端-127.0.0.1" theme="light" :command-store="commandStore"
+    <terminal ref="textContainer" name="my-terminal" title="客户端-127.0.0.1" :command-store="commandStore"
       :enable-fold="setting.logFold" :enable-hover-stripe="setting.logHighlight" cursor-style="bar"
-      :enable-input-tips="setting.inputHint" :enable-help-box="setting.shellSampleHint"  @on-keydown="onKeydown" log-size-limit="5"
-      context="junchenmo@127.0.0.1" @exec-cmd="onExecCmd">
+      :enable-input-tips="setting.inputHint" :enable-help-box="setting.shellSampleHint" @on-keydown="onKeydown"
+      log-size-limit="5" :line-space="setting.lineSpace" context="junchenmo@127.0.0.1" @exec-cmd="onExecCmd" theme='ceshi1'>
       <template #header>
-        <div style="background-color: #323538;">
+        <div style="background-color: #323538;" @dblclick.stop="disableDoubleClick()">
           <div style="height: 36px;margin: 0px 10px;display: flex;justify-content: space-between; align-items: center;">
             <div class="ssh-header-left">
               127.0.0.1
             </div>
             <div class="ssh-header-right">
-              <el-tooltip class="box-item" effect="dark" content="上传" placement="bottom">
-                <div class="tool-button" @click="upload()">
-                  <svg-icon name="jcm-上传" color="#C3C6C9" width="20" height="20" />
+              <el-tooltip class="box-item" effect="dark" content="开启滑动复制" placement="bottom">
+                <div class="tool-button" @click="autoCopy()">
+                  <svg-icon name="jcm-放大镜" color="#C3C6C9" width="20" height="20" />
+                </div>
+              </el-tooltip>
+              <el-tooltip class="box-item" effect="dark" content="放大字体" placement="bottom">
+                <div class="tool-button" @click="fontSizeEdit(1)">
+                  <svg-icon name="jcm-放大镜" color="#C3C6C9" width="20" height="20" />
+                </div>
+              </el-tooltip>
+              <el-tooltip class="box-item" effect="dark" content="缩小字体" placement="bottom">
+                <div class="tool-button" @click="fontSizeEdit(-1)">
+                  <svg-icon name="jcm-放小镜" color="#C3C6C9" width="20" height="20" />
                 </div>
               </el-tooltip>
               <el-tooltip class="box-item" effect="dark" content="ctrl + c" placement="bottom">
@@ -190,16 +222,12 @@ const onKeydown = (event: Event) => {
                   <svg-icon name="jcm-全选" color="#C3C6C9" width="20" height="20" />
                 </div>
               </el-tooltip>
-              <el-tooltip class="box-item" effect="dark" content="复制" placement="bottom">
-                <div class="tool-button" @click="copy()">
-                  <svg-icon name="jcm-复制" color="#C3C6C9" width="20" height="20" />
-                </div>
-              </el-tooltip>
               <el-tooltip class="box-item" effect="dark" content="粘贴" placement="bottom">
                 <div class="tool-button" @click="paste()">
                   <svg-icon name="jcm-粘贴" color="#C3C6C9" width="20" height="20" />
                 </div>
               </el-tooltip>
+         
               <el-tooltip class="box-item" effect="dark" content="ctrl + c" placement="bottom">
                 <div class="tool-button" @click="jumpToTop()">
                   <svg-icon name="jcm-去顶部" color="#C3C6C9" width="20" height="20" />
@@ -228,6 +256,11 @@ const onKeydown = (event: Event) => {
               <el-tooltip class="box-item" effect="dark" content="日志折叠" placement="bottom">
                 <div class="tool-button" @click="logFold()">
                   <svg-icon name="jcm-折叠" color="#C3C6C9" width="20" height="20" />
+                </div>
+              </el-tooltip>
+              <el-tooltip class="box-item" effect="dark" content="复制" placement="bottom">
+                <div class="tool-button" @click="copy()">
+                  <svg-icon name="jcm-复制" color="#C3C6C9" width="20" height="20" />
                 </div>
               </el-tooltip>
               <el-tooltip class="box-item" effect="dark" content="全屏" placement="bottom">

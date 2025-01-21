@@ -170,6 +170,19 @@ html {
       }
     }
   }
+
+  //下拉抽屉样式修改
+  .el-dropdown-menu{
+    margin: 0px 5px;
+  }
+  .el-dropdown-menu__item{
+    color: black;
+  }
+  .el-dropdown-menu__item:not(.is-disabled):focus, .el-dropdown-menu__item:not(.is-disabled):hover{
+    color: black;
+    background-color: var(--lvshihao-suuny-deputy-bg);
+    border-radius: var(--lvshihao-border-radius);
+  }
 }
 
 html.dark {

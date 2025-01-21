@@ -52,17 +52,29 @@
                 </div>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item icon="CircleCloseFilled" @click="tabsStore.removeOutherTab(route.path)">
-                            关闭其他标签
+                        <el-dropdown-item  @click="tabsStore.removeOutherTab(route.path)">
+                            <template #default>
+                                <svg-icon  name="关闭其他" :width="14" :height="14" :color="iconColor" />  
+                                关闭其他标签
+                            </template>
                         </el-dropdown-item>
-                        <el-dropdown-item icon="CircleCloseFilled" @click="tabsStore.removeAllTab($router)">
-                            关闭所有标签
+                        <el-dropdown-item @click="tabsStore.removeAllTab($router)">
+                            <template #default>
+                                <svg-icon  name="全部关闭" :width="14" :height="14" :color="iconColor" />  
+                                关闭所有
+                            </template>
                         </el-dropdown-item>
-                        <el-dropdown-item icon="CircleCloseFilled" @click="tabsStore.removeAllLeftTab(route.path)">
-                            关闭左侧标签
+                        <el-dropdown-item  @click="tabsStore.removeAllLeftTab(route.path)">
+                            <template #default>
+                                <svg-icon  name="关闭左侧" :width="14" :height="14" :color="iconColor" />  
+                                关闭左侧
+                            </template>
                         </el-dropdown-item>
-                        <el-dropdown-item icon="CircleCloseFilled" @click="tabsStore.removeAllRightTab(route.path)">
-                            关闭右侧标签
+                        <el-dropdown-item @click="tabsStore.removeAllRightTab(route.path)">
+                            <template #default>
+                                <svg-icon  name="关闭右侧" :width="14" :height="14" :color="iconColor" />  
+                                关闭右侧标签
+                            </template>
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
@@ -233,6 +245,15 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+
+
+.el-dropdown-jcm {
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
 .el-check-tag-jcm {
     padding: 0px;
     margin-right: 10px;

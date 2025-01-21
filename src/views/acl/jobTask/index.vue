@@ -121,7 +121,7 @@
             <el-button size="small" type="primary" @click="Item(scope.row)" text>
               任务详情
             </el-button>
-            <el-button size="small" type="primary" @click="Item(scope.row)" text>
+            <el-button size="small" type="primary" @click="ceshi2(scope.row)" text>
               调度日志
             </el-button>
           </template>
@@ -153,12 +153,10 @@ import { useRouter } from 'vue-router'
 import JobAddFromModal from './components/job-add-from-modal.vue'
 import JobUpdateFromModal from './components/job-update-from-modal.vue'
 //仓库
-import useTabsStore from '@/store/modules/layout/tabs'
 import useDictDataStore from '@/store/modules/acl/dictData'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 import useSysJobStore from '@/store/modules/acl/jobTask'
 
-const tabStore = useTabsStore();
 const dictDataStore = useDictDataStore()
 const layoutSettingStore = useLayoutSettingStore();
 const sysJobStore = useSysJobStore();
@@ -185,15 +183,13 @@ onMounted(() => {
 })
 
 const ceshi = () => {
-  const updateRouter = {
-    title: "定时任务日志",
-    path: "/log/jobTaskLog",
-    icon: "jobTaskLog",
-    closable: true,
-    checked: true
-  }
-  tabStore.addTab(updateRouter, $router);
+  $router.push( "/log/jobTaskLog");
 }
+
+const ceshi2 = (item:any) => {
+  $router.push( "/log/jobTaskLog?"+"jobId="+item.jobId);
+}
+
 
 //页码变更触发的方法
 const handleCurrentChange = (currentPage: number) => {

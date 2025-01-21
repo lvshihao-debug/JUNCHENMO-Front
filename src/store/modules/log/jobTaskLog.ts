@@ -4,7 +4,6 @@ import { defineStore } from 'pinia'
 //导入请求
 import {
   listTaskLog,
-  getTaskLog,
   delTaskLog,
   clearTaskLog,
 } from '@/api/log/jobTaskLog'

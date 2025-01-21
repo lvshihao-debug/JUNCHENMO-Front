@@ -236,7 +236,7 @@ export default {
         left: variable.$base-menu-width;
       }
     }
-    transition: width 0.3s ease, left 0.3s ease; // 添加过渡效果
+    transition: width 0.3s ease, left 0.3s ease,top 0.3 ease; // 添加过渡效果
   }
 
   .layout_main {
@@ -310,7 +310,7 @@ export default {
       }
     }
 
-    transition: width 0.3s ease, left 0.3s ease; // 添加过渡效果
+    transition: width 0.3s ease, left 0.3s ease ,top 0.3s ease; // 添加过渡效果
 
   }
 
@@ -352,7 +352,7 @@ export default {
       left: 0;
       width: 100%;
     }
-    transition: width 0.3s ease, left 0.3s ease; // 添加过渡效果
+    transition: width 0.3s ease, left 0.3s ease,top 0.3s ease; // 添加过渡效果
 
   }
 

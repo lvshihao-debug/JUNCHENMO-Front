@@ -1,0 +1,51 @@
+:root {
+    --t-main-background-color: #0052D9; /* 主背景颜色 */
+    --t-main-font-color: #fff; /* 主字体颜色 */
+    --t-window-box-shadow: 0 0 0px 0px rgb(0 0 0 / 20%); /* 窗口阴影颜色 */
+    --t-header-background-color: #959598; /* 头部背景颜色 */
+    --t-header-font-color: white; /* 头部字体颜色 */
+    --t-tag-font-color: #fff; /* 标签字体颜色 */
+    --t-cursor-color: #000000; /* 光标颜色 */
+    --t-cmd-key-color: #000; /* 命令键颜色 */
+    --t-cmd-arg-color: #c0c0ff; /* 命令参数颜色 */
+    --t-cmd-splitter-color: #808085; /* 命令分隔符颜色 */
+    --t-link-color: antiquewhite; /* 链接颜色 */
+    --t-link-hover-color: white; /* 链接悬停颜色 */
+    --t-table-border: 1px dashed #fff; /* 表格边框颜色 */
+    --t-selection-font-color: black; /* 选中文本字体颜色 */
+    --t-selection-background-color: white; /* 选中文本背景颜色 */
+    --t-code-inline-font-color: #00b10e; /* 内联代码字体颜色 */
+    --t-cmd-help-background-color: black; /* 命令帮助背景颜色 */
+    --t-cmd-help-code-background-color: rgba(0, 0, 0, 0); /* 命令帮助代码背景颜色 */
+    --t-cmd-help-box-shadow: 0px 0px 0px 4px rgb(255 255 255 / 20%); /* 命令帮助框阴影颜色 */
+    --t-text-editor-floor-background-color: rgb(72 69 69); /* 文本编辑器底部背景颜色 */
+    --t-text-editor-floor-close-btn-color: #bba9a9; /* 文本编辑器底部关闭按钮颜色 */
+    --t-text-editor-floor-save-btn-color: #00b10e; /* 文本编辑器底部保存按钮颜色 */
+    --t-text-editor-floor-btn-hover-color: #befcff; /* 文本编辑器底部按钮悬停颜色 */
+    --t-json-background-color: rgba(0, 0, 0, 0); /* JSON背景颜色 */
+    --t-json-value-obj-color: #bdadad; /* JSON对象值颜色 */
+    --t-json-value-bool-color: #cdc83c; /* JSON布尔值颜色 */
+    --t-json-value-number-color: #f3c7fb; /* JSON数值颜色 */
+    --t-json-ellipsis-background-color: #674848; /* JSON省略号背景颜色 */
+    --t-json-more-background-webkit: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 20%, rgb(255 255 255 / 10%) 100%); /* JSON更多背景（Webkit） */
+    --t-json-more-background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 20%, rgb(255 255 255 / 10%) 100%); /* JSON更多背景 */
+    --t-json-deep-selector-border-color: rgb(249 249 249 / 52%); /* JSON深度选择器边框颜色 */
+    --t-code-default-background-color: rgb(39 50 58); /* 代码默认背景颜色 */
+    --t-log-box-hover-script-background-color: #2a2c34; /* 日志框悬停脚本背景颜色 */
+    --t-log-box-folded-background-color: #042f36; /* 折叠日志框背景颜色 */
+    --t-log-box-folded-hover-background-color: #515157; /* 折叠日志框悬停背景颜色 */
+    --t-log-fold-icon-color: #4ca5c1; /* 日志折叠图标颜色 */
+    --t-log-fold-icon-background-color: #191b24; /* 日志折叠图标背景颜色 */
+    --t-log-fold-icon-border-color: #4ca5c1; /* 日志折叠图标边框颜色 */
+    --t-log-fold-icon-active-color: #191b24; /* 日志折叠图标激活颜色 */
+    --t-log-fold-icon-active-background-color: #4ca5c1; /* 日志折叠图标激活背景颜色 */
+    --t-log-fold-line-color: #4ca5c1; /* 日志折叠线颜色 */
+    --t-cmd-tips-background-color: #544a4a; /* 命令提示背景颜色 */
+    --t-cmd-tips-font-color: #fff; /* 命令提示字体颜色 */
+    --t-cmd-tips-active-background-color: #5c6ec9; /* 命令提示激活背景颜色 */
+    --t-cmd-tips-content-font-color: #fff; /* 命令提示内容字体颜色 */
+    --t-cmd-tips-des-font-color: #cbb0b0; /* 命令提示描述字体颜色 */
+    --t-cmd-tips-footer-font-color: #e3c2c2; /* 命令提示页脚字体颜色 */
+    --t-cmd-tips-footer-background-color: #546456; /* 命令提示页脚背景颜色 */
+}
+

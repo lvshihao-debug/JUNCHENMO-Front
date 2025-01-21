@@ -126,7 +126,8 @@
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
 import API_ENUM from '@/enum/api-enum'
-
+//导入Router
+import { useRoute } from 'vue-router'
 //仓库
 import useDictDataStore from '@/store/modules/acl/dictData'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
@@ -136,6 +137,7 @@ const dictDataStore = useDictDataStore()
 const layoutSettingStore = useLayoutSettingStore();
 const sysJobLogStore = useSysJobLogStore();
 
+const route = useRoute()
 //获取当前组件实例
 const instance = getCurrentInstance();
 //表单对象
@@ -147,6 +149,11 @@ const jobTaskExecuteTimeRange = ref([])
 
 
 onMounted(() => {
+  //TODO 太简单以后再写跳转
+  if(route.query && route.query.jobId){
+    console.log(route.query.jobId)
+  }
+
   const searchForm = sysJobLogStore.searchForm;
   instance?.proxy?.$resetObj(searchForm);
   //进入页面初始化的数据 手动触发更新页数的逻辑
