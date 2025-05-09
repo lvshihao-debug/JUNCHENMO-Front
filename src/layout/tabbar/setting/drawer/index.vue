@@ -1,6 +1,6 @@
 <template>
   <el-drawer
-    v-model="LayoutSettingStore.settingDrawer"
+    v-model="layoutSettingStore.settingDrawer"
     :before-close="handleClose"
     direction="rtl"
     size="20%"
@@ -23,10 +23,10 @@ export default {
 import DrawerContext from './context/index.vue'
 //获取设置相关的小仓库
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
-let LayoutSettingStore = useLayoutSettingStore()
+let layoutSettingStore = useLayoutSettingStore()
 //打开或关闭偏好设置抽屉
 const handleClose = () => {
-  LayoutSettingStore.settingDrawer = !LayoutSettingStore.settingDrawer
+  layoutSettingStore.settingDrawer = !layoutSettingStore.settingDrawer
 }
 </script>
 <style lang="scss">

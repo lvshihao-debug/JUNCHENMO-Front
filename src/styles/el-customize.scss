@@ -1,0 +1,254 @@
+/**
+el-card区域
+**/
+/* 设置卡片的样式和卡片中输入框的宽度*/
+.el-card {
+  border: var(--lvshihao-card-border-white) solid var(--lvshihao-theme-color) !important;
+  border-radius: var(--lvshihao-border-radius);
+  .el-card__body {
+    .el-input {
+      width: var(--base-form-item-width);
+    }
+    .el-select {
+      width: var(--base-form-item-width);
+    }
+  }
+  .el-card__footer {
+    border-top: 0;
+  }
+}
+
+//搜素区域的卡片样式
+.searchCard {
+  .searchForm {
+    padding-top: 18px;
+  }
+  .el-card__body {
+    padding: 0px 20px;
+  }
+}
+//搜索的工具栏样式
+.card-search-end {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  .custom-button {
+    svg {
+      use {
+        fill: var(--lvshihao-theme-color);
+      }
+    }
+  }
+}
+
+//表格区域的卡片样式
+.card-table-style {
+  .el-card__body {
+    padding: 10px;
+  }
+  margin-top: var(--lvshihao-card-margin-top);
+}
+/* 自定义卡片头部的样式 */
+.card-header-style {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 20px 0px 10px;
+  .card-header {
+    margin-top: 4px;
+    font-size: var(--lvshihao-card-title-fontSize);
+    color: var(--lvshihao-theme-color);
+  }
+}
+//自定义卡片头部工具栏的样式
+.card-end {
+  .custom-button {
+    svg {
+      use {
+        fill: var(--lvshihao-theme-color);
+      }
+    }
+  }
+}
+
+/**
+  el-avatar区域
+  **/
+.el-avatar {
+  --el-avatar-bg-color: var(--lvshihao-theme-color);
+}
+
+//标签的文字颜色
+.el-tag.el-tag--primary {
+  color: aliceblue !important;
+  background-color: var(--lvshihao-theme-color);
+  border-color: transparent;
+}
+
+/* menu区域样式 */
+.el-menu-item {
+  height: var(--lvshihao-menu-item-height) !important;
+}
+/*多级菜单的样式*/
+.el-sub-menu__title * {
+  vertical-align: text-top;
+}
+.el-sub-menu__title {
+  border-radius: var(--lvshihao-border-radius) !important;
+  height: var(--lvshihao-menu-item-height) !important;
+}
+.el-menu.el-menu--collapse {
+  li {
+    div {
+      justify-content: center;
+    }
+  }
+}
+//菜单弹出宽度自适应
+.el-menu--popup {
+  min-width: var(--lvshihao-menu-propu-item-white) !important;
+}
+
+html {
+  //对话框
+  .el-dialog {
+    filter: drop-shadow(0px 5px 5px black);
+    opacity: 0.9;
+  }
+  //侧边抽屉
+  .el-drawer {
+    filter: drop-shadow(5px 0px 30px var(--lvshihao-theme-color));
+    opacity: 0.85;
+  }
+
+  //el-check-tag tab标签页
+  .el-check-tag--primary,
+  .el-check-tag.is-checked.el-check-tag--primary,
+  .el-check-tag.is-checked.el-check-tag--primary:hover {
+    color: var(--lvshihao-theme-color);
+    background-color: var(--lvshihao-suuny-bg);
+  }
+  .el-check-tag.is-checked.el-check-tag--primary {
+    div {
+      div {
+        svg {
+          use {
+            fill: var(--lvshihao-theme-color);
+          }
+        }
+      }
+      .jcm-tabs-titleWithIcon {
+        svg {
+          use {
+            fill: var(--lvshihao-theme-color);
+          }
+        }
+      }
+    }
+  }
+  .el-check-tag.el-check-tag--primary {
+    color: var(--lvshihao-moom-bg);
+    background-color: var(--lvshihao-suuny-bg);
+  }
+  .el-check-tag.el-check-tag--primary:hover {
+    color: var(--lvshihao-theme-color);
+    box-shadow: var(--lvshihao-suuny-shadow);
+    div {
+      div {
+        svg {
+          use {
+            fill: var(--lvshihao-theme-color);
+          }
+        }
+      }
+      .jcm-tabs-titleWithIcon {
+        svg {
+          use {
+            fill: var(--lvshihao-theme-color);
+          }
+        }
+      }
+    }
+  }
+
+  //下拉抽屉样式修改
+  .el-dropdown-menu{
+    margin: 0px 5px;
+  }
+  .el-dropdown-menu__item{
+    color: black;
+  }
+  .el-dropdown-menu__item:not(.is-disabled):focus, .el-dropdown-menu__item:not(.is-disabled):hover{
+    color: black;
+    background-color: var(--lvshihao-suuny-deputy-bg);
+    border-radius: var(--lvshihao-border-radius);
+  }
+}
+
+html.dark {
+  /**
+    表格样式
+  **/
+  .el-table {
+    --el-table-tr-bg-color: var(--lvshihao-moon-bg);
+    --el-table-header-bg-color: var(--lvshihao-moon-bg);
+  }
+
+  //tab标签页
+  .el-check-tag--primary,
+  .el-check-tag.is-checked.el-check-tag--primary,
+  .el-check-tag.is-checked.el-check-tag--primary:hover {
+    color: var(--lvshihao-theme-color);
+    background-color: var(--lvshihao-moon-bg);
+  }
+  .el-check-tag.is-checked.el-check-tag--primary {
+    div {
+      .jcm-tabs-titleWithIcon {
+        svg {
+          use {
+            fill: var(--lvshihao-theme-color);
+          }
+        }
+      }
+    }
+  }
+  .el-check-tag.el-check-tag--primary:hover {
+    background-color: var(--lvshihao-moon-bg);
+    box-shadow: var(--lvshihao-moon-shadow);
+    color: var(--lvshihao-theme-color);
+    div {
+      div {
+        svg {
+          use {
+            fill: var(--lvshihao-theme-color);
+          }
+        }
+      }
+      .jcm-tabs-titleWithIcon {
+        svg {
+          use {
+            fill: var(--lvshihao-theme-color);
+          }
+        }
+      }
+    }
+  }
+  .el-check-tag.el-check-tag--primary {
+    color: var(--lvshihao-suuny-bg);
+    background-color: var(--lvshihao-moon-bg);
+    box-shadow: var(--lvshihao-moon-shadow);
+    div {
+      .jcm-tabs-titleWithIcon {
+        svg {
+          use {
+            fill: var(--lvshihao-suuny-bg);
+          }
+        }
+      }
+    }
+  }
+  /*card样式*/
+  .el-card {
+    background-color: var(--lvshihao-moon-bg);
+  }
+}

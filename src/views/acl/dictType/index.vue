@@ -1,82 +1,84 @@
 <template>
   <div>
-    <el-card>
-      <el-form :inline="true" :model="dictTypeStore.searchform" class="searchForm" label-position="right" label-width="auto"
-        ref="searchFormRef">
+    <el-card class="searchCard">
+      <el-form :inline="true" :model="dictTypeStore.searchForm" class="searchForm" label-position="right"
+        label-width="auto" ref="searchFormRef">
         <el-row style="display: flex">
           <el-form-item label="配置项" prop="name">
-            <el-input v-model="dictTypeStore.searchform.name" />
+            <el-input v-model="dictTypeStore.searchForm.name" />
           </el-form-item>
           <el-form-item label="描述" prop="description">
-            <el-input v-model="dictTypeStore.searchform.description" />
+            <el-input v-model="dictTypeStore.searchForm.description" />
           </el-form-item>
           <el-form-item label="状态" prop="status">
-            <el-select v-model="dictTypeStore.searchform.status">
+            <el-select v-model="dictTypeStore.searchForm.status">
               <el-option label="正常" value="0" />
               <el-option label="禁用" value="1" />
             </el-select>
           </el-form-item>
-          <div style="margin-left: auto">
-            <el-button type="info" @click="resetSearchForm(searchFormRef)">
-              重置
-            </el-button>
-            <el-button  :color="LayoutSettingStore.getTheme" @click="searchList(dictTypeStore.searchform)">
-              搜索
-            </el-button>
+          <div style="margin-left: auto" class="card-search-end">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="resetSearchForm(searchFormRef)">
+              <template #icon>
+                <svg-icon name="擦除" />
+              </template>
+            </JcmButton>
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="refresh()">
+              <template #icon>
+                <svg-icon name="搜索" />
+              </template>
+            </JcmButton>
           </div>
         </el-row>
       </el-form>
     </el-card>
-    <el-card class="card-table-style">
-      <template #header>
+
+    <el-row>
+      <el-col :span="24">
         <div class="card-header-style">
           <div class="card-header">
             <span>字典配置项</span>
           </div>
           <div class="card-end">
-            <el-button-group class="ml-4">
-              <el-button :color="LayoutSettingStore.getTheme" @click="dictTypeAddFromModal?.open()">
-                <template #icon>
-                  <svg-icon name="加号"  color="white"/>
-                </template>
-                新增
-              </el-button>
-              <el-button :color="LayoutSettingStore.getTheme" @click="addButtenClick()">
-                <template #icon>
-                  <svg-icon name="刷新"  color="white"/>
-                </template>
-                刷新缓存
-              </el-button>
-              <el-button :color="LayoutSettingStore.getTheme" @click="deleteItems()">
-                <template #icon>
-                  <svg-icon name="垃圾桶"  color="white"/>
-                </template>
-                删除
-              </el-button>
-            </el-button-group>
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="dictTypeAddFromModal?.open()">
+              <template #icon>
+                <svg-icon name="加号" />
+              </template>
+            </JcmButton>
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="refreshCache()">
+              <template #icon>
+                <svg-icon name="刷新" />
+              </template>
+            </JcmButton>
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="deleteItems()">
+              <template #icon>
+                <svg-icon name="垃圾桶" />
+              </template>
+            </JcmButton>
           </div>
         </div>
-      </template>
+      </el-col>
+    </el-row>
 
-      <el-table :data="dataList.list" table-layout="auto"  @selection-change="handleSelectionChange">
-        <el-table-column type="selection"  width="55" />
+    <el-card class="card-table-style" >
+      <el-table :data="dictTypeStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange" v-loading="!loadingStatus" element-loading-text="Loading..." >
+        <el-table-column type="selection" width="55" />
         <el-table-column prop="dictTypeId" label="ID" align="center" />
         <el-table-column prop="name" label="配置项" align="center" />
         <el-table-column prop="description" label="描述" align="center" />
         <el-table-column prop="type" label="类型" align="center">
           <template #default="scope">
-            <el-tag size="small" style="color:white" :color="LayoutSettingStore.getTheme">
+            <el-tag size="small" style="color:white">
               {{ getStatusByType(scope.row.type) }}
             </el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="extraSchema" label="额外配置" align="center" width="250">
           <template #default="scope">
-            <template v-if="scope.row.extraSchema!==''">
+            <template v-if="scope.row.extraSchema !== ''">
               <template v-for="item in extraStrToJson(scope.row.extraSchema)">
                 <el-tag checked size="small" :color="getColorByType(item.type)" style="margin-right: 2px;">
                   {{ item.parameter }}
-              </el-tag>
+                </el-tag>
               </template>
             </template>
           </template>
@@ -84,7 +86,7 @@
         <el-table-column prop="status" label="状态" align="center">
           <template #default="scope">
             <template v-if="scope.row.status === 0">
-              <el-tag checked size="small" :color="LayoutSettingStore.getTheme">
+              <el-tag checked size="small">
                 启用
               </el-tag>
             </template>
@@ -95,7 +97,7 @@
             </template>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作" fixed="right">
+        <el-table-column align="center" label="操作" >
           <template #default="scope">
             <el-button size="small" type="primary" @click="getInfoButtonClick(scope.row)" text>
               查看
@@ -113,17 +115,18 @@
       <template #footer>
         <div class="pagination-style">
           <!--分页-->
-          <el-pagination :page-sizes="[10, 20, 30, 40]" small="small" background="true"  :default-page-size="LayoutSettingStore.size"
-            layout="total, sizes, prev, pager, next, jumper" :total="dataList.total" @size-change="handleSizeChange"
-            @current-change="handleCurrentChange" />
+          <el-pagination :page-sizes="[10, 20, 30, 40]" small="small" background="true"
+            :default-page-size="Number(layoutSettingStore.setting.size)"
+            layout="total, sizes, prev, pager, next, jumper" :total="dictTypeStore.dataList.total" @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"></el-pagination>
         </div>
       </template>
     </el-card>
 
 
     <!--弹出框组件列表-->
-    <DictTypeAddFromModal  ref="dictTypeAddFromModal" @refreshData="refreshData"></DictTypeAddFromModal>
-    <DictTypeUpdateFromModal  ref="dictTypeUpdateFromModal" @refreshData="refreshData"></DictTypeUpdateFromModal>
+    <DictTypeAddFromModal ref="dictTypeAddFromModal" ></DictTypeAddFromModal>
+    <DictTypeUpdateFromModal ref="dictTypeUpdateFromModal" ></DictTypeUpdateFromModal>
     <!-- json 查看器模态框 -->
     <JsonEditor ref="dictTypeViewFromModal" />
   </div>
@@ -137,21 +140,24 @@ import type { FromModal } from '@/utils/commonType'
 import DictTypeAddFromModal from './components/dict-type-add-from-modal.vue'
 import DictTypeUpdateFromModal from './components/dict-type-update-from-modal.vue'
 //仓库
-import useDictTypeStore from '@/store/modules/dictType'
-import useDictDataStore from '@/store/modules/dictData'
+import useDictTypeStore from '@/store/modules/acl/dictType'
+import useDictDataStore from '@/store/modules/acl/dictData'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 
+//获取当前组件实例
+const instance = getCurrentInstance()
 const dictDataStore = useDictDataStore()
 const dictTypeStore = useDictTypeStore()
-const LayoutSettingStore = useLayoutSettingStore()
+const layoutSettingStore = useLayoutSettingStore()
 
 onMounted(() => {
+  instance?.proxy?.$resetObj(dictTypeStore.searchForm);
+
   //手动触发更新页数的逻辑
-  handleSizeChange(LayoutSettingStore.size)
-  //进入页面初始化的数据
-  searchList(dictTypeStore.searchform)
+  handleSizeChange(Number(layoutSettingStore.setting.size))
   //初始化字典数据
   loadDictData()
+
 });
 
 //表单对象
@@ -161,39 +167,32 @@ const dictTypeAddFromModal = ref<FromModal>()
 const dictTypeUpdateFromModal = ref<FromModal>()
 const dictTypeViewFromModal = ref();
 
+//页面数据加载的状态
+const loadingStatus = computed(() => {
+  return !dictTypeStore.tableLoading || !layoutSettingStore.setting.dataLoading;
+});
 
+//刷新数据方法
+const refresh = async() => {
+  dictTypeStore.tableLoading = true
 
-//表格数据
-const dataList = reactive({
-  list: [],
-  total: 0,
-  page: 1,
-  size: 10,
-})
+  const searchQuery = dictTypeStore.searchForm;
+  (instance?.proxy as any).$addPage(searchQuery, dictTypeStore.dataList.page, dictTypeStore.dataList.size);
+  await dictTypeStore.dictTypeList(searchQuery);
 
-//根据搜索条件进行搜索
-const searchList = (searchData: any) => {
-  dictTypeStore
-    .dictTypeList(searchData, dataList.page, dataList.size)
-    .then((resp) => {
-      console.log(resp.rows)
-      dataList.list = resp.rows
-      dataList.total = resp.total
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+  dictTypeStore.tableLoading = false
 }
+
 
 //页码变更处理方法
 const handleCurrentChange = (currentPage: number) => {
-  dataList.page = currentPage
-  searchList(dictTypeStore.searchform)
+  dictTypeStore.dataList.page = currentPage
+  refresh();
 }
 //页数切换触发的事件
 const handleSizeChange = (pageSize: number) => {
-  dataList.size = pageSize
-  searchList(dictTypeStore.searchform)
+  dictTypeStore.dataList.size = pageSize
+  refresh();
 }
 
 //选中数据触发的事件
@@ -204,51 +203,49 @@ const handleSelectionChange = (val: []) => {
 //删除字典类型触发的事件
 const deleteItem = (item: any) => {
   dictTypeStore
-    .deleteDictType([item.dictTypeId])
+    .deleteDictType(item.dictTypeId)
     .then(() => {
-      searchList(dictTypeStore.searchform)
-      ElMessage.success({ message: '删除成功' })
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
+      refresh();
     })
 }
 
 //删除多个字典类型触发的事件
 const deleteItems = () => {
-  const dictTypeIds = dictTypeStore.multipleSelection.map((item: any) => item.dictTypeId);
+  const dictTypeIds = dictTypeStore.multipleSelection.map((item: any) => item.dictTypeId).join(',');
+  if(dictTypeStore.multipleSelection.length == 0){
+      ElMessage.warning({ message: '请选择要删除的数据' })
+      return;
+  }
   dictTypeStore
     .deleteDictType(dictTypeIds)
     .then(() => {
-      searchList(dictTypeStore.searchform)
-      ElMessage.success({ message: '删除成功' })
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
+      refresh();
     })
 }
 
 //点击查看按钮触发的事件
-const getInfoButtonClick = (item: any) =>{
-  let extras = undefined
+const getInfoButtonClick = (item: any) => {
   dictDataStore.
     dictDataInfo(item.name)
     .then((resp) => {
-      dictTypeViewFromModal?.value?.open(resp.data,item.name +' - '+item.description)
+      dictTypeViewFromModal?.value?.open(resp.data, item.name + ' - ' + item.description)
     })
     .catch((error) => {
       ElMessage.error({ message: error })
-  })
-  console.log(extras)
+    })
 }
 
+//刷新字典数据列表缓存
+const refreshCache = () => {
+  dictDataStore.dictDataRefreshCache()
+}
 //加载所需要的字典数据
 const loadDictData = () => {
-  const dictNames = ['extrasDefaultTag','extrasDefaultStatus']
+  const dictNames = ['extrasDefaultTag', 'extrasDefaultStatus']
   dictDataStore
     .dictDataInfoList(dictNames)
     .then((resp) => {
-      dictTypeStore.dictData=resp.data
+      dictTypeStore.dictData = resp.data
     })
     .catch((error) => {
       ElMessage.error({ message: error })
@@ -256,8 +253,7 @@ const loadDictData = () => {
 }
 
 const extraStrToJson = (item: any) => {
-  console.log(item)
-  if(undefined===item||item==='')return
+  if (undefined === item || item === '') return
   return JSON.parse(item)
 }
 
@@ -295,13 +291,8 @@ const getColorByType = (type: any) => {
       return '#e03e36';
   }
 }
-  
-//提供给子组件刷新数据的方法
-const refreshData = () => {
-  searchList(dictTypeStore.searchform)
-}
 
-  //重置搜索表单
+//重置搜索表单
 const resetSearchForm = (ruleFormRef: any) => {
   if (!ruleFormRef) return
   ruleFormRef.resetFields()
@@ -313,5 +304,4 @@ export default {
   name: 'dictType',
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>

@@ -1,72 +1,69 @@
 <template>
-  <div>
-    <el-card>
-      <el-form
-        :inline="true"
-        :model="roleStore.searchform"
-        class="searchForm"
-        label-position="right"
-        label-width="auto"
-        ref="searchFormRef"
-      >
+  <div class="fade">
+    <el-card class="searchCard">
+      <el-form :inline="true" :model="roleStore.searchForm" class="searchForm" label-position="right" label-width="auto"
+        ref="searchFormRef">
         <el-row style="display: flex">
           <el-form-item label="角色名称" prop="name">
-            <el-input v-model="roleStore.searchform.name" />
+            <el-input v-model="roleStore.searchForm.name" />
           </el-form-item>
           <el-form-item label="角色编码" prop="code">
-            <el-input v-model="roleStore.searchform.code" />
+            <el-input v-model="roleStore.searchForm.code" />
           </el-form-item>
           <el-form-item label="状态" prop="status">
-            <el-select v-model="roleStore.searchform.status">
+            <el-select v-model="roleStore.searchForm.status">
               <el-option label="启用" value="0" />
               <el-option label="禁用" value="1" />
             </el-select>
           </el-form-item>
-          <div style="margin-left: auto">
-            <el-button type="info" @click="resetSearchForm(searchFormRef)">
-              重置
-            </el-button>
-            <el-button :color="LayoutSettingStore.getTheme" @click="searchList(roleStore.searchform)">
-              搜索
-            </el-button>
+          <div style="margin-left: auto" class="card-search-end">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="resetSearchForm(searchFormRef)">
+              <template #icon>
+                <svg-icon name="擦除" />
+              </template>
+            </JcmButton>
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="refresh()">
+              <template #icon>
+                <svg-icon name="搜索" />
+              </template>
+            </JcmButton>
           </div>
         </el-row>
       </el-form>
     </el-card>
-    <el-card class="card-table-style">
-      <template #header>
+
+    <el-row>
+      <el-col :span="24">
         <div class="card-header-style">
           <div class="card-header">
-            <span>用户列表</span>
+            <span>角色列表</span>
           </div>
           <div class="card-end">
-            <el-button-group class="ml-4">
-              <el-button :color="LayoutSettingStore.getTheme"  @click="roleAddFromModal?.open()">
-                <template #icon>
-                  <svg-icon name="加号"  color="white"/>
-                </template>
-                新增
-              </el-button>
-              <el-button :color="LayoutSettingStore.getTheme" @click="deleteItems()">
-                <template #icon>
-                  <svg-icon name="垃圾桶"  color="white"/>
-                </template>
-                删除
-              </el-button>
-            </el-button-group>
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="roleAddFromModal?.open()">
+              <template #icon>
+                <svg-icon name="加号" />
+              </template>
+            </JcmButton>
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="deleteItems()">
+              <template #icon>
+                <svg-icon name="垃圾桶" />
+              </template>
+            </JcmButton>
           </div>
         </div>
-      </template>
+      </el-col>
+    </el-row>
 
-      <el-table :data="dataList.list" table-layout="auto" @selection-change="handleSelectionChange">
-        <el-table-column type="selection"  width="55" />
+    <el-card class="card-table-style">
+      <el-table :data="roleStore.dataList.list" table-layout="auto" @selection-change="handleSelectionChange" v-loading="!loadingStatus" element-loading-text="Loading..." >
+        <el-table-column type="selection" width="55" />
         <el-table-column prop="roleId" label="ID" align="center" />
         <el-table-column prop="name" label="角色名称" align="center" />
         <el-table-column prop="code" label="角色编码" align="center" />
         <el-table-column prop="status" label="角色状态" align="center">
           <template #default="scope">
             <template v-if="scope.row.status === 0">
-              <el-tag checked size="small" :color="LayoutSettingStore.getTheme">
+              <el-tag checked size="small">
                 启用
               </el-tag>
             </template>
@@ -77,44 +74,29 @@
             </template>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作" fixed="right">
+        <el-table-column align="center" label="操作" >
           <template #default="scope">
-            <el-button
-              size="small"
-              type="primary"
-              @click="disableItem(scope.row)"
-              :disabled="isAdminById(scope.row.roleId)"
-              text
-            >
-            停用
+            <template v-if="!isAdminById(scope.row.roleId)">
+              <el-button size="small" type="primary" @click="disableItem(scope.row)" text>
+                停用
+              </el-button>
+            </template>
+            <el-button size="small" type="primary" @click="roleUpdateFromModal?.open(scope.row)" text>
+              修改
             </el-button>
-            <el-button
-              size="small"
-              type="primary"
-              @click="roleUpdateFromModal?.open(scope.row)"
-              text
-            >
-             修改
-            </el-button>
-            <el-button
-              size="small"
-              type="primary"
-              @click="roleAuthMenusFromModal?.open(scope.row)"
-              :disabled="isAdminById(scope.row.roleId)"
-              text
-            >
-            分配菜单
-            </el-button>
-            <el-button
-              size="small"
-              type="danger"
-              @click="deleteItem(scope.row)"
-              :disabled="isAdminById(scope.row.roleId)"
-              text
-            >
-             
-            删除
-            </el-button>
+            <template v-if="!isAdminById(scope.row.roleId)">
+              <el-button size="small" type="primary" @click="roleAuthMenusFromModal?.open(scope.row)" text>
+                分配菜单
+              </el-button>
+            </template>
+
+            <template v-if="!isAdminById(scope.row.roleId)">
+              <el-button size="small" type="danger" @click="deleteItem(scope.row)" text>
+
+                删除
+              </el-button>
+            </template>
+
           </template>
         </el-table-column>
       </el-table>
@@ -122,24 +104,17 @@
       <template #footer>
         <div class="pagination-style">
           <!--分页-->
-          <el-pagination
-            :page-sizes="[10, 20, 30, 40]"
-            :default-page-size="LayoutSettingStore.size"
-            small="small"
-            background="true"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="dataList.total"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
+          <el-pagination :page-sizes="[10, 20, 30, 40]" :default-page-size="Number(layoutSettingStore.setting.size)"
+            small="small" background="true" layout="total, sizes, prev, pager, next, jumper" :total="roleStore.dataList.total"
+            @size-change="handleSizeChange" @current-change="handleCurrentChange" />
         </div>
       </template>
     </el-card>
 
     <!--弹出框组件列表-->
-    <RoleAddFromModal ref="roleAddFromModal" @refreshData="refreshData"></RoleAddFromModal>
-    <RoleAuthMenusFromModal ref="roleAuthMenusFromModal" @refreshData="refreshData"></RoleAuthMenusFromModal>
-    <RoleUpdateFromModal ref="roleUpdateFromModal" @refreshData="refreshData"></RoleUpdateFromModal>
+    <RoleAddFromModal ref="roleAddFromModal"></RoleAddFromModal>
+    <RoleAuthMenusFromModal ref="roleAuthMenusFromModal"></RoleAuthMenusFromModal>
+    <RoleUpdateFromModal ref="roleUpdateFromModal"></RoleUpdateFromModal>
   </div>
 </template>
 
@@ -152,20 +127,21 @@ import RoleAddFromModal from './components/role-add-from-modal.vue'
 import RoleAuthMenusFromModal from './components/role-auth-menus-from-modal.vue'
 import RoleUpdateFromModal from './components/role-update-from-modal.vue'
 //仓库
-import useRoleStore from '@/store/modules/role'
+import useRoleStore from '@/store/modules/user/role'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
 //权限工具类
 import { isAdminById } from '@/utils/permission'
 
+//获取当前组件实例
+const instance = getCurrentInstance()
 const roleStore = useRoleStore()
-const LayoutSettingStore = useLayoutSettingStore()
+const layoutSettingStore = useLayoutSettingStore()
 
 
 onMounted(() => {
-  //手动触发更新页数的逻辑
-  handleSizeChange(LayoutSettingStore.size)
-  //进入页面初始化的数据
-  searchList(roleStore.searchform)
+  instance?.proxy?.$resetObj(roleStore.searchForm);
+  //进入页面初始化的数据 手动触发更新页数的逻辑
+  handleSizeChange(Number(layoutSettingStore.setting.size))
 })
 
 //表单对象
@@ -176,36 +152,31 @@ const roleAuthMenusFromModal = ref<FromModal>()
 const roleUpdateFromModal = ref<FromModal>()
 
 
-//表格数据
-const dataList = reactive({
-  list: [],
-  total: 0,
-  page: 1,
-  size: 10
-})
+//刷新数据方法
+const refresh = async() => {
+  roleStore.tableLoading = true;
 
-//根据搜索条件进行搜索
-const searchList = (searchData: any) => {
-  roleStore
-    .roleList(searchData, dataList.page, dataList.size)
-    .then((resp) => {
-      dataList.list = resp.rows
-      dataList.total = resp.total
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+  const searchQuery = roleStore.searchForm;
+  (instance?.proxy as any).$addPage(searchQuery, roleStore.dataList.page, roleStore.dataList.size);
+  await roleStore.roleList(searchQuery);
+
+  roleStore.tableLoading = false
 }
+
+//页面数据加载的状态
+const loadingStatus = computed(() => {
+  return !roleStore.tableLoading || !layoutSettingStore.setting.dataLoading;
+});
 
 //页码变更处理方法
 const handleCurrentChange = (currentPage: number) => {
-  dataList.page = currentPage
-  searchList(roleStore.searchform)
+  roleStore.dataList.page = currentPage
+  refresh();
 }
 //页数切换触发的事件
 const handleSizeChange = (pageSize: number) => {
-  dataList.size = pageSize
-  searchList(roleStore.searchform)
+  roleStore.dataList.size = pageSize
+  refresh();
 }
 
 //选中数据触发的事件
@@ -215,51 +186,32 @@ const handleSelectionChange = (val: []) => {
 
 //删除角色触发的事件
 const deleteItem = (item: any) => {
-  roleStore
-    .deleteRole([item.roleId])
-    .then(() => {
-      searchList(roleStore.searchform)
-      ElMessage.success({ message: '删除成功' })
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+  roleStore.deleteRole(item.roleId).then(() => {
+    refresh();
+  })
 }
 
 //删除多个字典类型触发的事件
 const deleteItems = () => {
-  const roleIds = roleStore.multipleSelection.map((item: any) => item.roleId);
-  roleStore
-    .deleteRole(roleIds)
-    .then(() => {
-      searchList(roleStore.searchform)
-      ElMessage.success({ message: '删除成功' })
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+  const roleIds = roleStore.multipleSelection.map((item: any) => item.roleId).join(',');
+  if(roleStore.multipleSelection.length == 0){
+      ElMessage.warning({ message: '请选择要删除的数据' })
+      return;
+  }
+  roleStore.deleteRole(roleIds).then(() => {
+    refresh();
+  })
 }
 
 //停用用户触发的事件
 const disableItem = (item: any) => {
-  if(item.status==1){
+  if (item.status == 1) {
     ElMessage.warning({ message: '角色已经是停用状态' })
-  }else{
-    roleStore
-      .upStatusRole(item)
-      .then((resp) => {
-        searchList(searchform)
-        ElMessage.success({ message: '停用成功' })
-      })
-      .catch((error) => {
-        ElMessage.error({ message: error })
-      })
+  } else {
+    roleStore.upStatusRole(item).then(() => {
+      refresh()
+    })
   }
-}
-
-//提供给子组件刷新数据的方法
-const refreshData = () => {
-  searchList(roleStore.searchform)
 }
 
 //重置搜索表单
@@ -273,8 +225,4 @@ export default {
   name: 'role',
 }
 </script>
-<style scoped>
-*{
-  font-weight: 900;
-}
-</style>
+<style scoped></style>

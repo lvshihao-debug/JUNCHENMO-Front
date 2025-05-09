@@ -1,61 +1,77 @@
 <template>
   <div>
     <!--权限列表条件卡片-->
-    <el-card>
-      <el-form :inline="true" :model="menuStore.searchform" class="searchForm" label-position="right" label-width="auto"
-        ref="searchFormRef">
+    <el-card class="searchCard">
+      <el-form :inline="true" :model="menuStore.searchForm" class="searchForm" label-position="right"
+        label-width="auto" ref="searchFormRef">
         <el-row>
           <el-form-item label="菜单名称" prop="name">
-            <el-input v-model="menuStore.searchform.name" />
+            <el-input v-model="menuStore.searchForm.name" />
           </el-form-item>
           <el-form-item label="菜单状态" prop="status">
-            <el-select v-model="menuStore.searchform.status">
+            <el-select v-model="menuStore.searchForm.status">
               <el-option label="启用" value="0" />
               <el-option label="禁用" value="1" />
             </el-select>
           </el-form-item>
 
-          <div style="margin-left: auto">
-            <el-button :color="LayoutSettingStore.getTheme"
-              @click="menuAddFromModal?.open(undefined)">新增</el-button>
-            <el-button :color="LayoutSettingStore.getTheme" @click="searchList(menuStore.searchform)">
-              搜索
-            </el-button>
-            <el-button type="info" @click="resetSearchForm(searchFormRef)">
-              重置
-            </el-button>
-            <el-button type="info" @click="expandHandle()">
-              <template v-if="menuStore.expandStatus">收起</template>
-              <template v-else>展开</template>
-            </el-button>
-            <el-button @click="refreshCacheMenu()" :color="LayoutSettingStore.theme ? '#1e56a0' : '#f73859'">
-              刷新缓存
-            </el-button>
+          <div style="margin-left: auto" class="card-search-end">
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="menuAddFromModal?.open(undefined)">
+              <template #icon>
+                <svg-icon name="加号" />
+              </template>
+            </JcmButton>
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="refresh()">
+              <template #icon>
+                <svg-icon name="搜索" />
+              </template>
+            </JcmButton>
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="resetSearchForm(searchFormRef)">
+              <template #icon>
+                <svg-icon name="擦除" />
+              </template>
+            </JcmButton>
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="expandHandle"
+              v-show="menuStore.expandStatus">
+              <template #icon>
+                <svg-icon name="收起" />
+              </template>
+            </JcmButton>
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="expandHandle"
+              v-show="!menuStore.expandStatus">
+              <template #icon>
+                <svg-icon name="展开" />
+              </template>
+            </JcmButton>
+            <JcmButton :buttonBgColor="layoutSettingStore.getTheme" @click="refreshCacheMenu()">
+              <template #icon>
+                <svg-icon name="刷新" />
+              </template>
+            </JcmButton>
           </div>
         </el-row>
       </el-form>
     </el-card>
-
     <!-- 权限列表卡片 -->
-    <el-card class="card-table-style">
+    <el-card class="card-table-style" >
       <el-table :data="menuStore.dataList" table-layout="auto" row-key="menuId"
-        :default-expand-all="menuStore.expandStatus" :default-sort="{ prop: 'sort', order: 'ascending' }"
-        v-if="menuStore.refreshTable">
-        <el-table-column prop="name" label="菜单名称" />
-        <el-table-column prop="icon" label="图标" align="center">
+        :default-expand-all="menuStore.expandStatus" :default-sort="{ prop: 'sort', order: 'ascending' }"  :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        v-if="menuStore.refreshTable" v-loading="!loadingStatus" element-loading-text="Loading..." >
+        <el-table-column prop="name" label="菜单名称"  width="200px" />
+        <el-table-column prop="icon" label="图标" width="60px" align="center">
           <template #default="scope">
-            <svg-icon :name="scope.row.icon" :color="iconColor" />
+            <svg-icon :name="scope.row.icon" :color="layoutSettingStore.getThemeInvert" />
           </template>
         </el-table-column>
-        <el-table-column prop="type" label="类型" align="center">
+        <el-table-column prop="type" label="类型" width="60px" align="center">
           <template #default="scope">
-            <el-tag size="small" :color="LayoutSettingStore.getTheme">
+            <el-tag size="small">
               {{ getStatusByType(scope.row.type) }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="sort" label="排序" align="center" />
-        <el-table-column prop="status" label="状态" align="center">
+        <el-table-column prop="sort" label="排序" width="100px" align="center" />
+        <el-table-column prop="status" label="状态" width="170px" align="center">
           <template #default="scope">
             <!--状态-->
             <el-popconfirm width="200" icon-color="#626AEF"
@@ -63,8 +79,7 @@
               @confirm="tagUpdateStatusButtonClick(scope.row)">
               <template #reference>
                 <template v-if="scope.row.status === 0">
-                  <el-tag checked size="small" :color="LayoutSettingStore.getTheme"
-                    class="menu-status-tag">
+                  <el-tag checked size="small" class="menu-status-tag">
                     <el-tooltip class="box-item" effect="dark" content="点击切换状态" placement="top">
                       启用
                     </el-tooltip>
@@ -78,12 +93,6 @@
                   </el-tag>
                 </template>
               </template>
-              <template #actions>
-                <el-button size="small">取消</el-button>
-                <el-button type="danger" size="small">
-                  确定
-                </el-button>
-              </template>
             </el-popconfirm>
             <!--显示隐藏-->
             <el-popconfirm width="200" icon-color="#626AEF"
@@ -91,8 +100,7 @@
               @confirm="tagUpdateVisibleButtonClick(scope.row)">
               <template #reference>
                 <template v-if="scope.row.visible">
-                  <el-tag checked size="small" :color="LayoutSettingStore.getTheme"
-                    class="menu-status-tag menu-status-tag-margin">
+                  <el-tag checked size="small" class="menu-status-tag menu-status-tag-margin">
                     <el-tooltip class="box-item" effect="dark" content="点击切换状态" placement="top">
                       显示
                     </el-tooltip>
@@ -106,27 +114,23 @@
                   </el-tag>
                 </template>
               </template>
-              <template #actions>
-                <el-button size="small">取消</el-button>
-                <el-button type="danger" size="small">
-                  确定
-                </el-button>
-              </template>
             </el-popconfirm>
           </template>
         </el-table-column>
-        <el-table-column prop="permission" label="权限标识" align="center" >
+        <el-table-column prop="permission" label="权限标识"  width="230px" align="center" show-overflow-tooltip>
           <template #default="scope">
-            <span @click="instance?.proxy?.$copyText(scope.row.permission)" class="copy-span">{{ scope.row.permission}}</span>
+            <span @click="(instance?.proxy as any).$copyText(scope.row.permission)" class="copy-span">{{
+              scope.row.permission }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="component" label="组件名称" align="center" >
+        <el-table-column prop="component" label="组件名称" width="100px" align="center" show-overflow-tooltip>
           <template #default="scope">
-            <span @click="instance?.proxy?.$copyText(scope.row.component)" class="copy-span">{{ scope.row.component}}</span>
+            <span @click="(instance?.proxy as any).$copyText(scope.row.component)" class="copy-span">{{
+              scope.row.component }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="link" label="链接路径" align="center" />
-        <el-table-column prop="remark" label="操作" align="center">
+        <el-table-column prop="link" label="链接路径"  align="center" show-overflow-tooltip/>
+        <el-table-column prop="remark" label="操作" align="center" width="240px">
           <template #default="scope">
             <el-button size="small" type="primary" @click="menuAddFromModal?.open(scope.row)" text
               v-show="scope.row.type != 2">
@@ -145,8 +149,8 @@
 
 
     <!--弹出框组件列表-->
-    <MenuAddFromModal ref="menuAddFromModal" @refreshData="refreshData"></MenuAddFromModal>
-    <MenuUpdateFromModal ref="menuUpdateFromModal" @refreshData="refreshData"></MenuUpdateFromModal>
+    <MenuAddFromModal ref="menuAddFromModal" ></MenuAddFromModal>
+    <MenuUpdateFromModal ref="menuUpdateFromModal"></MenuUpdateFromModal>
   </div>
 </template>
 
@@ -158,22 +162,27 @@ export default {
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import type { FromModal } from '@/utils/commonType'
-import type { ComponentInternalInstance } from 'vue'
+
 //弹出窗
 import MenuAddFromModal from './components/menu-add-from-modal.vue'
 import MenuUpdateFromModal from './components/menu-update-from-modal.vue'
 //仓库
-import useMenuStore from '@/store/modules/menu'
+import useMenuStore from '@/store/modules/acl/menu'
 import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
+import useDictDataStore from '@/store/modules/acl/dictData'
 
 //获取当前组件实例
-const instance: ComponentInternalInstance | null = getCurrentInstance();
+const instance = getCurrentInstance();
 const menuStore = useMenuStore()
-const LayoutSettingStore = useLayoutSettingStore()
+const layoutSettingStore = useLayoutSettingStore()
+const dictDataStore = useDictDataStore()
 
 onMounted(() => {
+  instance?.proxy?.$resetObj(menuStore.searchForm);
   //进入页面初始化的数据
-  searchList(menuStore.searchform)
+  refresh();
+  //初始化字典数据
+  loadDictData();
 })
 
 //表单对象
@@ -182,35 +191,30 @@ const searchFormRef = ref<FormInstance>()
 const menuAddFromModal = ref<FromModal>()
 const menuUpdateFromModal = ref<FromModal>()
 
+//页面数据加载的状态
+const loadingStatus = computed(() => {
+  return !menuStore.tableLoading || !layoutSettingStore.setting.dataLoading;
+});
 
-//根据搜索条件进行搜索
-const searchList = (searchData: any) => {
-  menuStore.expandStatus = true
-  menuStore
-    .menuList(searchData)
-    .then((resp: any) => {
-      menuStore.dataList = resp
-    })
-    .catch((error) => {
-      ElMessage.error({ message: error })
-    })
+
+//刷新数据方法
+const refresh = async() => {
+  menuStore.tableLoading = true
+
+  await menuStore.menuList(menuStore.searchForm)
+
+  menuStore.tableLoading = false
 }
+
 
 //删除菜单触发的事件
 const deleteItemClick = (item: any) => {
   menuStore
     .delMenu(item.menuId)
     .then(() => {
-      searchList(menuStore.searchform)
-      ElMessage.success({ message: '删除成功' })
-    })
-    .catch((error: any) => {
-      ElMessage.error({ message: error })
+      refresh();
     })
 }
-
-//图标根据主题模式动态切换颜色
-const iconColor = computed(() => LayoutSettingStore.theme ? 'black' : 'white');
 
 //点击标签更改状态中的启用/禁用
 const tagUpdateStatusButtonClick = (item: any) => {
@@ -218,11 +222,7 @@ const tagUpdateStatusButtonClick = (item: any) => {
   menuStore
     .upStatusMenu(item)
     .then(() => {
-      searchList(menuStore.searchform)
-      ElMessage.success({ message: '状态更新成功' })
-    })
-    .catch((error: any) => {
-      ElMessage.error({ message: error })
+      refresh();
     })
 }
 
@@ -232,11 +232,7 @@ const tagUpdateVisibleButtonClick = (item: any) => {
   menuStore
     .upStatusMenu(item)
     .then(() => {
-      searchList(menuStore.searchform)
-      ElMessage.success({ message: '状态更新成功' })
-    })
-    .catch((error: any) => {
-      ElMessage.error({ message: error })
+      refresh();
     })
 }
 
@@ -253,10 +249,7 @@ const getStatusByType = (type: any) => {
   }
 }
 
-//提供给子组件刷新数据的方法
-const refreshData = () => {
-  searchList(menuStore.searchform)
-}
+
 
 //重置搜索表单
 const resetSearchForm = async (ruleFormRef: any) => {
@@ -271,6 +264,19 @@ const expandHandle = async () => {
   menuStore.expandStatus = !menuStore.expandStatus;
   await nextTick()
   menuStore.refreshTable = true
+}
+
+//加载所需要的字典数据
+const loadDictData = () => {
+  const dictNames = ['menuType'];
+  dictDataStore
+    .dictDataInfoList(dictNames)
+    .then((resp) => {
+      menuStore.dictData = resp.data
+    })
+    .catch((error) => {
+      ElMessage.error({ message: error })
+    })
 }
 
 //刷新缓存
@@ -291,7 +297,4 @@ const refreshCacheMenu = () => {
   margin-left: 5px;
 }
 
-* {
-  font-weight: 900;
-}
 </style>

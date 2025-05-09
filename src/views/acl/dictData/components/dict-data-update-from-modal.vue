@@ -6,22 +6,22 @@
                 <h4 :id="titleId" :class="titleClass">修改字典配置值</h4>
             </div>
         </template>
-        <el-form :model="dictDataStore.commonform" label-width="100" :rules="formRules" ref="formRef">
+        <el-form :model="dictDataStore.commonForm" label-width="100" :rules="formRules" ref="formRef">
             <el-form-item label="配置项" prop="name">
-                <el-select v-model="dictDataStore.commonform.name" filterable placeholder="请输入配置项">
+                <el-select v-model="dictDataStore.commonForm.name" filterable placeholder="请输入配置项">
                     <el-option v-for="item in dictDataStore.dictTypeWithExtra" :key="item.dictTypeId"
                         :label="(item.name + ' - ' + item.description)" :value="(item.name + ' - ' + item.description)"
                         @click="changeSelectDictData(item)" />
                 </el-select>
             </el-form-item>
             <el-form-item label="配置描述" prop="description">
-                <el-input v-model="dictDataStore.commonform.description" autocomplete="off" placeholder="请输入配置描述" />
+                <el-input v-model="dictDataStore.commonForm.description" autocomplete="off" placeholder="请输入配置描述" />
             </el-form-item>
             <el-form-item label="配置值" prop="value">
-                <el-input v-model="dictDataStore.commonform.value" autocomplete="off" placeholder="请输入配置值" />
+                <el-input v-model="dictDataStore.commonForm.value" autocomplete="off" placeholder="请输入配置值" />
             </el-form-item>
             <el-form-item label="排序" prop="sort">
-                <el-input v-model="dictDataStore.commonform.sort" autocomplete="off" placeholder="请输入排序" />
+                <el-input v-model="dictDataStore.commonForm.sort" autocomplete="off" placeholder="请输入排序" />
             </el-form-item>
             <!-- 额外参数列表 -->
             <template v-for="item in dictDataStore.selectDictTypeExtra">
@@ -58,31 +58,26 @@
 
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
-import type { ComponentInternalInstance } from 'vue'
-import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
-import useDictDataStore from '@/store/modules/dictData'
-import { formRules } from '../types/form.rules'
 //仓库
-const LayoutSettingStore = useLayoutSettingStore()
-const dictDataStore = useDictDataStore()
+import useDictDataStore from '@/store/modules/acl/dictData'
+import { formRules } from '../types/form.rules'
+
 //获取当前组件实例
-const instance: ComponentInternalInstance | null = getCurrentInstance();
+const instance = getCurrentInstance();
+const dictDataStore = useDictDataStore()
 //表单对象引用
 const formRef = ref<FormInstance>()
 //表单打开的状态
 const fromOpenStatus = ref(false)
-//接收刷新父组件数据的方法
-const emit = defineEmits(['refreshData']);
-
 
 // 打开modal框
 const open = (item: any) => {
-    dictDataStore.commonform.dictTypeId = item.dictTypeId
-    dictDataStore.commonform.dictDataId = item.dictDataId
-    dictDataStore.commonform.name = item.name
-    dictDataStore.commonform.description = item.description
-    dictDataStore.commonform.value = item.value
-    dictDataStore.commonform.sort = item.sort
+    dictDataStore.commonForm.dictTypeId = item.dictTypeId
+    dictDataStore.commonForm.dictDataId = item.dictDataId
+    dictDataStore.commonForm.name = item.name
+    dictDataStore.commonForm.description = item.description
+    dictDataStore.commonForm.value = item.value
+    dictDataStore.commonForm.sort = item.sort
 
     const extraJson = JSON.parse(item.extra)
     //查询字典值所依赖的字典项并遍历出所有的额外参数
@@ -93,7 +88,6 @@ const open = (item: any) => {
 
 //点击修改按钮触发的事件
 const updateInfoItem = (formEl: FormInstance | undefined) => {
-    console.log(dictDataStore.extra)
     if (!formEl) return
     formEl.validate((valid) => {
         if (valid) {
@@ -107,16 +101,14 @@ const updateInfoItem = (formEl: FormInstance | undefined) => {
                     }
                 }
             }
-            dictDataStore.commonform.extra = JSON.stringify(dictDataStore.extra)
+            dictDataStore.commonForm.extra = JSON.stringify(dictDataStore.extra)
             dictDataStore
-                .upInfoDictData(dictDataStore.commonform)
+                .upInfoDictData(dictDataStore.commonForm)
                 .then(() => {
-                    fromOpenStatus.value = false
-                    emit('refreshData');
-                    ElMessage.success({ message: '信息修改成功' })
-                })
-                .catch((error) => {
-                    ElMessage.error({ message: error })
+                    const searchQuery = dictDataStore.searchForm;
+                    (instance?.proxy as any).$addPage(searchQuery, dictDataStore.dataList.page, dictDataStore.dataList.size);
+                    dictDataStore.dictDataList(searchQuery);
+                    fromOpenStatus.value = false;
                 })
         } else {
             //弹出数据校验失败的message
@@ -127,7 +119,7 @@ const updateInfoItem = (formEl: FormInstance | undefined) => {
 
 //更改选择的选择项触发的事件
 const changeSelectDictData = (item: any) => {
-    dictDataStore.commonform.dictTypeId = item.dictTypeId
+    dictDataStore.commonForm.dictTypeId = item.dictTypeId
     extraSchemaswhthExtra(item.extraSchema, false)
 }
 

@@ -47,8 +47,10 @@ const init = () => {
       ...createDefaultOptions(),
       ...props.options,
     };
+
     // 创建编辑器
     editor = monaco.editor.create(codeEditBox.value, options);
+
     // 注册代码提示
     registerSuggestions();
     // 自动聚焦

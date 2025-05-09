@@ -31,13 +31,13 @@ const links = ref([
         href: 'https://github.com/202252197'
     },
     {
-        title: 'v2.1.7 community',
-        key: 'v2.1.7 community',
+        title: 'v1.0.0 community',
+        key: 'v1.0.0 community',
         href: 'http://q.aaaaa.com'
     },
  
 ]);
-const copyright = ref('Copyright © 2023-2024 | JUNCHENMO网络科技有限公司');
+const copyright = ref('Copyright © 2024-2025 | JUNCHENMO网络科技有限公司');
 
 // 在mounted阶段获取版本信息并更新版权信息
 onMounted(() => {
@@ -69,7 +69,6 @@ onMounted(() => {
 .ivu-global-footer-links a {
   text-decoration: none;
   font-size: 14px;
-  color: #728ce3;
   transition: all 0.2s ease-in-out;
 }
 
