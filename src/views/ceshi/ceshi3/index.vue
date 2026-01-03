@@ -1,0 +1,576 @@
+<script lang="ts">
+export default {
+  name: 'ceshi3',
+}
+</script>
+<script setup lang="ts">
+import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
+import {
+  TerminalApi,
+  TerminalFlash,
+  Terminal,
+  DragConfig,
+  FailedFunc,
+  SuccessFunc,
+  TerminalMessageClass,
+  Message,
+  Command,
+} from 'vue-web-terminal'
+import { reactive } from 'vue'
+
+const layoutSettingStore = useLayoutSettingStore()
+const textContainer = ref<HTMLElement | null>(null)
+
+// 内置命令
+const commandStore = reactive<Command>({
+  key: 'cat',
+  title: '查看文件',
+  group: '常用',
+  usage: 'cat json.txt',
+  description: '查看文件',
+})
+
+const dragConf = reactive<DragConfig>({
+  width: '100%',
+  height: '100%',
+  zIndex: 1,
+  init: {
+    x: 200,
+    y: 200,
+  },
+  pinned: false,
+})
+
+const onExecCmd = (
+  key: string,
+  command: string,
+  success: SuccessFunc,
+  failed: FailedFunc,
+) => {
+  if (key === 'fail') {
+    failed('Something wrong!!!')
+  } else {
+    let allClass = ['success', 'error', 'system', 'info', 'warning']
+
+    let clazz = allClass[Math.floor(Math.random() * allClass.length)]
+    success({
+      type: 'normal',
+      class: clazz as TerminalMessageClass,
+      tag: clazz,
+      content: `Your command is '${command}'`,
+    })
+  }
+
+  // let flash = new TerminalFlash()
+  // success(flash)
+
+  // let count = 0
+  // let flashInterval = setInterval(() => {
+  //   flash.flush(`This is flash content: ${count}`)
+
+  //   if (++count >= 20) {
+  //     clearInterval(flashInterval)
+  //     flash.finish()
+  //   }
+  // }, 200)
+
+  // TerminalApi.textEditorOpen('my-terminal', {
+  //       content: 'Please edit this file',
+  //       onClose: (value, options) => {
+  //           console.log("用户编辑完成，文本结果：", value, "options:", options)
+  //       }
+  //   })
+}
+const setting = reactive({
+  logFold: false,
+  logHighlight: false,
+  shellHint: false,
+  shellSampleHint: false,
+  inputHint: false,
+  lineSpace: 15,
+  fontSize: 14,
+})
+//全屏按钮点击的回调
+const fullScreen = () => {
+  TerminalApi.fullscreen('my-terminal')
+}
+//日志折叠
+const logFold = () => {
+  setting.logFold = !setting.logFold
+}
+//命令样例提示
+const shellSampleHint = () => {
+  setting.shellSampleHint = !setting.shellSampleHint
+}
+//输入提示
+const inputHint = () => {
+  setting.inputHint = !setting.inputHint
+}
+//日志高亮
+const logHighlight = () => {
+  setting.logHighlight = !setting.logHighlight
+}
+//全选
+const selectAllText = () => {
+  const text = document.getElementsByClassName('t-window')[0]
+  let selection = window.getSelection()
+  let range = document.createRange()
+  range.selectNodeContents(text)
+  if (selection) {
+    selection.removeAllRanges()
+    selection.addRange(range)
+  }
+}
+
+//复制选择的内容
+const copy = async () => {
+  const divElement = document.getElementsByClassName('t-window')[0]
+  const textContent = divElement.textContent
+  navigator.clipboard.writeText(textContent)
+}
+//清空
+const clear = () => {
+  //  clear screen log
+  TerminalApi.clearLog('my-terminal')
+}
+
+//去底部
+const jumpToBottom = () => {
+  // 强制跳转到底部
+  TerminalApi.jumpToBottom('my-terminal', true)
+}
+
+//粘贴
+const paste = async () => {
+  navigator.clipboard.readText().then((data) => {
+    TerminalApi.setCommand(
+      'my-terminal',
+      TerminalApi.getCommand('my-terminal') + data,
+    )
+  })
+}
+//字体行间距
+
+//结束命令
+const ctrlC = () => {
+  TerminalApi.execute('my-terminal', '^C')
+}
+
+//去顶部
+//gundong
+const jumpToTop = () => {
+  document.getElementsByClassName('t-window')[0].scrollTop = 0
+}
+
+//禁用双击放大事件
+const disableDoubleClick = () => {
+  console.log('禁用双击放大事件')
+}
+
+//字体大小变化
+const fontSizeEdit = (size) => {
+  const divs = document.querySelectorAll('.t-window')
+  setting.fontSize = setting.fontSize + size
+  divs.forEach((div) => {
+    div?.style.setProperty('--t-font-size', setting.fontSize + 'px')
+  })
+}
+
+const autoCopy = () => {
+  // 创建一个用于存储选中文本的变量
+  let selectedText = ''
+  // 获取要监听的元素
+  const textArea = document.getElementsByClassName('t-window')[0]
+  // 添加鼠标释放事件监听器
+  textArea.addEventListener('mouseup', function () {
+    // 获取选中的文本
+    selectedText = window.getSelection().toString()
+    navigator.clipboard.writeText(selectedText)
+  })
+}
+
+//监听快捷键
+const onKeydown = (event: Event) => {
+  if (event.key === 'c' && event.ctrlKey) {
+    event.preventDefault()
+    //  设置结束命令
+    TerminalApi.execute('my-terminal', '^C')
+  }
+}
+</script>
+
+<template>
+  <div style="height: 75vh">
+    <terminal
+      ref="textContainer"
+      name="my-terminal"
+      title="客户端-127.0.0.1"
+      :command-store="commandStore"
+      :enable-fold="setting.logFold"
+      :enable-hover-stripe="setting.logHighlight"
+      cursor-style="bar"
+      :enable-input-tips="setting.inputHint"
+      :enable-help-box="setting.shellSampleHint"
+      @on-keydown="onKeydown"
+      log-size-limit="5"
+      :line-space="setting.lineSpace"
+      context="junchenmo@127.0.0.1"
+      @exec-cmd="onExecCmd"
+      theme="ceshi1"
+    >
+      <template #header>
+        <div
+          style="background-color: #323538"
+          @dblclick.stop="disableDoubleClick()"
+        >
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin: 0 10px;
+              height: 36px;
+            "
+          >
+            <div class="ssh-header-left">127.0.0.1</div>
+            <div class="ssh-header-right">
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="开启滑动复制"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="autoCopy()">
+                  <svg-icon
+                    name="jcm-放大镜"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="放大字体"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="fontSizeEdit(1)">
+                  <svg-icon
+                    name="jcm-放大镜"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="缩小字体"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="fontSizeEdit(-1)">
+                  <svg-icon
+                    name="jcm-放小镜"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="ctrl + c"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="ctrlC()">
+                  <svg-icon
+                    name="jcm-公式"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="全选"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="selectAllText()">
+                  <svg-icon
+                    name="jcm-全选"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="粘贴"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="paste()">
+                  <svg-icon
+                    name="jcm-粘贴"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="ctrl + c"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="jumpToTop()">
+                  <svg-icon
+                    name="jcm-去顶部"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="去底部"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="jumpToBottom()">
+                  <svg-icon
+                    name="jcm-去底部"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="输入提示"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="inputHint()">
+                  <svg-icon
+                    name="jcm-输入提示"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="命令样例提示"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="shellSampleHint()">
+                  <svg-icon
+                    name="jcm-命令样例提示"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="日志组高亮"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="logHighlight()">
+                  <svg-icon
+                    name="jcm-触摸高亮"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="日志折叠"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="logFold()">
+                  <svg-icon
+                    name="jcm-折叠"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="复制"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="copy()">
+                  <svg-icon
+                    name="jcm-复制"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="全屏"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="fullScreen()">
+                  <svg-icon
+                    name="全屏"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="清空内容"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="clear()">
+                  <svg-icon
+                    name="擦除"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="命令编辑器"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="closeConnect()">
+                  <svg-icon
+                    name="jcm-命令编辑器"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="打开SFTP"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="closeConnect()">
+                  <svg-icon
+                    name="jcm-sftp"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <el-tooltip
+                class="box-item"
+                effect="dark"
+                content="断开连接"
+                placement="bottom"
+              >
+                <div class="tool-button" @click="closeConnect()">
+                  <svg-icon
+                    name="jcm-断开连接"
+                    color="#C3C6C9"
+                    width="20"
+                    height="20"
+                  />
+                </div>
+              </el-tooltip>
+              <div class="fenge">
+                <svg-icon
+                  name="jcm-分割"
+                  color="#C3C6C9"
+                  width="20"
+                  height="20"
+                />
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <span class="status"></span>
+                <div class="status-message">已断开</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </terminal>
+  </div>
+</template>
+
+<style scoped>
+.ssh-header-left::before {
+  content: 'IP:';
+  padding-right: 4px;
+}
+.ssh-header-left {
+  color: aliceblue;
+}
+.ssh-header-right {
+  display: flex;
+}
+.status {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: red;
+}
+.status-message {
+  margin-left: 8px;
+  font-size: 11px;
+  color: aliceblue;
+}
+.tool-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 2px;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}
+.fenge {
+  display: flex;
+  align-items: center;
+  margin: 0 2px;
+  width: 28px;
+  height: 28px;
+}
+.tool-button:hover {
+  cursor: pointer;
+  background-color: #3e4246;
+}
+</style>

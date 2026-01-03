@@ -1,0 +1,26 @@
+/* Make clicks pass-through */
+#nprogress {
+  pointer-events: none;
+}
+#nprogress .bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  width: 100%;
+  height: 2px;
+  // background: linear-gradient(to right,red,cyan,yellow,pink);
+  background-color: var(--lvshihao-theme-color);
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  position: absolute;
+  right: 0;
+  display: block;
+  width: 100px;
+  height: 100%;
+  opacity: 1.0;
+  box-shadow: 0 0 10px var(--lvshihao-theme-color), 0 0 5px var(--lvshihao-theme-color);
+}
+

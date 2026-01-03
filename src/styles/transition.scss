@@ -1,0 +1,107 @@
+
+/**
+ * tab 组件的过渡动画，向上滑动
+ */
+.tab-enter-active,
+.tab-leave-active {
+  transition: all 0.5s ease; /* 过渡动画的时间和形式 */
+}
+.tab-enter {
+  transform: translateY(-100%); /* 初始状态，向上滑动 */
+  opacity: 0; /* 初始状态，透明度为0 */
+}
+.tab-leave-to {
+  transform: translateY(100%); /* 离开状态，向下滑动 */
+  opacity: 0; /* 离开状态，透明度为0 */
+}
+
+/**
+ * 页面滑动过渡，向右滑动
+ */
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.5s ease; /* 过渡动画的时间和形式 */
+}
+.slide-enter {
+  // transform: translateY(-100%); /* 初始状态，向右滑动 */
+  opacity: 1; /* 初始状态，透明度为0 */
+}
+.slide-leave-to {
+  // transform: translateY(100%); /* 离开状态，向左滑动 */
+  opacity: 1、0; /* 离开状态，透明度为0 */
+}
+
+/**
+ * 面包屑导航的过渡动画，向上滑动
+ */
+.breadcrumb-enter-active {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.breadcrumb-leave-active {
+  transition: all 0.5s;
+}
+.breadcrumb-enter,
+.breadcrumb-leave-active {
+  opacity: 0;
+  transform: translateX(20px);
+}
+.breadcrumb-move {
+  transition: all 0.5s;
+}
+.breadcrumb-leave-active {
+  position: absolute;
+}
+
+/* fade-transform */
+.fade-transform--move,
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all 0.5s;
+}
+.fade-transform-enter {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+
+/* 旋转动画 指定class为trun即可使用 */
+.turn:hover {
+  animation: turn 3s linear infinite;
+}
+
+/* 
+旋转动画
+turn : 定义的动画名称
+10s : 动画时间
+linear : 动画平滑
+infinite :使动画无限循环
+transform:rotate(旋转角度)
+%0:动画开始
+%100:动画结束
+*/
+@keyframes turn {
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(72deg);
+  }
+  40% {
+    transform: rotate(144deg);
+  }
+  60% {
+    transform: rotate(216deg);
+  }
+  80% {
+    transform: rotate(288deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+

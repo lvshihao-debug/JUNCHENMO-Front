@@ -1,0 +1,422 @@
+<template>
+  <div>
+    <!--权限列表条件卡片-->
+    <el-card class="searchCard">
+      <el-form
+        :inline="true"
+        :model="menuStore.searchForm"
+        class="searchForm"
+        label-position="right"
+        label-width="auto"
+        ref="searchFormRef"
+      >
+        <el-row>
+          <el-form-item label="菜单名称" prop="name">
+            <el-input v-model="menuStore.searchForm.name" />
+          </el-form-item>
+          <el-form-item label="菜单状态" prop="status">
+            <el-select v-model="menuStore.searchForm.status">
+              <el-option label="启用" value="0" />
+              <el-option label="禁用" value="1" />
+            </el-select>
+          </el-form-item>
+
+          <div style="margin-left: auto" class="card-search-end">
+            <JcmButton
+              :buttonBgColor="layoutSettingStore.getTheme"
+              @click="menuAddFromModal?.open(undefined)"
+            >
+              <template #icon>
+                <svg-icon name="加号" />
+              </template>
+            </JcmButton>
+            <JcmButton
+              :buttonBgColor="layoutSettingStore.getTheme"
+              @click="refresh()"
+            >
+              <template #icon>
+                <svg-icon name="搜索" />
+              </template>
+            </JcmButton>
+            <JcmButton
+              :buttonBgColor="layoutSettingStore.getTheme"
+              @click="resetSearchForm(searchFormRef)"
+            >
+              <template #icon>
+                <svg-icon name="擦除" />
+              </template>
+            </JcmButton>
+            <JcmButton
+              :buttonBgColor="layoutSettingStore.getTheme"
+              @click="expandHandle"
+              v-show="menuStore.expandStatus"
+            >
+              <template #icon>
+                <svg-icon name="收起" />
+              </template>
+            </JcmButton>
+            <JcmButton
+              :buttonBgColor="layoutSettingStore.getTheme"
+              @click="expandHandle"
+              v-show="!menuStore.expandStatus"
+            >
+              <template #icon>
+                <svg-icon name="展开" />
+              </template>
+            </JcmButton>
+            <JcmButton
+              :buttonBgColor="layoutSettingStore.getTheme"
+              @click="refreshCacheMenu()"
+            >
+              <template #icon>
+                <svg-icon name="刷新" />
+              </template>
+            </JcmButton>
+          </div>
+        </el-row>
+      </el-form>
+    </el-card>
+    <!-- 权限列表卡片 -->
+    <el-card class="card-table-style">
+      <el-table
+        :data="menuStore.dataList"
+        table-layout="auto"
+        row-key="menuId"
+        :default-expand-all="menuStore.expandStatus"
+        :default-sort="{ prop: 'sort', order: 'ascending' }"
+        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        v-if="menuStore.refreshTable"
+        v-loading="!loadingStatus"
+        element-loading-text="Loading..."
+      >
+        <el-table-column prop="name" label="菜单名称" width="200px" />
+        <el-table-column prop="icon" label="图标" width="60px" align="center">
+          <template #default="scope">
+            <svg-icon
+              :name="scope.row.icon"
+              :color="layoutSettingStore.getThemeInvert"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column prop="type" label="类型" width="60px" align="center">
+          <template #default="scope">
+            <el-tag size="small">
+              {{ getStatusByType(scope.row.type) }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="sort"
+          label="排序"
+          width="100px"
+          align="center"
+        />
+        <el-table-column
+          prop="status"
+          label="状态"
+          width="170px"
+          align="center"
+        >
+          <template #default="scope">
+            <!--状态-->
+            <el-popconfirm
+              width="200"
+              icon-color="#626AEF"
+              :title="
+                scope.row.status === 0
+                  ? '确定要将当前节点以及所有子节点改为禁用状态?'
+                  : '确定要将当前节点以及所有子节点改为正常状态?'
+              "
+              @confirm="tagUpdateStatusButtonClick(scope.row)"
+            >
+              <template #reference>
+                <template v-if="scope.row.status === 0">
+                  <el-tag checked size="small" class="menu-status-tag">
+                    <el-tooltip
+                      class="box-item"
+                      effect="dark"
+                      content="点击切换状态"
+                      placement="top"
+                    >
+                      启用
+                    </el-tooltip>
+                  </el-tag>
+                </template>
+                <template v-if="scope.row.status === 1">
+                  <el-tag
+                    checked
+                    size="small"
+                    color="#393e46"
+                    class="menu-status-tag"
+                  >
+                    <el-tooltip
+                      class="box-item"
+                      effect="dark"
+                      content="点击切换状态"
+                      placement="top"
+                    >
+                      停用
+                    </el-tooltip>
+                  </el-tag>
+                </template>
+              </template>
+            </el-popconfirm>
+            <!--显示隐藏-->
+            <el-popconfirm
+              width="200"
+              icon-color="#626AEF"
+              :title="
+                scope.row.visible === 0
+                  ? '确定要将当前节点以及所有子节点改为隐藏?'
+                  : '确定要将当前节点以及所有子节点改为显示?'
+              "
+              @confirm="tagUpdateVisibleButtonClick(scope.row)"
+            >
+              <template #reference>
+                <template v-if="scope.row.visible">
+                  <el-tag
+                    checked
+                    size="small"
+                    class="menu-status-tag menu-status-tag-margin"
+                  >
+                    <el-tooltip
+                      class="box-item"
+                      effect="dark"
+                      content="点击切换状态"
+                      placement="top"
+                    >
+                      显示
+                    </el-tooltip>
+                  </el-tag>
+                </template>
+                <template v-if="!scope.row.visible">
+                  <el-tag
+                    checked
+                    size="small"
+                    color="#393e46"
+                    class="menu-status-tag menu-status-tag-margin"
+                  >
+                    <el-tooltip
+                      class="box-item"
+                      effect="dark"
+                      content="点击切换状态"
+                      placement="top"
+                    >
+                      隐藏
+                    </el-tooltip>
+                  </el-tag>
+                </template>
+              </template>
+            </el-popconfirm>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="permission"
+          label="权限标识"
+          width="230px"
+          align="center"
+          show-overflow-tooltip
+        >
+          <template #default="scope">
+            <span
+              @click="(instance?.proxy as any).$copyText(scope.row.permission)"
+              class="copy-span"
+            >
+              {{ scope.row.permission }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="component"
+          label="组件名称"
+          width="100px"
+          align="center"
+          show-overflow-tooltip
+        >
+          <template #default="scope">
+            <span
+              @click="(instance?.proxy as any).$copyText(scope.row.component)"
+              class="copy-span"
+            >
+              {{ scope.row.component }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="link"
+          label="链接路径"
+          align="center"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          prop="remark"
+          label="操作"
+          align="center"
+          width="240px"
+        >
+          <template #default="scope">
+            <el-button
+              size="small"
+              type="primary"
+              @click="menuAddFromModal?.open(scope.row)"
+              text
+              v-show="scope.row.type != 2"
+            >
+              新增
+            </el-button>
+            <el-button
+              size="small"
+              type="primary"
+              @click="menuUpdateFromModal?.open(scope.row)"
+              text
+            >
+              修改
+            </el-button>
+            <el-button
+              size="small"
+              type="danger"
+              @click="deleteItemClick(scope.row)"
+              text
+            >
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
+
+    <!--弹出框组件列表-->
+    <MenuAddFromModal ref="menuAddFromModal"></MenuAddFromModal>
+    <MenuUpdateFromModal ref="menuUpdateFromModal"></MenuUpdateFromModal>
+  </div>
+</template>
+
+<script lang="ts">
+export default {
+  name: 'menu',
+}
+</script>
+<script lang="ts" setup>
+import type { FormInstance } from 'element-plus'
+import type { FromModal } from '@/utils/commonType'
+
+//弹出窗
+import MenuAddFromModal from './components/menu-add-from-modal.vue'
+import MenuUpdateFromModal from './components/menu-update-from-modal.vue'
+//仓库
+import useMenuStore from '@/store/modules/acl/menu'
+import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
+import useDictDataStore from '@/store/modules/acl/dictData'
+
+//获取当前组件实例
+const instance = getCurrentInstance()
+const menuStore = useMenuStore()
+const layoutSettingStore = useLayoutSettingStore()
+const dictDataStore = useDictDataStore()
+
+onMounted(() => {
+  instance?.proxy?.$resetObj(menuStore.searchForm)
+  //进入页面初始化的数据
+  refresh()
+  //初始化字典数据
+  loadDictData()
+})
+
+//表单对象
+const searchFormRef = ref<FormInstance>()
+//user弹出窗对象
+const menuAddFromModal = ref<FromModal>()
+const menuUpdateFromModal = ref<FromModal>()
+
+//页面数据加载的状态
+const loadingStatus = computed(() => {
+  return !menuStore.tableLoading || !layoutSettingStore.setting.dataLoading
+})
+
+//刷新数据方法
+const refresh = async () => {
+  menuStore.tableLoading = true
+
+  await menuStore.menuList(menuStore.searchForm)
+
+  menuStore.tableLoading = false
+}
+
+//删除菜单触发的事件
+const deleteItemClick = (item: any) => {
+  menuStore.delMenu(item.menuId).then(() => {
+    refresh()
+  })
+}
+
+//点击标签更改状态中的启用/禁用
+const tagUpdateStatusButtonClick = (item: any) => {
+  item.status = item.status == 0 ? 1 : 0
+  menuStore.upStatusMenu(item).then(() => {
+    refresh()
+  })
+}
+
+//点击标签更改状态中的显示/隐藏
+const tagUpdateVisibleButtonClick = (item: any) => {
+  item.visible = item.visible == 0 ? 1 : 0
+  menuStore.upStatusMenu(item).then(() => {
+    refresh()
+  })
+}
+
+const getStatusByType = (type: any) => {
+  switch (type) {
+    case 0:
+      return '目录'
+    case 1:
+      return '菜单'
+    case 2:
+      return '按钮' // 根据实际情况填写第三种状态的描述
+    default:
+      return '未知状态'
+  }
+}
+
+//重置搜索表单
+const resetSearchForm = async (ruleFormRef: any) => {
+  if (!ruleFormRef) return
+  ruleFormRef.resetFields()
+}
+
+//扩展&折叠树形数据表格
+const expandHandle = async () => {
+  menuStore.refreshTable = false
+  menuStore.expandStatus = !menuStore.expandStatus
+  await nextTick()
+  menuStore.refreshTable = true
+}
+
+//加载所需要的字典数据
+const loadDictData = () => {
+  const dictNames = ['menuType']
+  dictDataStore
+    .dictDataInfoList(dictNames)
+    .then((resp) => {
+      menuStore.dictData = resp.data
+    })
+    .catch((error) => {
+      ElMessage.error({ message: error })
+    })
+}
+
+//刷新缓存
+const refreshCacheMenu = () => {
+  menuStore.generateRoutes()
+  ElMessage.success({ message: '缓存刷新完成' })
+}
+</script>
+
+<style scoped>
+.menu-status-tag {
+  cursor: pointer;
+}
+.menu-status-tag-margin {
+  margin-left: 5px;
+}
+</style>

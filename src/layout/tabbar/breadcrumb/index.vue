@@ -1,0 +1,73 @@
+<template>
+  <!-- 左侧面包屑 -->
+  <el-breadcrumb
+    separator-icon="ArrowRight"
+    class="animate__animated animate__fadeIn"
+  >
+    <!-- 面包屑动态的展示路由名字与标题 -->
+    <transition-group name="breadcrumb">
+      <el-breadcrumb-item
+        v-for="(item, index) in route.matched"
+        :key="index"
+        v-show="item.meta.title"
+        :to="item.path"
+        @click="tabClick(item)"
+      >
+        <div style="display: flex; align-items: center" class="jcm-breadcurmb">
+          <div>
+            <svg-icon
+              :name="item.meta.icon"
+              :color="layoutSettingStore.getThemeInvert"
+            />
+          </div>
+          <div>
+            <span
+              style="margin: 0 5px"
+              :style="{ color: layoutSettingStore.getThemeInvert }"
+            >
+              {{ item.meta.title }}
+            </span>
+          </div>
+        </div>
+      </el-breadcrumb-item>
+    </transition-group>
+  </el-breadcrumb>
+</template>
+
+<script setup lang="ts">
+import { useRoute } from 'vue-router'
+//创建用户相关的小仓库
+import type { Tag } from '@/store/modules/types/tabsType'
+//创建Tabs相关的小仓库
+import useTabsStore from '@/store/modules/layout/tabs'
+import useLayoutSettingStore from '@/store/modules/layout/layoutSetting'
+//获取路由对象
+const route = useRoute()
+const $router = useRouter()
+//获取layout配置相关的仓库
+const layoutSettingStore = useLayoutSettingStore()
+
+const TabsStore = useTabsStore()
+
+const tabClick = (item: any) => {
+  const myTag: Tag = {
+    title: '',
+    closable: true,
+    path: item.redirect,
+    checked: false,
+    icon: '',
+  }
+  TabsStore.routerTab(myTag, $router)
+}
+</script>
+<script lang="ts">
+export default {
+  name: 'Breadcrumb',
+}
+</script>
+<style lang="scss" scoped>
+.foldwithExpand {
+  margin-right: 10px;
+  cursor: pointer;
+}
+</style>
