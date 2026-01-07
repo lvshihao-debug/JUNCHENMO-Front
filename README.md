@@ -1,46 +1,124 @@
-# What project is this
+<p align="center">
+  <img src="src/assets/icons/logo.svg" width="120" height="120" alt="logo" />
+</p>
 
-The is my base front project
+# JUNCHENMO-Front（JCM LEADER）
 
-| 技术架构     | 版本    | 描述         |
-| ------------ | ------- | ------------ |
-| vue          | ^3.4.21 | 框架         |
-| axios        | ^1.6.8  | 请求接口     |
-| element-plus | ^2.6.2  | UI           |
-| pinia        | ^2.1.7  | 管理页面状态 |
-| vue-router   | ^4.3.0  | 路由         |
-| nprogress    | ^0.2.0  | 进度条加载   |
+一个开箱即用的中后台管理前端基础项目：基于 **Vue 3 + TypeScript + Vite**，内置登录鉴权、动态路由/菜单、标签页导航与常见系统管理模块，适合快速搭建企业级 Admin 并进行二次开发。
 
-| 开发依赖   | 版本    | 描述              |
-| ---------- | ------- | ----------------- |
-| sass       | ^1.72.0 | 样式语言          |
-| typescript | ^5.2.2  | 脚本语言          |
-| vite       | ^5.2.0  | 构建工具          |
-| eslint     | ^8.57.0 | 检查JS代码的工具  |
-| stylelint  | ^14.6.0 | 检查CSS代码的工具 |
-| mockjs     | ^1.1.0  | 模拟接口测试工具  |
-| prettier   | ^3.2.5  | 代码格式化工具    |
+[![Vue](https://img.shields.io/badge/Vue-3.x-42b883?logo=vue.js&logoColor=white)](https://vuejs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Element Plus](https://img.shields.io/badge/Element%20Plus-2.x-409EFF)](https://element-plus.org/)
 
-| src目录下的文件夹 | 描述                      |
-| ----------------- | ------------------------- |
-| api               | 存放axios调用后端接口文件 |
-| components        | 存放通用组件              |
-| layout            | 存放页面布局              |
-| mock              | 存放测试接口数据          |
-| store             | 存放页面状态              |
-| styles            | 存放样式                  |
-| utils             | 存放工具类                |
-| views             | 存放页面                  |
+如果你觉得这个项目对你有帮助，欢迎点个 **Star**，你的支持会让我持续迭代更多通用能力。
 
-# Project View
+## 目录
 
-![1714570765516](image/README/用户管理.png)
-![1714549564673](image/README/角色管理.png)
-![1714549564673](image/README/菜单管理.png)
-![1714549564673](image/README/数据字典项.png)
-![1714549564673](image/README/数据字典值.png)
-![1714549564673](image/README/操作日志.png)
-![1714549564673](image/README/缓存列表.png)
-![1714549564673](image/README/缓存监控.png)
-![1714549564673](image/README/服务监控.png)
-![1714549564673](image/README/系统设置.png)
+- [功能亮点](#功能亮点)
+- [内置模块](#内置模块)
+- [快速开始](#快速开始)
+- [环境变量](#环境变量)
+- [项目结构](#项目结构)
+- [项目截图](#项目截图)
+- [脚本命令](#脚本命令)
+
+## 功能亮点
+
+- 登录鉴权：Token 持久化、全局路由守卫、登录状态过期处理
+- 权限路由：后端下发路由/菜单，前端动态注入路由并渲染侧边栏
+- 体验增强：顶部进度条、标签页导航、KeepAlive 缓存策略
+- 视觉美化：布局与配色更贴近中后台产品体验，图标与动效提升观感
+- 工程化：ESLint / Stylelint / Prettier、TypeScript 类型约束、Vite 高速构建
+
+## 内置模块
+
+- 系统管理：用户管理、角色管理、菜单管理
+- 字典管理：字典项、字典值
+- 日志审计：操作日志、登录日志
+- 监控运维：缓存列表、缓存监控、服务监控、系统监控
+- 提效工具：代码生成、AI 表结构生成、接口文档页
+
+## 快速开始
+
+要求：Node.js >= 18
+
+```bash
+# 安装依赖
+npm i
+
+# 本地开发（自动打开浏览器）
+npm run dev
+```
+
+构建与预览：
+
+```bash
+# 生产构建
+npm run build
+
+# 本地预览构建产物
+npm run preview
+```
+
+## 环境变量
+
+项目通过 `VITE_APP_BASE_API` 配置接口地址（Axios baseURL）。
+
+- 开发环境：`.env.development`
+- 测试环境：`.env.test`
+- 生产环境：`.env.production`
+
+接口请求封装见 [request.ts](src/utils/request.ts)。
+
+## 项目结构
+
+```text
+src
+├─ api          接口层（按业务域拆分）
+├─ assets       静态资源（图标、字体、图片）
+├─ components   通用组件
+├─ enum         枚举与常量
+├─ layout       布局（菜单、Tabs、面包屑等）
+├─ mock         Mock 数据（开发/测试用）
+├─ router       路由与鉴权守卫
+├─ store        Pinia 状态管理（按模块拆分）
+├─ styles       全局样式与主题覆盖
+├─ utils        工具与请求封装
+└─ views        页面（按业务模块组织）
+```
+
+## 项目截图
+
+<details>
+<summary>点击展开</summary>
+
+![截图 01](image/README/msedge_00dL0IP1vw.png)
+![截图 02](image/README/msedge_0tPEdFTPYh.png)
+![截图 03](image/README/msedge_9A7FSzMxVb.png)
+![截图 04](image/README/msedge_C8VUCOPHTA.png)
+![截图 05](image/README/msedge_McEuijupNP.png)
+![截图 06](image/README/msedge_McU15pRFs3.png)
+![截图 07](image/README/msedge_NN2WcompVz.png)
+![截图 08](image/README/msedge_PXCJCwBbGS.png)
+![截图 09](image/README/msedge_Ul5Lr9mQR1.png)
+![截图 10](image/README/msedge_X9oe8O3HfN.png)
+![截图 11](image/README/msedge_g1zswpWawz.png)
+![截图 12](image/README/msedge_ja23MGj9om.png)
+![截图 13](image/README/msedge_kteGvZih23.png)
+![截图 14](image/README/msedge_qI0vrcVjPi.png)
+![截图 15](image/README/msedge_xiT47EdYkI.png)
+
+</details>
+
+## 脚本命令
+
+```bash
+npm run dev        # 开发启动
+npm run build      # 构建
+npm run preview    # 预览构建产物
+npm run lint       # eslint 检查
+npm run fix        # eslint 自动修复
+npm run lint:style # stylelint 自动修复
+npm run format     # prettier 格式化
+```
