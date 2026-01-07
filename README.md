@@ -90,7 +90,7 @@ src
 
 ## 项目截图
 
-<details>
+<details open>
 <summary>点击展开</summary>
 
 ![截图 01](image/README/msedge_00dL0IP1vw.png)
